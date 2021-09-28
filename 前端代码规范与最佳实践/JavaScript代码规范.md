@@ -1,8 +1,6 @@
 # JavaScript 代码规范
 
-*一种写JavaScript更合理的代码风格。*
-
-> **Note**: 本指南假设你使用了 [Babel](https://babeljs.io), 并且要求你使用 [babel-preset-airbnb](https://npmjs.com/babel-preset-airbnb) 或者其他同等资源。 并且假设你在你的应用中安装了 shims/polyfills ，使用[airbnb-browser-shims](https://npmjs.com/airbnb-browser-shims) 或者相同功能。
+*一种写 JavaScript更合理的代码风格。*
 
 ## <a id="table-of-contents">目录</a>
 
@@ -270,7 +268,10 @@
     };
     ```
 
+**注：无效标识符 意为 中间含有空格等非法字符。**
+
   <a name="objects--prototype-builtins"></a>
+
   - [3.7](#objects--prototype-builtins) 不能直接调用 `Object.prototype` 的方法，如： `hasOwnProperty` 、 `propertyIsEnumerable` 和 `isPrototypeOf`。
 
     > 为什么? 这些方法可能被以下问题对象的属性追踪 - 相应的有 `{ hasOwnProperty: false }` - 或者，对象是一个空对象 (`Object.create(null)`)。
@@ -290,8 +291,11 @@
     console.log(has.call(object, key));
     ```
 
+**注：这条倒是无所谓了，我估计你们也不会用这些原型函数。**
+
   <a name="objects--rest-spread"></a>
-  - [3.8](#objects--rest-spread) 更喜欢对象扩展操作符，而不是用 [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) 浅拷贝一个对象。 使用对象的 rest 操作符来获得一个具有某些属性的新对象。
+
+  - [3.8](#objects--rest-spread)使用对象扩展操作符，而不是用 [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) 浅拷贝一个对象。 使用对象的 rest 操作符来获得一个具有某些属性的新对象。
 
     ```javascript
     // very bad
@@ -309,6 +313,8 @@
     
     const { a, ...noA } = copy; // noA => { b: 2, c: 3 }
     ```
+
+**注：deep copy的语法示例，下面有关于数组展开(spread)的相关知识。**
 
 **[⬆ 返回目录](#table-of-contents)**
 
@@ -493,7 +499,10 @@
     }
     ```
 
+**注：解构(destructuring) 和Python里语法是一样的，将对象中的n个属性解构至n个变量中。**
+
   <a name="destructuring--array"></a><a name="5.2"></a>
+
   - [5.2](#destructuring--array) 使用数组解构。 eslint: [`prefer-destructuring`](https://eslint.org/docs/rules/prefer-destructuring)
 
     ```javascript
@@ -598,7 +607,10 @@
     }
     ```
 
-  <a name="strings--eval"></a><a name="6.5"></a>
+  **注：字符串模板就是反引号，和系统编程Linux系统里的类似。不要因为Java用习惯了就老是+一切。**
+
+<a name="strings--eval"></a><a name="6.5"></a>
+
   - [6.4](#strings--eval) 不要在字符串上使用 `eval()` ，它打开了太多漏洞。 eslint: [`no-eval`](https://eslint.org/docs/rules/no-eval)
 
   <a name="strings--escaping"></a>
@@ -642,7 +654,10 @@
     };
     ```
 
+**注：关于函数表达式和函数声明的相关内容可参考JavaScript——函数进阶**
+
   <a name="functions--iife"></a><a name="7.2"></a>
+
   - [7.2](#functions--iife) Wrap立即调用函数表达式。 eslint: [`wrap-iife`](https://eslint.org/docs/rules/wrap-iife.html)
 
     > 为什么? 立即调用的函数表达式是单个单元 - 包装， 并且拥有括号调用, 在括号内, 清晰的表达式。 请注意，在一个到处都是模块的世界中，您几乎不需要一个 IIFE 。
@@ -654,8 +669,11 @@
     }());
     ```
 
-  <a name="functions--in-blocks"></a><a name="7.3"></a>
-  - [7.3](#functions--in-blocks) 切记不要在非功能块中声明函数 (`if`, `while`, 等)。 将函数赋值给变量。 浏览器允许你这样做，但是他们都有不同的解释，这是个坏消息。 eslint: [`no-loop-func`](https://eslint.org/docs/rules/no-loop-func.html)
+  **注：这个内容可能有点高阶，咱们目前没有多少应用场景，可略。**
+
+<a name="functions--in-blocks"></a><a name="7.3"></a>
+
+  - [7.3](#functions--in-blocks) 切记**不要**在非功能块中声明函数 (`if`, `while`, 等)。 将函数赋值给变量。 浏览器允许你这样做，但是他们都有不同的解释，这是个坏消息。 eslint: [`no-loop-func`](https://eslint.org/docs/rules/no-loop-func.html)
 
   <a name="functions--note-on-blocks"></a><a name="7.4"></a>
   - [7.4](#functions--note-on-blocks) **注意:** ECMA-262 将 `block` 定义为语句列表。 函数声明不是语句。
@@ -711,6 +729,7 @@
     ```
 
   <a name="es6-default-parameters"></a><a name="7.7"></a>
+
   - [7.7](#es6-default-parameters) 使用默认的参数语法，而不是改变函数参数。
 
     ```javascript
@@ -737,7 +756,10 @@
     }
     ```
 
+**注：同样是和python中参数默认值的语法相同。**
+
   <a name="functions--default-side-effects"></a><a name="7.8"></a>
+
   - [7.8](#functions--default-side-effects) 避免使用默认参数的副作用。
 
     > 为什么? 他们很容易混淆。
