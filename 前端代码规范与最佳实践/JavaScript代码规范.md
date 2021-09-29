@@ -27,10 +27,7 @@
   1. [分号](#semicolons)
   1. [类型转换和强制类型转换](#type-casting--coercion)
   1. [命名规范](#naming-conventions)
-  1. [存取器](#accessors)
   1. [事件](#events)
-  1. [jQuery](#jquery)
-  1. [ECMAScript 5 兼容性](#ecmascript-5-compatibility)
   1. [ECMAScript 6+ (ES 2015+) 风格](#ecmascript-6-es-2015-styles)
   1. [标准库](#standard-library)
   1. [测试](#testing)
@@ -838,7 +835,7 @@
     ```
 
   <a name="functions--reassign-params"></a><a name="7.13"></a>
-  - [7.13](#functions--reassign-params) 不要再赋值参数。 eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-param-reassign.html)
+  - [7.13](#functions--reassign-params) 不要重新赋值参数。 eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-param-reassign.html)
 
     > 为什么? 重新赋值参数会导致意外的行为，尤其是在访问 `arguments` 对象的时候。 它还可能导致性能优化问题，尤其是在 V8 中。
 
@@ -989,7 +986,10 @@
     });
     ```
 
-  <a name="arrows--paren-wrap"></a><a name="8.3"></a>
+**注：涉及箭头函数，详见JavaScript——函数进阶(非常有用，推荐学习)**
+
+ <a name="arrows--paren-wrap"></a><a name="8.3"></a>
+
   - [8.3](#arrows--paren-wrap) 如果表达式跨越多个行，用括号将其括起来，以获得更好的可读性。
 
     > 为什么? 它清楚地显示了函数的起点和终点。
@@ -1012,7 +1012,7 @@
     ```
 
   <a name="arrows--one-arg-parens"></a><a name="8.4"></a>
-  - [8.4](#arrows--one-arg-parens) 如果你的函数接收一个参数，则可以不用括号，省略括号。 否则，为了保证清晰和一致性，需要在参数周围加上括号。 注意：总是使用括号是可以接受的，在这种情况下，我们使用 [“always” option](https://eslint.org/docs/rules/arrow-parens#always) 来配置 eslint. eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html)
+  - [8.4](#arrows--one-arg-parens) 如果你的函数接收一个参数，则可以不用括号，省略括号。 否则，为了保证清晰和一致性，需要在参数周围加上括号。
 
     > 为什么? 减少视觉上的混乱。
 
@@ -1082,171 +1082,6 @@
 
 **[⬆ 返回目录](#table-of-contents)**
 
-## <a id="classes--constructors">类和构造器</a>
-
-  <a name="constructors--use-class"></a><a name="9.1"></a>
-  - [9.1](#constructors--use-class) 尽量使用 `class`. 避免直接操作 `prototype` .
-
-    > 为什么? `class` 语法更简洁，更容易推理。
-
-    ```javascript
-    // bad
-    function Queue(contents = []) {
-      this.queue = [...contents];
-    }
-    Queue.prototype.pop = function () {
-      const value = this.queue[0];
-      this.queue.splice(0, 1);
-      return value;
-    };
-    
-    // good
-    class Queue {
-      constructor(contents = []) {
-        this.queue = [...contents];
-      }
-      pop() {
-        const value = this.queue[0];
-        this.queue.splice(0, 1);
-        return value;
-      }
-    }
-    ```
-
-  <a name="constructors--extends"></a><a name="9.2"></a>
-  - [9.2](#constructors--extends) 使用 `extends` 来扩展继承。
-
-    > 为什么? 它是一个内置的方法，可以在不破坏 `instanceof` 的情况下继承原型功能。
-
-    ```javascript
-    // bad
-    const inherits = require('inherits');
-    function PeekableQueue(contents) {
-      Queue.apply(this, contents);
-    }
-    inherits(PeekableQueue, Queue);
-    PeekableQueue.prototype.peek = function () {
-      return this.queue[0];
-    };
-    
-    // good
-    class PeekableQueue extends Queue {
-      peek() {
-        return this.queue[0];
-      }
-    }
-    ```
-
-  <a name="constructors--chaining"></a><a name="9.3"></a>
-  - [9.3](#constructors--chaining) 方法返回了 `this` 来供其内部方法调用。
-
-    ```javascript
-    // bad
-    Jedi.prototype.jump = function () {
-      this.jumping = true;
-      return true;
-    };
-    
-    Jedi.prototype.setHeight = function (height) {
-      this.height = height;
-    };
-    
-    const luke = new Jedi();
-    luke.jump(); // => true
-    luke.setHeight(20); // => undefined
-    
-    // good
-    class Jedi {
-      jump() {
-        this.jumping = true;
-        return this;
-      }
-    
-      setHeight(height) {
-        this.height = height;
-        return this;
-      }
-    }
-    
-    const luke = new Jedi();
-    
-    luke.jump()
-      .setHeight(20);
-    ```
-
-  <a name="constructors--tostring"></a><a name="9.4"></a>
-  - [9.4](#constructors--tostring) 只要在确保能正常工作并且不产生任何副作用的情况下，编写一个自定义的 `toString()` 方法也是可以的。
-
-    ```javascript
-    class Jedi {
-      constructor(options = {}) {
-        this.name = options.name || 'no name';
-      }
-    
-      getName() {
-        return this.name;
-      }
-    
-      toString() {
-        return `Jedi - ${this.getName()}`;
-      }
-    }
-    ```
-
-  <a name="constructors--no-useless"></a><a name="9.5"></a>
-  - [9.5](#constructors--no-useless) 如果没有指定类，则类具有默认的构造器。 一个空的构造器或是一个代表父类的函数是没有必要的。 eslint: [`no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor)
-
-    ```javascript
-    // bad
-    class Jedi {
-      constructor() {}
-    
-      getName() {
-        return this.name;
-      }
-    }
-    
-    // bad
-    class Rey extends Jedi {
-      constructor(...args) {
-        super(...args);
-      }
-    }
-    
-    // good
-    class Rey extends Jedi {
-      constructor(...args) {
-        super(...args);
-        this.name = 'Rey';
-      }
-    }
-    ```
-
-  <a name="classes--no-duplicate-members"></a>
-  - [9.6](#classes--no-duplicate-members) 避免定义重复的类成员。 eslint: [`no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members)
-
-    > 为什么? 重复的类成员声明将会默认倾向于最后一个 - 具有重复的类成员可以说是一个错误。
-
-    ```javascript
-    // bad
-    class Foo {
-      bar() { return 1; }
-      bar() { return 2; }
-    }
-    
-    // good
-    class Foo {
-      bar() { return 1; }
-    }
-    
-    // good
-    class Foo {
-      bar() { return 2; }
-    }
-    ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
 ## <a id="modules">模块</a>
 
   <a name="modules--use-them"></a><a name="10.1"></a>
@@ -1300,8 +1135,9 @@
   <a name="modules--no-duplicate-imports"></a>
   - [10.4](#modules--no-duplicate-imports) 只从一个路径导入所有需要的东西。
  eslint: [`no-duplicate-imports`](https://eslint.org/docs/rules/no-duplicate-imports)
+    
     > 为什么? 从同一个路径导入多个行，使代码更难以维护。
-
+    
     ```javascript
     // bad
     import foo from 'foo';
@@ -1321,8 +1157,9 @@
   <a name="modules--no-mutable-exports"></a>
   - [10.5](#modules--no-mutable-exports) 不要导出可变的引用。
  eslint: [`import/no-mutable-exports`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
+    
     > 为什么? 在一般情况下，应该避免发生突变，但是在导出可变引用时及其容易发生突变。虽然在某些特殊情况下，可能需要这样，但是一般情况下只需要导出常量引用。
-
+    
     ```javascript
     // bad
     let foo = 3;
@@ -1333,11 +1170,15 @@
     export { foo };
     ```
 
-  <a name="modules--prefer-default-export"></a>
-  - [10.6](#modules--prefer-default-export) 在单个导出的模块中，选择默认模块而不是指定的导出。
- eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
-    > 为什么? 为了鼓励更多的文件只导出一件东西，这样可读性和可维护性更好。
+  **注：简言之就是导出的最好是const。**
 
+<a name="modules--prefer-default-export"></a>
+
+  - [10.6](#modules--prefer-default-export) 在单个导出的模块中，选择默认模块(default)而不是指定的导出。
+ eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+    
+    > 为什么? 为了鼓励更多的文件只导出一件东西，这样可读性和可维护性更好。
+    
     ```javascript
     // bad
     export function foo() {}
@@ -1387,8 +1228,9 @@
   <a name="modules--no-webpack-loader-syntax"></a>
   - [10.9](#modules--no-webpack-loader-syntax) 在模块导入语句中禁止使用 Webpack 加载器语法。
  eslint: [`import/no-webpack-loader-syntax`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md)
+    
     > 为什么? 因为在导入语句中使用 webpack 语法，将代码和模块绑定在一起。应该在 `webpack.config.js` 中使用加载器语法。
-
+    
     ```javascript
     // bad
     import fooSass from 'css!sass!foo.scss';
@@ -1447,72 +1289,6 @@
     const increasedByOne = numbers.map(num => num + 1);
     ```
 
-  <a name="generators--nope"></a><a name="11.2"></a>
-  - [11.2](#generators--nope) 不要使用发生器。
-
-    > 为什么? 它们不能很好的适应 ES5。
-
-  <a name="generators--spacing"></a>
-  - [11.3](#generators--spacing) 如果你必须使用发生器或者无视 [我们的建议](#generators--nope)，请确保他们的函数签名是正常的间隔。 eslint: [`generator-star-spacing`](https://eslint.org/docs/rules/generator-star-spacing)
-
-    > 为什么? `function` 和 `*` 是同一个概念关键字的一部分 - `*` 不是 `function` 的修饰符， `function*` 是一个不同于 `function` 的构造器。
-
-    ```javascript
-    // bad
-    function * foo() {
-      // ...
-    }
-    
-    // bad
-    const bar = function * () {
-      // ...
-    };
-    
-    // bad
-    const baz = function *() {
-      // ...
-    };
-    
-    // bad
-    const quux = function*() {
-      // ...
-    };
-    
-    // bad
-    function*foo() {
-      // ...
-    }
-    
-    // bad
-    function *foo() {
-      // ...
-    }
-    
-    // very bad
-    function
-    *
-    foo() {
-      // ...
-    }
-    
-    // very bad
-    const wat = function
-    *
-    () {
-      // ...
-    };
-    
-    // good
-    function* foo() {
-      // ...
-    }
-    
-    // good
-    const foo = function* () {
-      // ...
-    };
-    ```
-
 **[⬆ 返回目录](#table-of-contents)**
 
 ## <a id="properties">属性</a>
@@ -1534,7 +1310,7 @@
     ```
 
   <a name="properties--bracket"></a><a name="12.2"></a>
-  - [12.2](#properties--bracket) 使用变量访问属性时，使用 `[]`表示法。
+  - [12.2](#properties--bracket) 使用**变量**访问属性时，使用 `[]`表示法。
 
     ```javascript
     const luke = {
@@ -1564,7 +1340,7 @@
 ## <a id="variables">变量</a>
 
   <a name="variables--const"></a><a name="13.1"></a>
-  - [13.1](#variables--const) 使用 `const` 或者 `let` 来定义变量。 不这样做将创建一个全局变量。 我们希望避免污染全局命名空间。 Captain Planet 警告过我们。 eslint: [`no-undef`](https://eslint.org/docs/rules/no-undef) [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
+  - [13.1](#variables--const) 使用 `const` 或者 `let` 来**定义**变量。 不这样做将创建一个全局变量。 我们希望**避免污染全局命名空间**。 Captain Planet 警告过我们。 eslint: [`no-undef`](https://eslint.org/docs/rules/no-undef) [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
 
     ```javascript
     // bad
@@ -1575,7 +1351,7 @@
     ```
 
   <a name="variables--one-const"></a><a name="13.2"></a>
-  - [13.2](#variables--one-const) 使用 `const` 或者 `let` 声明每一个变量。 eslint: [`one-var`](https://eslint.org/docs/rules/one-var.html)
+  - [13.2](#variables--one-const) 使用 `const` 或者 `let` **声明**每一个变量。 eslint: [`one-var`](https://eslint.org/docs/rules/one-var.html)
 
     > 为什么? 这样更容易添加新的变量声明，而且你不必担心是使用 `;` 还是使用 `,` 或引入标点符号的差别。 你可以通过 debugger 逐步查看每个声明，而不是立即跳过所有声明。
 
@@ -1696,7 +1472,7 @@
   <a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
   - [13.6](#variables--unary-increment-decrement) 避免使用不必要的递增和递减 (`++`, `--`)。 eslint [`no-plusplus`](https://eslint.org/docs/rules/no-plusplus)
 
-    > 为什么? 在eslint文档中，一元递增和递减语句以自动分号插入为主题，并且在应用程序中可能会导致默认值的递增或递减。它还可以用像 `num += 1` 这样的语句来改变您的值，而不是使用 `num++` 或 `num ++` 。不允许不必要的增量和减量语句也会使您无法预先递增/预递减值，这也会导致程序中的意外行为。
+    > 为什么? 在eslint文档中，一元递增和递减语句以自动分号插入为主题，并且在应用程序中可能会导致默认值的递增或递减。用 `num += 1` 这样的语句来改变您的值，而不是使用 `num++` 或 `num ++` 。不允许不必要的增量和减量语句也会使您无法预先递增/预递减值，这也会导致程序中的意外行为。
 
     ```javascript
     // bad
@@ -1752,39 +1528,7 @@
 
 **[⬆ 返回目录](#table-of-contents)**
 
-## <a id="hoisting">提升</a>
-
-  <a name="hoisting--about"></a><a name="14.1"></a>
-  - [14.1](#hoisting--about) `var` 定义的变量会被提升到函数范围的最顶部，但是它的赋值不会。`const` 和 `let` 声明的变量受到一个称之为 [Temporal Dead Zones (TDZ)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let) 的新概念保护。 知道为什么 [typeof 不再安全](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15) 是很重要的。
-
-    ```javascript
-    // 我们知道这个行不通 (假设没有未定义的全局变量)
-    function example() {
-      console.log(notDefined); // => throws a ReferenceError
-    }
-    
-    // 在引用变量后创建变量声明将会因变量提升而起作用。
-    // 注意: 真正的值 `true` 不会被提升。
-    function example() {
-      console.log(declaredButNotAssigned); // => undefined
-      var declaredButNotAssigned = true;
-    }
-    
-    // 解释器将变量提升到函数的顶部
-    // 这意味着我们可以将上边的例子重写为：
-    function example() {
-      let declaredButNotAssigned;
-      console.log(declaredButNotAssigned); // => undefined
-      declaredButNotAssigned = true;
-    }
-    
-    // 使用 const 和 let
-    function example() {
-      console.log(declaredButNotAssigned); // => throws a ReferenceError
-      console.log(typeof declaredButNotAssigned); // => throws a ReferenceError
-      const declaredButNotAssigned = true;
-    }
-    ```
+## <a id="hoisting">提升(关于 变量和函数等标识符 声明和调用的先后的问题)</a>
 
   <a name="hoisting--anon-expressions"></a><a name="14.2"></a>
   - [14.2](#hoisting--anon-expressions) 匿名函数表达式提升变量名，而不是函数赋值。
@@ -1907,9 +1651,9 @@
   - [15.4](#comparison--moreinfo) 获取更多信息请查看 Angus Croll 的 [Truth Equality and JavaScript](https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/#more-2108) 。
 
   <a name="comparison--switch-blocks"></a><a name="15.5"></a>
-  - [15.5](#comparison--switch-blocks) 在 `case` 和 `default` 的子句中，如果存在声明 (例如. `let`, `const`, `function`, 和 `class`)，使用大括号来创建块 。 eslint: [`no-case-declarations`](https://eslint.org/docs/rules/no-case-declarations.html)
+  - [15.5](#comparison--switch-blocks) 在 `case` 和 `default` 的子句中，如果存在声明 (例如. `let`, `const`, `function`, 和 `class`)，使用大括号来创建块(block) 。 eslint: [`no-case-declarations`](https://eslint.org/docs/rules/no-case-declarations.html)
 
-    > 为什么? 语法声明在整个 `switch` 块中都是可见的，但是只有在赋值的时候才会被初始化，这种情况只有在 `case` 条件达到才会发生。 当多个 `case` 语句定义相同的东西是，这会导致问题问题。
+    > 为什么? 语法声明在整个 `switch` 块中都是可见的，但是只有在赋值的时候才会被初始化，这种情况只有在 `case` 条件达到才会发生。 当多个 `case` 语句定义相同的东西是，这会导致问题。
 
     ```javascript
     // bad
@@ -2028,7 +1772,7 @@
 ## <a id="blocks">块</a>
 
   <a name="blocks--braces"></a><a name="16.1"></a>
-  - [16.1](#blocks--braces) 当有多行代码块的时候，使用大括号包裹。 eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
+  - [16.1](#blocks--braces) 当有多行代码块的时候，使用大括号包裹；单行不用大括号。 eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
 
     ```javascript
     // bad
@@ -2074,7 +1818,10 @@
     }
     ```
 
+**注：这个应该是JetsBrain默认的设置**
+
   <a name="blocks--no-else-return"></a><a name="16.3"></a>
+
   - [16.3](#blocks--no-else-return) 如果一个 `if` 块总是执行一个 `return` 语句，那么接下来的 `else` 块就没有必要了。 如果一个包含 `return` 语句的 `else if` 块，在一个包含了 `return` 语句的 `if` 块之后，那么可以拆成多个 `if` 块。 eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
 
     ```javascript
@@ -2244,7 +1991,10 @@
     }
     ```
 
+**注：经典Java注释格式**
+
   <a name="comments--singleline"></a><a name="17.2"></a>
+
   - [18.2](#comments--singleline) 使用 `//` 进行单行注释。 将单行注释放在需要注释的行的上方新行。 在注释之前放一个空行，除非它在块的第一行。
 
     ```javascript
@@ -2375,7 +2125,10 @@
     }
     ```
 
+**注：因为前端开发会有很多嵌套，所以tabs少一点比较好。**
+
   <a name="whitespace--before-blocks"></a><a name="18.2"></a>
+
   - [19.2](#whitespace--before-blocks) 在主体前放置一个空格。 eslint: [`space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks.html)
 
     ```javascript
@@ -2438,75 +2191,8 @@
     const x = y + 5;
     ```
 
-  <a name="whitespace--newline-at-end"></a><a name="18.5"></a>
-  - [19.5](#whitespace--newline-at-end) 使用单个换行符结束文件。 eslint: [`eol-last`](https://github.com/eslint/eslint/blob/master/docs/rules/eol-last.md)
+ <a name="whitespace--after-blocks"></a><a name="18.7"></a>
 
-    ```javascript
-    // bad
-    import { es6 } from './AirbnbStyleGuide';
-      // ...
-    export default es6;
-    ```
-
-    ```javascript
-    // bad
-    import { es6 } from './AirbnbStyleGuide';
-      // ...
-    export default es6;↵
-    ↵
-    ```
-
-    ```javascript
-    // good
-    import { es6 } from './AirbnbStyleGuide';
-      // ...
-    export default es6;↵
-    ```
-
-  <a name="whitespace--chains"></a><a name="18.6"></a>
-  - [19.6](#whitespace--chains) 在使用链式方法调用的时候使用缩进(超过两个方法链)。 使用一个引导点，强调该行是方法调用，而不是新的语句。 eslint: [`newline-per-chained-call`](https://eslint.org/docs/rules/newline-per-chained-call) [`no-whitespace-before-property`](https://eslint.org/docs/rules/no-whitespace-before-property)
-
-    ```javascript
-    // bad
-    $('#items').find('.selected').highlight().end().find('.open').updateCount();
-    
-    // bad
-    $('#items').
-      find('.selected').
-        highlight().
-        end().
-      find('.open').
-        updateCount();
-    
-    // good
-    $('#items')
-      .find('.selected')
-        .highlight()
-        .end()
-      .find('.open')
-        .updateCount();
-    
-    // bad
-    const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
-        .attr('width', (radius + margin) * 2).append('svg:g')
-        .attr('transform', `translate(${radius + margin},${radius + margin})`)
-        .call(tron.led);
-    
-    // good
-    const leds = stage.selectAll('.led')
-        .data(data)
-      .enter().append('svg:svg')
-        .classed('led', true)
-        .attr('width', (radius + margin) * 2)
-      .append('svg:g')
-        .attr('transform', `translate(${radius + margin},${radius + margin})`)
-        .call(tron.led);
-    
-    // good
-    const leds = stage.selectAll('.led').data(data);
-    ```
-
-  <a name="whitespace--after-blocks"></a><a name="18.7"></a>
   - [19.7](#whitespace--after-blocks) 在块和下一个语句之前留下一空白行。
 
     ```javascript
@@ -2756,25 +2442,6 @@
   <a name="whitespace--no-trailing-spaces"></a>
   - [19.18](#whitespace--no-trailing-spaces) 在行的末尾避免使用空格。 eslint: [`no-trailing-spaces`](https://eslint.org/docs/rules/no-trailing-spaces)
 
-  <a name="whitespace--no-multiple-empty-lines"></a>
-  - [19.19](#whitespace--no-multiple-empty-lines) 避免多个空行，并且只允许在文件末尾添加一个换行符。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
-
-    <!-- markdownlint-disable MD012 -->
-    ```javascript
-    // bad
-    var x = 1;
-
-
-
-    var y = 2;
-    
-    // good
-    var x = 1;
-    
-    var y = 2;
-    ```
-    <!-- markdownlint-enable MD012 -->
-
 **[⬆ 返回目录](#table-of-contents)**
 
 ## <a id="commas">逗号</a>
@@ -2815,7 +2482,7 @@
     ```
 
   <a name="commas--dangling"></a><a name="19.2"></a>
-  - [20.2](#commas--dangling) 添加尾随逗号： **可以** eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle.html)
+  - [20.2](#commas--dangling) 添加尾随逗号： **最好** eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle.html)
 
     > 为什么? 这个将造成更清洁的 git 扩展差异。 另外，像 Babel 这样的编译器，会在转换后的代码中删除额外的尾随逗号，这意味着你不必担心在浏览器中后面的 [尾随逗号问题](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas) 。
 
@@ -2915,7 +2582,7 @@
 ## <a id="semicolons">分号</a>
 
   <a name="semicolons--required"></a><a name="20.1"></a>
-  - [21.1](#semicolons--required) **对** eslint: [`semi`](https://eslint.org/docs/rules/semi.html)
+  - [21.1](#semicolons--required) **虽然不写分号程序一样能跑，但是最好把他当成C，每个语句完了都写分号！** eslint: [`semi`](https://eslint.org/docs/rules/semi.html)
 
     > 为什么? 当 JavaScript 遇见一个没有分号的换行符时，它会使用一个叫做 [Automatic Semicolon Insertion](https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion) 的规则来确定是否应该以换行符视为语句的结束，并且如果认为如此，会在代码中断前插入一个分号到代码中。 但是，ASI 包含了一些奇怪的行为，如果 JavaScript 错误的解释了你的换行符，你的代码将会中断。 随着新特性成为 JavaScript 的一部分，这些规则将变得更加复杂。 明确地终止你的语句，并配置你的 linter 以捕获缺少的分号将有助于防止你遇到的问题。
 
@@ -3011,7 +2678,10 @@
     const val = parseInt(inputValue, 10);
     ```
 
+**注：你们前端拿到后端传来的数据时，很多时候都是字符串，但是可能类型应该是数字，可以考虑在读取后端数据时就用这种方法进行转换后，直接存储数字**
+
   <a name="coercion--comment-deviations"></a><a name="21.4"></a>
+
   - [22.4](#coercion--comment-deviations) 如果出于某种原因，你正在做一些疯狂的事情，而 `parseInt` 是你的瓶颈，并且出于 [性能问题](https://jsperf.com/coercion-vs-casting/3) 需要使用位运算， 请写下注释，说明为什么这样做和你做了什么。
 
     ```javascript
@@ -3023,17 +2693,8 @@
     const val = inputValue >> 0;
     ```
 
-  <a name="coercion--bitwise"></a><a name="21.5"></a>
-  - [22.5](#coercion--bitwise) **注意：** 当你使用位运算的时候要小心。 数字总是被以 [64-bit 值](https://es5.github.io/#x4.3.19) 的形式表示，但是位运算总是返回一个 32-bit 的整数 ([来源](https://es5.github.io/#x11.7))。 对于大于 32 位的整数值，位运算可能会导致意外行为。[讨论](https://github.com/airbnb/javascript/issues/109)。 最大的 32 位整数是： 2,147,483,647。
-
-    ```javascript
-    2147483647 >> 0; // => 2147483647
-    2147483648 >> 0; // => -2147483648
-    2147483649 >> 0; // => -2147483647
-    ```
-
   <a name="coercion--booleans"></a><a name="21.6"></a>
-  - [22.6](#coercion--booleans) 布尔类型： eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+  - [22.6](#coercion--booleans) 布尔类型： 直接用两次取反进行转换。eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
     ```javascript
     const age = 0;
@@ -3082,7 +2743,7 @@
     ```
 
   <a name="naming--PascalCase"></a><a name="22.3"></a>
-  - [23.3](#naming--PascalCase) 只有在命名构造器或者类的时候才用帕斯卡拼命名法（PascalCase）。 eslint: [`new-cap`](https://eslint.org/docs/rules/new-cap.html)
+  - [23.3](#naming--PascalCase) 只有在命名构造器或者类的时候才用帕斯卡命名法（PascalCase）(首字母大写)。 eslint: [`new-cap`](https://eslint.org/docs/rules/new-cap.html)
 
     ```javascript
     // bad
@@ -3155,7 +2816,7 @@
     ```
 
   <a name="naming--filename-matches-export"></a><a name="22.6"></a>
-  - [23.6](#naming--filename-matches-export) 文件名应该和默认导出的名称完全匹配。
+  - [23.6](#naming--filename-matches-export) 文件名应该和默认导出的名称完全匹配。（大小写不一样也不行！）
 
     ```javascript
     // file 1 contents
@@ -3289,75 +2950,6 @@
 
 **[⬆ 返回目录](#table-of-contents)**
 
-## <a id="accessors">存取器</a>
-
-  <a name="accessors--not-required"></a><a name="23.1"></a>
-  - [24.1](#accessors--not-required) 对于属性的的存取函数不是必须的。
-
-  <a name="accessors--no-getters-setters"></a><a name="23.2"></a>
-  - [24.2](#accessors--no-getters-setters) 不要使用 JavaScript 的 getters/setters 方法，因为它们会导致意外的副作用，并且更加难以测试、维护和推敲。 相应的，如果你需要存取函数的时候使用 `getVal()` 和 `setVal('hello')`。
-
-    ```javascript
-    // bad
-    class Dragon {
-      get age() {
-        // ...
-      }
-    
-      set age(value) {
-        // ...
-      }
-    }
-    
-    // good
-    class Dragon {
-      getAge() {
-        // ...
-      }
-    
-      setAge(value) {
-        // ...
-      }
-    }
-    ```
-
-  <a name="accessors--boolean-prefix"></a><a name="23.3"></a>
-  - [24.3](#accessors--boolean-prefix) 如果属性/方法是一个 `boolean` 值，使用 `isVal()` 或者 `hasVal()`。
-
-    ```javascript
-    // bad
-    if (!dragon.age()) {
-      return false;
-    }
-    
-    // good
-    if (!dragon.hasAge()) {
-      return false;
-    }
-    ```
-
-  <a name="accessors--consistent"></a><a name="23.4"></a>
-  - [24.4](#accessors--consistent) 可以创建 `get()` 和 `set()` 方法，但是要保证一致性。
-
-    ```javascript
-    class Jedi {
-      constructor(options = {}) {
-        const lightsaber = options.lightsaber || 'blue';
-        this.set('lightsaber', lightsaber);
-      }
-    
-      set(key, val) {
-        this[key] = val;
-      }
-    
-      get(key) {
-        return this[key];
-      }
-    }
-    ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
 ## <a id="events">事件</a>
 
   <a name="events--hash"></a><a name="24.1"></a>
@@ -3389,83 +2981,6 @@
 
   **[⬆ 返回目录](#table-of-contents)**
 
-## jQuery
-
-  <a name="jquery--dollar-prefix"></a><a name="25.1"></a>
-  - [26.1](#jquery--dollar-prefix) 对于 jQuery 对象的变量使用 `$` 作为前缀。
-
-    ```javascript
-    // bad
-    const sidebar = $('.sidebar');
-    
-    // good
-    const $sidebar = $('.sidebar');
-    
-    // good
-    const $sidebarBtn = $('.sidebar-btn');
-    ```
-
-  <a name="jquery--cache"></a><a name="25.2"></a>
-  - [26.2](#jquery--cache) 缓存 jQuery 查询。
-
-    ```javascript
-    // bad
-    function setSidebar() {
-      $('.sidebar').hide();
-    
-      // ...
-    
-      $('.sidebar').css({
-        'background-color': 'pink',
-      });
-    }
-    
-    // good
-    function setSidebar() {
-      const $sidebar = $('.sidebar');
-      $sidebar.hide();
-    
-      // ...
-    
-      $sidebar.css({
-        'background-color': 'pink',
-      });
-    }
-    ```
-
-  <a name="jquery--queries"></a><a name="25.3"></a>
-  - [26.3](#jquery--queries) 对于 DOM 查询使用层叠 `$('.sidebar ul')` 或 父元素 > 子元素 `$('.sidebar > ul')` 的格式。 [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
-
-  <a name="jquery--find"></a><a name="25.4"></a>
-  - [26.4](#jquery--find) 对于有作用域的 jQuery 对象查询使用 `find` 。
-
-    ```javascript
-    // bad
-    $('ul', '.sidebar').hide();
-    
-    // bad
-    $('.sidebar').find('ul').hide();
-    
-    // good
-    $('.sidebar ul').hide();
-    
-    // good
-    $('.sidebar > ul').hide();
-    
-    // good
-    $sidebar.find('ul').hide();
-    ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-## <a id="ecmascript-5-compatibility">ECMAScript 5 兼容性</a>
-
-  <a name="es5-compat--kangax"></a><a name="26.1"></a>
-  - [27.1](#es5-compat--kangax) 参考 [Kangax](https://twitter.com/kangax/)的 ES5 [兼容性表格](https://kangax.github.io/es5-compat-table/)。
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="ecmascript-6-styles"></a>
 ## ECMAScript 6+ (ES 2015+) Styles
 
   <a name="es6-styles"></a><a name="27.1"></a>
@@ -3551,7 +3066,7 @@
     - 无论你使用那种测试框架，都应该编写测试！
     - 努力写出许多小的纯函数，并尽量减少发生错误的地方。
     - 对于静态方法和 mock 要小心----它们会使你的测试更加脆弱。
-    - 我们主要在 Airbnb 上使用 [`mocha`](https://www.npmjs.com/package/mocha) 和 [`jest`](https://www.npmjs.com/package/jest) 。 [`tape`](https://www.npmjs.com/package/tape) 也会用在一些小的独立模块上。
+    - 主要使用 [`mocha`](https://www.npmjs.com/package/mocha) 和 [`jest`](https://www.npmjs.com/package/jest) 。 [`tape`](https://www.npmjs.com/package/tape) 也会用在一些小的独立模块上。
     - 100%的测试覆盖率是一个很好的目标，即使它并不总是可行的。
     - 无论何时修复bug，都要编写一个回归测试。在没有回归测试的情况下修复的bug在将来几乎肯定会再次崩溃。
 
@@ -3685,5 +3200,3 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## <a id="amendments">修正案</a>
 
 我们鼓励您使用此指南并更改规则以适应您的团队的风格指南。下面，你可以列出一些对风格指南的修正。这允许您定期更新您的样式指南，而不必处理合并冲突。
-
-# };
