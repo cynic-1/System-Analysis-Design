@@ -653,21 +653,6 @@
 
 **注：关于函数表达式和函数声明的相关内容可参考JavaScript——函数进阶**
 
-  <a name="functions--iife"></a><a name="7.2"></a>
-
-  - [7.2](#functions--iife) Wrap立即调用函数表达式。 eslint: [`wrap-iife`](https://eslint.org/docs/rules/wrap-iife.html)
-
-    > 为什么? 立即调用的函数表达式是单个单元 - 包装， 并且拥有括号调用, 在括号内, 清晰的表达式。 请注意，在一个到处都是模块的世界中，您几乎不需要一个 IIFE 。
-
-    ```javascript
-    // immediately-invoked function expression (IIFE) 立即调用的函数表达式
-    (function () {
-      console.log('Welcome to the Internet. Please follow me.');
-    }());
-    ```
-
-  **注：这个内容可能有点高阶，咱们目前没有多少应用场景，可略。**
-
 <a name="functions--in-blocks"></a><a name="7.3"></a>
 
   - [7.3](#functions--in-blocks) 切记**不要**在非功能块中声明函数 (`if`, `while`, 等)。 将函数赋值给变量。 浏览器允许你这样做，但是他们都有不同的解释，这是个坏消息。 eslint: [`no-loop-func`](https://eslint.org/docs/rules/no-loop-func.html)
@@ -2396,23 +2381,6 @@
     var arr = [1, 2];
     ```
 
-  <a name="whitespace--computed-property-spacing"></a>
-  - [19.15](#whitespace--computed-property-spacing) 在计算属性之间强化间距。eslint: [`computed-property-spacing`](https://eslint.org/docs/rules/computed-property-spacing)
-
-    ```javascript
-    // bad
-    obj[foo ]
-    obj[ 'foo']
-    var x = {[ b ]: a}
-    obj[foo[ bar ]]
-    
-    // good
-    obj[foo]
-    obj['foo']
-    var x = { [b]: a }
-    obj[foo[bar]]
-    ```
-
   <a name="whitespace--func-call-spacing"></a>
   - [19.16](#whitespace--func-call-spacing) 在函数和它的调用之间强化间距。 eslint: [`func-call-spacing`](https://eslint.org/docs/rules/func-call-spacing)
 
@@ -3169,34 +3137,3 @@
 ## <a id="the-javascript-style-guide-guide">JavaScript风格指南的指南</a>
 
   - [Reference](https://github.com/airbnb/javascript/wiki/The-JavaScript-Style-Guide-Guide)
-
-## <a id="license">许可证</a>
-
-(The MIT License)
-
-Copyright (c) 2012 康兵奎
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-**[⬆ 返回目录](#table-of-contents)**
-
-## <a id="amendments">修正案</a>
-
-我们鼓励您使用此指南并更改规则以适应您的团队的风格指南。下面，你可以列出一些对风格指南的修正。这允许您定期更新您的样式指南，而不必处理合并冲突。
