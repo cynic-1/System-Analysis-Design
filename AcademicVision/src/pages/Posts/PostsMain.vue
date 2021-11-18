@@ -9,9 +9,7 @@
 
     <q-splitter
       v-model="splitterModel"
-      style="height: 750px"
-
-    >
+      style="height: 750px">
 
       <template v-slot:before>
         <q-tabs
@@ -19,9 +17,10 @@
           vertical
           class="text-blue-6"
         >
-          <q-tab name="mails" icon="view_in_ar" label="首   页"/>
-          <q-tab name="alarms" icon="vertical_split" label="分   区"/>
-          <q-tab name="movies" icon="how_to_reg" label="我   的"/>
+          <q-tab name="mails" icon="view_in_ar" label="首 页 推 荐"/>
+          <q-tab name="test" icon="leaderboard" label="知 贴 热 榜"/>
+          <q-tab name="alarms" icon="vertical_split" label="知 贴 分 区"/>
+          <q-tab name="movies" icon="how_to_reg" label="我 的 知 贴"/>
         </q-tabs>
       </template>
 
@@ -42,6 +41,11 @@
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
               quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
               In, libero.</p>
+          </q-tab-panel>
+
+          <q-tab-panel name="test">
+            <div class="text-h4 q-mb-md">千恋万花</div>
+            <h3>丛雨，嘿嘿~</h3>
           </q-tab-panel>
 
           <q-tab-panel name="alarms">
@@ -131,7 +135,8 @@ export default {
   data() {
     return {
       tab: 'mails',
-      splitterModel: 20
+      splitterModel: 10,
+      ratio: 50
     }
   },
 
