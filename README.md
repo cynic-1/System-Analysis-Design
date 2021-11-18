@@ -2,7 +2,13 @@
 
 ## 注意事项
 
-front-end-dev是开发分支，最终测试没有问题代码需要提交到front-end分支
+`front-end-dev`是开发分支，最终测试没有问题代码需要提交到`front-end`分支
+
+如果pull项目后本地运行quasar dev指令报错
+
+![image-20211118175512763](README.assets/image-20211118175512763.png)
+
+运行`Webstorm`右下角提示的`npm install`命令即可
 
 ## 安装Quasar
 
