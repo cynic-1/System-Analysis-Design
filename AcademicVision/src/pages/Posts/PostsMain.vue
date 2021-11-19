@@ -7,73 +7,42 @@
       </template>
     </q-banner>
 
-    <q-splitter
-      v-model="splitterModel"
-      style="height: 750px">
+    <q-layout view="hHr lpR fFf">
 
-      <template v-slot:before>
-        <q-tabs
-          v-model="tab"
-          vertical
-          class="text-blue-6"
-        >
-          <q-tab name="mails" icon="view_in_ar" label="首 页 推 荐"/>
-          <q-tab name="test" icon="leaderboard" label="知 贴 热 榜"/>
-          <q-tab name="alarms" icon="vertical_split" label="知 贴 分 区"/>
-          <q-tab name="movies" icon="how_to_reg" label="我 的 知 贴"/>
-        </q-tabs>
-      </template>
+      <q-drawer show-if-above v-model="left" side="left" :width="200">
+        <!-- drawer content -->
+        <q-splitter
+          v-model="splitterModel"
+          style="height: 970px"
+          model-value="200px">
 
-      <template v-slot:after >
-        <q-tab-panels
-          v-model="tab"
-          animated
-          swipeable
-          vertical
-          transition-prev="jump-up"
-          transition-next="jump-up"
-        >
-          <q-tab-panel name="mails">
-            <div class="text-h4 q-mb-md">Mails</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-          </q-tab-panel>
+          <template v-slot:before>
+            <q-tabs
+              v-model="tab"
+              vertical
+              class="text-blue-6"
+              @click="ChangeMode"
+            >
+              <q-tab name="1" icon="view_in_ar" label="首 页 推 荐"/>
+              <q-tab name="2" icon="leaderboard" label="知 贴 热 榜"/>
+              <q-tab name="3" icon="vertical_split" label="知 贴 分 区"/>
+              <q-tab name="4" icon="how_to_reg" label="我 的 知 贴"/>
+            </q-tabs>
+          </template>
+        </q-splitter>
+      </q-drawer>
 
-          <q-tab-panel name="test">
-            <div class="text-h4 q-mb-md">千恋万花</div>
-            <h3>丛雨，嘿嘿~</h3>
-          </q-tab-panel>
+      <q-page-container v-show="tab==='1'">
+        <PostFirstPage style="padding-top: 10px;padding-right: 10px"></PostFirstPage>
+      </q-page-container>
+      <q-page-container v-show="tab==='2'">
+      </q-page-container>
+      <q-page-container v-show="tab==='3'">
+      </q-page-container>
+      <q-page-container v-show="tab==='4'">
+      </q-page-container>
 
-          <q-tab-panel name="alarms">
-            <div class="text-h4 q-mb-md">Alarms</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-          </q-tab-panel>
-
-          <q-tab-panel name="movies">
-            <div class="text-h4 q-mb-md">Movies</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure
-              quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam.
-              In, libero.</p>
-          </q-tab-panel>
-        </q-tab-panels>
-      </template>
-
-    </q-splitter>
+    </q-layout>
   </div>
 
 
@@ -83,6 +52,7 @@
 import {ref} from "vue";
 import {tiArrowTopRight} from '@quasar/extras/themify';
 import {matAllInbox} from '@quasar/extras/material-icons'
+import PostFirstPage from "pages/Posts/PostFirstPage";
 
 const linksList = [
   {
@@ -134,9 +104,33 @@ export default {
 
   data() {
     return {
-      tab: 'mails',
-      splitterModel: 10,
-      ratio: 50
+      tab: "1",
+      splitterModel: 250,
+      ratio: 50,
+      left: false
+    }
+  },
+
+  methods: {
+    ChangeMode() {
+      console.log("转换菜单" + this.tab)
+    }
+  },
+
+  components: {
+    PostFirstPage
+  },
+
+  watch: {
+    splitterModel: {
+      immediate: true,    //初始化时就调用handler
+
+      handler(newvalue, oldvalue) { //只要isHot属性发生了改变就会调用handler函数，handler函数有两个参数
+        console.log("isHot的值发生了改变，变为", newvalue);
+        if (newvalue < 50) {
+          this.splitterModel = 50;
+        }
+      }
     }
   },
 

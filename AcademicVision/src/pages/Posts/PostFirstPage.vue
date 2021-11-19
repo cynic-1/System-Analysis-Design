@@ -1,0 +1,81 @@
+<template>
+  <div>
+    <!--    <h3>帖子首页：热门推荐。帖子排行榜（部分）</h3>-->
+
+    <div class="q-pa-md" style="margin-top: 0;padding-top: 0">
+      <q-carousel
+        arrows
+        animated
+        v-model="slide"
+        height="400px"
+        :autoplay="autoplay"
+        transition-prev="slide-right"
+        transition-next="slide-left"
+        @mouseenter="autoplay = false"
+        @mouseleave="autoplay = true"
+      >
+        <q-carousel-slide name="first" img-src="https://cdn.quasar.dev/img/mountains.jpg">
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">Welcome to 知贴</div>
+            <div class="text-subtitle1">知&nbsp&nbsp&nbsp贴&nbsp&nbsp&nbsp知&nbsp&nbsp&nbsp你</div>
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide name="second" img-src="https://cdn.quasar.dev/img/parallax1.jpg">
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">Windows11正式发布</div>
+            <div class="text-subtitle1">今&nbsp&nbsp&nbsp日&nbsp&nbsp&nbsp推&nbsp&nbsp&nbsp荐</div>
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide name="third" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">知贴版区公告</div>
+            <div class="text-subtitle1">运&nbsp&nbsp&nbsp行&nbsp&nbsp&nbsp公&nbsp&nbsp&nbsp告</div>
+          </div>
+        </q-carousel-slide>
+      </q-carousel>
+    </div>
+
+    <div class="row">
+      <div class="col-8" style="height: 550px">
+        <Recommendation></Recommendation>
+      </div>
+      <div class="col-4" style="height: 550px">
+        <RankingList></RankingList>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Recommendation from "components/Posts/Recommendation";
+import RankingList from "components/Posts/RankingList";
+
+export default {
+  name: "PostFirstPage",
+
+  components: {
+    Recommendation,
+    RankingList
+  },
+
+  data() {
+    return {
+      slide: 'first',
+      autoplay: true,
+      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    }
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+.custom-caption
+  text-align: center
+  padding: 12px
+  color: white
+  background-color: rgba(0, 0, 0, .3)
+
+.my-card
+  width: 100%
+  max-width: 500px
+</style>
