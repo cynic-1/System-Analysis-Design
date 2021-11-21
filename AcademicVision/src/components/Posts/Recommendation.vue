@@ -3,7 +3,7 @@
 
   <div class="row">
     <div class="col-8">
-      <div class="q-pa-md">
+      <div class="q-pa-md" @click="search">
         <q-card class="my-card" style="max-width: 800px">
           <q-parallax
             src="https://cdn.quasar.dev/img/parallax1.jpg"
@@ -93,7 +93,13 @@
 
 <script>
 export default {
-  name: "Recommendation"
+  name: "Recommendation",
+
+  methods: {
+    search() {
+      this.$router.push({path: '/posts/view', query: {id: 123456,context: this.text,textid: 123}});
+    }
+  }
 }
 </script>
 

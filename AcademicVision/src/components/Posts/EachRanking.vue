@@ -4,7 +4,10 @@
 
       <q-banner class="bg-grey-3">
         <template v-slot:avatar>
-          <q-icon name="leaderboard" color="primary" size="25px" />
+          <q-icon name="leaderboard" color="red" size="27px" v-if="rank===1"/>
+          <q-icon name="leaderboard" color="yellow-10" size="27px" v-else-if="rank===2"/>
+          <q-icon name="leaderboard" color="indigo-12" size="27px" v-else-if="rank===3"/>
+          <q-icon name="leaderboard" color="blue-3" size="27px" v-else/>
         </template>
         <strong>{{rank}}&nbsp&nbsp&nbsp</strong>
         {{context}}

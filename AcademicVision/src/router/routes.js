@@ -14,6 +14,18 @@ const routes = [
     component: () => import('pages/Posts/PostsMain.vue')
   },
 
+  // 注册帖子搜索页面路由
+  {
+    path: '/posts/search',
+    component: () => import('pages/Posts/PostSearch.vue')
+  },
+
+  // 注册帖子查看页面路由
+  {
+    path: '/posts/view',
+    component: () => import('pages/Posts/PostView')
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {

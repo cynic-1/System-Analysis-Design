@@ -9,37 +9,51 @@
 
     <q-layout view="hHr lpR fFf">
 
-      <q-drawer show-if-above v-model="left" side="left" :width="200">
-        <!-- drawer content -->
-        <q-splitter
-          v-model="splitterModel"
-          style="height: 970px"
-          model-value="200px">
+      <q-drawer
+        v-model="leftDrawerOpen"
+        show-if-above
+        bordered
+        side="left"
+        :width="widthD"
+      >
+        <q-list>
+          <q-tabs
+            v-model="tab"
+            vertical
+            class="text-blue-6"
+          >
+            <q-tab name="1" icon="camera" label="首 页 推 荐"/>
+            <q-tab name="2" icon="assessment" label="知 贴 热 榜"/>
+            <q-tab name="3" icon="dashboard" label="知 贴 分 区"/>
+            <q-tab name="4" icon="how_to_reg" label="我 的 知 贴"/>
+          </q-tabs>
 
-          <template v-slot:before>
-            <q-tabs
-              v-model="tab"
-              vertical
-              class="text-blue-6"
-              @click="ChangeMode"
-            >
-              <q-tab name="1" icon="view_in_ar" label="首 页 推 荐"/>
-              <q-tab name="2" icon="leaderboard" label="知 贴 热 榜"/>
-              <q-tab name="3" icon="vertical_split" label="知 贴 分 区"/>
-              <q-tab name="4" icon="how_to_reg" label="我 的 知 贴"/>
-            </q-tabs>
-          </template>
-        </q-splitter>
+          <br><br><br><br><br><br><br><br><br><br><br><br>
+
+          <q-item-label
+            header
+          >
+            <div class="q-pa-md q-gutter-sm">
+              <q-btn round color="blue-3" icon="arrow_back" @click="toggleLeftDrawer"/>
+            </div>
+            <h3 style="padding: 0;margin: 0;float: left">知贴&nbsp</h3>
+            <Strong>Know You</Strong>
+          </q-item-label>
+        </q-list>
       </q-drawer>
+      <PostDrawer v-show="!leftDrawerOpen" @click="toggleLeftDrawer"></PostDrawer>
 
-      <q-page-container v-show="tab==='1'">
+      <q-page-container v-if="tab==='1'">
         <PostFirstPage style="padding-top: 10px;padding-right: 10px"></PostFirstPage>
       </q-page-container>
-      <q-page-container v-show="tab==='2'">
+      <q-page-container v-else-if="tab==='2'">
+        <PostRanking></PostRanking>
       </q-page-container>
-      <q-page-container v-show="tab==='3'">
+      <q-page-container v-else-if="tab==='3'">
+        <PostPartition style="padding-top: 10px;padding-right: 10px;margin-left: 60px"></PostPartition>
       </q-page-container>
-      <q-page-container v-show="tab==='4'">
+      <q-page-container v-else-if="tab==='4'">
+        <PostFirstPage style="padding-top: 10px;padding-right: 10px"></PostFirstPage>
       </q-page-container>
 
     </q-layout>
@@ -49,10 +63,14 @@
 </template>
 
 <script>
-import {ref} from "vue";
 import {tiArrowTopRight} from '@quasar/extras/themify';
 import {matAllInbox} from '@quasar/extras/material-icons'
 import PostFirstPage from "pages/Posts/PostFirstPage";
+import PostRanking from "pages/Posts/PostRanking";
+import EssentialLink from "components/EssentialLink";
+import PostDrawer from "components/Posts/PostDrawer";
+import PostPartition from "pages/Posts/PostPartition";
+import {ref} from "vue";
 
 const linksList = [
   {
@@ -105,9 +123,9 @@ export default {
   data() {
     return {
       tab: "1",
-      splitterModel: 250,
       ratio: 50,
-      left: false
+      left: false,
+      widthD: 200
     }
   },
 
@@ -118,27 +136,17 @@ export default {
   },
 
   components: {
-    PostFirstPage
-  },
-
-  watch: {
-    splitterModel: {
-      immediate: true,    //初始化时就调用handler
-
-      handler(newvalue, oldvalue) { //只要isHot属性发生了改变就会调用handler函数，handler函数有两个参数
-        console.log("isHot的值发生了改变，变为", newvalue);
-        if (newvalue < 50) {
-          this.splitterModel = 50;
-        }
-      }
-    }
+    PostFirstPage,
+    PostRanking,
+    EssentialLink,
+    PostDrawer,
+    PostPartition
   },
 
   setup() {
     const leftDrawerOpen = ref(false)
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value

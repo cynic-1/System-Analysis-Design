@@ -35,6 +35,17 @@
       </q-carousel>
     </div>
 
+    <br>
+    <q-input standout v-model="text" :dense="dense" style="max-width: 900px;margin:0 auto">
+      <template v-slot:append>
+        <q-avatar>
+          <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>
+        </q-avatar>
+      </template>
+    </q-input>
+
+    <br>
+
     <div class="row">
       <div class="col-8" style="height: 550px">
         <Recommendation></Recommendation>
@@ -60,9 +71,18 @@ export default {
 
   data() {
     return {
+      text: '',
+      dense: false,
       slide: 'first',
       autoplay: true,
       lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    }
+  },
+
+  methods: {
+    search() {
+      console.log("您点击了搜索按钮，您选择搜索的内容是" + this.text);
+      this.$router.push({path: '/posts/search', query: {id: 123456,context: this.text}});
     }
   }
 }
