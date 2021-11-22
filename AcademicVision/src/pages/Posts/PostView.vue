@@ -13,7 +13,8 @@
       </h5>
     </q-card>
     <br>
-    <div style="margin-left: 200px;margin-right: 200px;" v-html="context" class="text-body1">
+    {{ context }}
+    <div style="margin-left: 200px;margin-right: 200px;" v-html="context" class="test">
     </div>
 
     <br><br><br>
@@ -94,11 +95,11 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-input dense v-model="reason" autofocus @keyup.enter="prompt = false" />
+              <q-input dense v-model="reason" autofocus @keyup.enter="prompt = false"/>
             </q-card-section>
 
             <q-card-actions align="right" class="text-primary">
-              <q-btn flat label="取消" v-close-popup />
+              <q-btn flat label="取消" v-close-popup/>
               <q-btn flat label="举报" v-close-popup @click="jubao(comment.cid)"/>
             </q-card-actions>
           </q-card>
@@ -124,7 +125,19 @@
 
 <script>
 import PostDrawer from "components/Posts/PostDrawer";
+import {marked} from 'marked'
 
+const rendererMD = new marked.Renderer();
+marked.setOptions({
+  renderer: rendererMD,
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+});//基本设置
 export default {
   name: "PostView",
 
@@ -148,8 +161,8 @@ export default {
         '2. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
         '3. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
         '4. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '5. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '6. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n',
+        '> 5. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
+        '### 6. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n',
       comments: [{
         name: '周杰伦',
         avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6',
@@ -316,6 +329,12 @@ export default {
     }
   },
 
+  computed: {
+    markdownToHtml() {
+      this.context = marked(this.context)
+    }
+  },
+
   methods: {
     back() {
       this.$router.back();
@@ -366,7 +385,7 @@ export default {
         this.alert = true;
         this.$refs.text.resetValidation();
         // 调用评论axios请求
-        this.comments.splice(0,0,{
+        this.comments.splice(0, 0, {
           name: this.$route.params.id,
           avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171208%2Ff1d2aa196b2248abb59d50bff5c7376a.jpeg&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640140175&t=fbcd874f84cac90de991d827a58808ae',
           text: this.text,
@@ -381,10 +400,13 @@ export default {
 
     onReset() {
       this.text = null
-
+      this.context = marked("# Marked in browser\n" +
+        "## 睡觉！" +
+        "\nRendered by **marked**.");
       this.$refs.text.resetValidation()
     }
   },
+
 
   mounted() {
     this.context = this.context.replace(/\n/g, '<br>');
@@ -393,10 +415,13 @@ export default {
     } else {
       this.length = this.comments.length / 5;
     }
-  }
+  },
+
 }
 </script>
 
 <style scoped>
+.test {
 
+}
 </style>
