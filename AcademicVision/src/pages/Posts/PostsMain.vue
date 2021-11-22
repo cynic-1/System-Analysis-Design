@@ -10,11 +10,13 @@
     <q-layout view="hHr lpR fFf">
 
       <q-drawer
+        elevated
         v-model="leftDrawerOpen"
         show-if-above
         bordered
         side="left"
         :width="widthD"
+        style="position: fixed;top: 0;left: 0"
       >
         <q-list>
           <q-tabs
@@ -53,7 +55,7 @@
         <PostPartition style="padding-top: 10px;padding-right: 10px;margin-left: 60px"></PostPartition>
       </q-page-container>
       <q-page-container v-else-if="tab==='4'">
-        <PostFirstPage style="padding-top: 10px;padding-right: 10px"></PostFirstPage>
+        <PostPeople style="padding-top: 10px;margin-left: 20px"></PostPeople>
       </q-page-container>
 
     </q-layout>
@@ -70,6 +72,7 @@ import PostRanking from "pages/Posts/PostRanking";
 import EssentialLink from "components/EssentialLink";
 import PostDrawer from "components/Posts/PostDrawer";
 import PostPartition from "pages/Posts/PostPartition";
+import PostPeople from "pages/Posts/PostPeople";
 import {ref} from "vue";
 
 const linksList = [
@@ -140,7 +143,8 @@ export default {
     PostRanking,
     EssentialLink,
     PostDrawer,
-    PostPartition
+    PostPartition,
+    PostPeople
   },
 
   setup() {
