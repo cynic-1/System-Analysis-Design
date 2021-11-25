@@ -7,7 +7,7 @@
          @touchend.stop="handleTouchEnd"
          :style="{left: left + 'px',top: top + 'px',width: itemWidth + 'px',height: itemHeight + 'px'}"
          v-if="isShow">
-      Back
+      <q-btn icon="arrow_back" size="15px" round color="blue-6"></q-btn>
     </div>
   </transition>
 </template>
@@ -17,15 +17,15 @@ export default {
   props: {
     text: {
       type: String,
-      default: '球'
+      default: ''
     },
     itemWidth: {
       type: Number,
-      default: 40
+      default: 50
     },
     itemHeight: {
       type: Number,
-      default: 40
+      default: 0
     }
   },
   data() {
@@ -37,7 +37,7 @@ export default {
       timer: null,
       currentTop: null,
       clientW: document.documentElement.clientWidth,//视口宽
-      clientH: document.documentElement.clientHeight,//视口高
+      clientH: 1200,//视口高
     }
   },
   created() {
@@ -69,7 +69,7 @@ export default {
     },
     handleTouchEnd() {
       if (this.left < (this.clientW / 2)) {
-        this.left = 30;//不让贴边 所以设置30没设置0
+        this.left = 50;//不让贴边 所以设置30没设置0
         this.handleIconY()
       } else {
         this.left = this.clientW - this.itemWidth - 30;//不让贴边 所以减30
@@ -95,7 +95,7 @@ export default {
       this.timer && clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         this.handleScrollEnd()
-      }, 300)
+      }, 200)
       this.currentTop = document.documentElement.scrollTop || document.body.scrollTop
     },
     handleScrollEnd() {
@@ -112,10 +112,9 @@ export default {
 <style scoped>
 .dragIcon {
   position: fixed;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: skyblue;
   line-height: 40px;
   text-align: center;
   color: #fff;
@@ -131,6 +130,6 @@ export default {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.3s;
+  transition: opacity 0.2s;
 }
 </style>

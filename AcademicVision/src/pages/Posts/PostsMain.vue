@@ -43,6 +43,7 @@
           </q-item-label>
         </q-list>
       </q-drawer>
+
       <PostDrawer v-show="!leftDrawerOpen" @click="toggleLeftDrawer"></PostDrawer>
 
       <q-page-container v-if="tab==='1'">
@@ -55,7 +56,7 @@
         <PostPartition style="padding-top: 10px;padding-right: 10px;margin-left: 60px"></PostPartition>
       </q-page-container>
       <q-page-container v-else-if="tab==='4'">
-        <PostPeople style="padding-top: 10px;margin-left: 20px"></PostPeople>
+        <PostPeople style="padding-top: 10px;margin-left: 20px" @func="this.leftDrawerOpen = true"></PostPeople>
       </q-page-container>
 
     </q-layout>

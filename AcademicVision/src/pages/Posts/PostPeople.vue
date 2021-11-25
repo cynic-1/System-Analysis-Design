@@ -66,7 +66,6 @@
       <q-icon name="account_circle" color="blue-6"></q-icon>
       &nbsp知贴 · 个人中心
     </h3>
-    {{ context }}
     <div class="q-pa-md" v-show="isPublish === true">
       <div class="q-gutter-md" style="max-width: 1200px;margin: 0 auto;" v-for="test in list">
         <transition
@@ -124,10 +123,12 @@
     </div>
 
     <div v-show="isCreate" style="margin-top: 50px">
-      <br>
-      <span style="font-size: 50px;float: left">知&nbsp贴&nbsp</span>
+
+      <span style="font-size: 50px;float: left">知&nbsp贴&nbsp<q-btn icon="arrow_back" size="13px" round color="blue-6"
+                                                                   @click="this.$emit('func',1)"
+                                                                   style="float: left"></q-btn></span>
       <span
-        style="font-size: 25px;float: left;background-color: rgba(103,206,247,0.64)">&nbspCreate&nbsp</span>
+        style="font-size: 20px;float: left;background-color: rgba(103,206,247,0.64)">&nbspCreate&nbsp</span>
       <br>
       <q-banner class="bg-grey-3" v-show="notice" rounded style="width: 1000px;margin: 0 auto">
         <template v-slot:avatar>
@@ -141,23 +142,16 @@
           <q-btn flat color="primary" label="知道了" @click="notice = false" style="font-size: 20px"/>
         </template>
       </q-banner>
+
       <br>
-      <VmMarkdown
-        :uploadImage="uploadImage"
-        theme="gray"
-        width="1150px"
-        height="300px"
-        @html-change="htmlChange"
-        style="margin: 0 auto"
-        class="shadow-3"
-        v-model="context"
-        @input="getMessage"
-        ref=""
-      />
-      <mavon-editor style="height: 100px"></mavon-editor>
+
+      <mavon-editor style="height: 500px;margin-right: 10px" v-model="context" @imgAdd="$imgAdd" ref=md
+                    image></mavon-editor>
       <div class="q-pa-md q-gutter-sm" style="float: right;margin-right: 200px">
         <q-btn color="blue-6" icon="cloud_upload" label="发布" @click="submit1"/>
       </div>
+      <br>
+      <br>
       <br>
       <br>
     </div>
@@ -195,35 +189,62 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <div v-show="isCharts === true">
+      <div class="q-pa-md row items-start q-gutter-md" style="float: left">
+        <q-card class="my-card">
+          <img src="../../../public/彼岸双生.png">
+
+          <q-list>
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon color="primary" name="format_list_numbered"/>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-h6">已发表</q-item-label>
+                <q-item-label caption>100</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon color="red" name="favorite"/>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-h6">被收藏</q-item-label>
+                <q-item-label caption>100</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon color="amber" name="thumb_up_alt"/>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-h6">获赞数</q-item-label>
+                <q-item-label caption>100</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </div>
+      <h4><q-icon name="poll" color="blue-6"></q-icon>&nbsp近期获赞数趋势图</h4>
+      <div id="echarts1" style="height: 300px;width: 600px;float: right;margin-right: 200px"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import {marked} from 'marked'
-import hljs from "highlight.js";
-import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/arta.css';
-import VmMarkdown from "./vm-markdown-change"
-import {useQuasar} from 'quasar'
-import {onBeforeUnmount} from 'vue'
-import { mavonEditor } from 'mavon-editor'
+import {mavonEditor} from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import axios from "axios";
+import PostDrawer from "components/Posts/PostDrawer";
+import * as echarts from 'echarts';
 
-const rendererMD = new marked.Renderer();
-marked.setOptions({
-  renderer: rendererMD,
-  highlight: function (code) {
-    return hljs.highlightAuto(code).value;
-  },
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  boxShadow: true
-});//基本设置
 export default {
   name: "PostPeople",
 
@@ -245,12 +266,23 @@ export default {
     }
   },
 
-  computed: {
-    markdown() {
-      return marked(this.editor)
-    }
-  },
   methods: {
+    // 绑定@imgAdd event
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData();
+      formdata.append('image', $file);
+      axios({
+        url: 'server url',
+        method: 'post',
+        data: formdata,
+        headers: {'Content-Type': 'multipart/form-data'},
+      }).then((url) => {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        // $vm.$img2Url 详情见本页末尾
+        this.$refs.md.$img2Url(pos, url);
+      })
+    },
     submit2() {
       // axios方法
       console.log(this.context);
@@ -260,7 +292,12 @@ export default {
       console.log(this.context)
     },
     submit1() {
-      this.bar2 = true;
+      if (this.context === '') {
+        alert("无法发布，您的帖子内容为空！")
+      } else {
+
+        this.bar2 = true;
+      }
     },
     async uploadImage(file) {
       const imgUrl = await this.uploadRequest(file);
@@ -382,12 +419,115 @@ export default {
       this.isLove = false;
       this.isCreate = false;
       this.isCharts = true;
+      const chartDom = document.getElementById('echarts1');
+      const myChart = echarts.init(chartDom);
+      let option;
+
+      option = {
+        title: {
+          text: 'Distribution of Electricity',
+          subtext: 'Fake Data'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          // prettier-ignore
+          data: ['00:00', '01:15', '02:30', '03:45', '05:00', '06:15', '07:30', '08:45', '10:00', '11:15', '12:30', '13:45', '15:00', '16:15', '17:30', '18:45', '20:00', '21:15', '22:30', '23:45']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} W'
+          },
+          axisPointer: {
+            snap: true
+          }
+        },
+        visualMap: {
+          show: false,
+          dimension: 0,
+          pieces: [
+            {
+              lte: 6,
+              color: 'green'
+            },
+            {
+              gt: 6,
+              lte: 8,
+              color: 'red'
+            },
+            {
+              gt: 8,
+              lte: 14,
+              color: 'green'
+            },
+            {
+              gt: 14,
+              lte: 17,
+              color: 'red'
+            },
+            {
+              gt: 17,
+              color: 'green'
+            }
+          ]
+        },
+        series: [
+          {
+            name: 'Electricity',
+            type: 'line',
+            smooth: true,
+            // prettier-ignore
+            data: [300, 280, 250, 260, 270, 300, 550, 500, 400, 390, 380, 390, 400, 500, 600, 750, 800, 700, 600, 400],
+            markArea: {
+              itemStyle: {
+                color: 'rgba(255, 173, 177, 0.4)'
+              },
+              data: [
+                [
+                  {
+                    name: 'Morning Peak',
+                    xAxis: '07:30'
+                  },
+                  {
+                    xAxis: '10:00'
+                  }
+                ],
+                [
+                  {
+                    name: 'Evening Peak',
+                    xAxis: '17:30'
+                  },
+                  {
+                    xAxis: '21:15'
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      };
+
+      option && myChart.setOption(option);
+
     }
   },
 
   components: {
-    VmMarkdown,
     mavonEditor,
+    PostDrawer,
   }
 }
 </script>

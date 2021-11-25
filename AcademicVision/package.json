@@ -12,6 +12,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "echarts": "^5.2.2",
     "fs": "^0.0.1-security",
     "marked": "^4.0.4",
     "mavon-editor": "^3.0.0-beta",

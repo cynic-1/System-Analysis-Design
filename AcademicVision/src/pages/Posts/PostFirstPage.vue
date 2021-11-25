@@ -15,18 +15,39 @@
         @mouseleave="autoplay = true"
       >
         <q-carousel-slide name="first" img-src="https://cdn.quasar.dev/img/mountains.jpg">
+          <q-input standout v-model="text" :dense="dense" style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85">
+            <template v-slot:append>
+              <q-avatar>
+                <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>
+              </q-avatar>
+            </template>
+          </q-input>
           <div class="absolute-bottom custom-caption">
             <div class="text-h2">Welcome to 知贴</div>
             <div class="text-subtitle1">知&nbsp&nbsp&nbsp贴&nbsp&nbsp&nbsp知&nbsp&nbsp&nbsp你</div>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="second" img-src="https://cdn.quasar.dev/img/parallax1.jpg">
+          <q-input standout v-model="text" :dense="dense" style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85">
+            <template v-slot:append>
+              <q-avatar>
+                <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>
+              </q-avatar>
+            </template>
+          </q-input>
           <div class="absolute-bottom custom-caption">
             <div class="text-h2">Windows11正式发布</div>
             <div class="text-subtitle1">今&nbsp&nbsp&nbsp日&nbsp&nbsp&nbsp推&nbsp&nbsp&nbsp荐</div>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="third" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <q-input standout v-model="text" :dense="dense" style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85">
+            <template v-slot:append>
+              <q-avatar>
+                <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>
+              </q-avatar>
+            </template>
+          </q-input>
           <div class="absolute-bottom custom-caption">
             <div class="text-h2">知贴版区公告</div>
             <div class="text-subtitle1">运&nbsp&nbsp&nbsp行&nbsp&nbsp&nbsp公&nbsp&nbsp&nbsp告</div>
@@ -35,16 +56,15 @@
       </q-carousel>
     </div>
 
-    <br>
-    <q-input standout v-model="text" :dense="dense" style="max-width: 900px;margin:0 auto">
-      <template v-slot:append>
-        <q-avatar>
-          <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>
-        </q-avatar>
-      </template>
-    </q-input>
+<!--    <q-input standout v-model="text" :dense="dense" style="max-width: 900px;margin:0 auto">-->
+<!--      <template v-slot:append>-->
+<!--        <q-avatar>-->
+<!--          <q-btn icon="search" round color="blue-6" size="12px" @click="search"></q-btn>-->
+<!--        </q-avatar>-->
+<!--      </template>-->
+<!--    </q-input>-->
 
-    <br>
+<!--    <br>-->
 
     <div class="row">
       <div class="col-8" style="height: 550px">

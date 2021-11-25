@@ -11,8 +11,8 @@
           />
 
           <q-card-section>
-            <div class="text-h6">Our Changing Planet</div>
-            <div class="text-subtitle2">by John Doe</div>
+            <div class="text-h6">今日推荐文章1</div>
+            <div class="text-subtitle2">作者名</div>
           </q-card-section>
         </q-card>
       </div>
@@ -22,8 +22,8 @@
         <q-card class="my-card" style="width: 100%;max-width: 250px;height: 230px">
           <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
             <div class="absolute-bottom">
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">今日推荐文章2</div>
+              <div class="text-subtitle2">作者名</div>
             </div>
           </q-img>
 
@@ -42,8 +42,8 @@
         <q-card class="my-card" style="width: 100%;max-width: 250px;height: 230px">
           <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
             <div class="absolute-bottom">
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">今日推荐文章3</div>
+              <div class="text-subtitle2">作者名</div>
             </div>
           </q-img>
 
@@ -59,8 +59,8 @@
         <q-card class="my-card" style="width: 100%;max-width: 250px;height: 230px">
           <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
             <div class="absolute-bottom">
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">今日推荐文章4</div>
+              <div class="text-subtitle2">作者名</div>
             </div>
           </q-img>
 
@@ -76,8 +76,8 @@
         <q-card class="my-card" style="width: 100%;max-width: 250px;height: 230px">
           <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
             <div class="absolute-bottom">
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">今日推荐文章5</div>
+              <div class="text-subtitle2">作者名</div>
             </div>
           </q-img>
 

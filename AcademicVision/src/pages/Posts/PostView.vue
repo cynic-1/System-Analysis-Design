@@ -1,8 +1,8 @@
 <template>
   <!--查看帖子页面-->
   <br>
-  <PostDrawer @click="back"></PostDrawer>
-  <div>
+  <PostDrawer @click="back" style="size: 50px"></PostDrawer>
+  <div class="PostView">
     <q-card style="background: lightskyblue;padding-top: 10px;padding-bottom: 10px;max-width: 1200px;margin: 0 auto">
       <h3 style="text-align: center;margin-bottom: 10px;margin-top: 10px">帖子标题</h3>
       <h5 style="text-align: center;margin-top: 10px;margin-bottom: 10px">
@@ -13,11 +13,36 @@
       </h5>
     </q-card>
     <br>
-    {{ context }}
-    <div style="margin-left: 200px;margin-right: 200px;" v-html="context" class="test">
-    </div>
+    <!--    <div style="margin-left: 200px;margin-right: 200px;" v-html="context" class="test">-->
+    <!--    </div>-->
 
-    <br><br><br>
+    <br>
+    <q-card class="my-card">
+      <div style="margin-left: 20px;margin-right: 20px;" v-html="context" class="test">
+      </div>
+      <q-card-actions align="right">
+        <q-btn flat round color="red" icon="thumb_up" size="19px"/>
+        <q-btn flat round color="blue-6" icon="bookmark" size="19px"/>
+        <q-btn flat round color="grey-6" icon="error" size="19px" @click="textJubao"/>
+      </q-card-actions>
+    </q-card>
+    <q-dialog v-model="textJ" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">举报理由</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="reason" autofocus @keyup.enter="textJ = false"/>
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="取消" v-close-popup/>
+          <q-btn flat label="举报" v-close-popup @click="jubao()"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <br><br>
     <q-separator inset/>
     <br>
     <h4 style="float: left;margin-top: 20px;margin-left: 120px;margin-bottom: 20px">
@@ -126,17 +151,25 @@
 <script>
 import PostDrawer from "components/Posts/PostDrawer";
 import {marked} from 'marked'
+import hljs from "highlight.js";
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/arta.css';
+
 
 const rendererMD = new marked.Renderer();
 marked.setOptions({
   renderer: rendererMD,
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value;
+  },
   gfm: true,
   tables: true,
   breaks: false,
   pedantic: false,
   sanitize: false,
   smartLists: true,
-  smartypants: false
+  smartypants: false,
+  boxShadow: true
 });//基本设置
 export default {
   name: "PostView",
@@ -147,6 +180,7 @@ export default {
 
   data() {
     return {
+      textJ: false,
       prompt: false,
       reason: '',
       length: 0,
@@ -156,13 +190,18 @@ export default {
       loading1: false,
       text: '',
       accept: true,
-      context: 'Before\n' +
-        '1. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '2. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '3. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '4. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '> 5. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n' +
-        '### 6. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.\n',
+      context: "++**vue + quasar + Markdown**++\n" +
+        "### 测试\n" +
+        "> 19231224卢恒润\n" +
+        "```c\n" +
+        "int a = 1;\n" +
+        "printf(\"Hello world!\");\n" +
+        "```\n" +
+        "**结束^上角标^**\n" +
+        "[mavonEditor](https://github.com/hinesboy/mavonEditor)\n\n" +
+        "|column1|column2|column3|\n" +
+        "|-|-|-|\n" +
+        "|123|c1232|1232133|\n",
       comments: [{
         name: '周杰伦',
         avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6',
@@ -236,13 +275,14 @@ export default {
           cid: 8,
         },
         {
-          name: '周杰伦',
-          avatar: 'https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto',
-          text: '这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦',
-          stamp: '2021/6/10',
-          goodnumber: 297,
-          isgood: true,
-          cid: 9,
+          name: '周杰伦',  // 用户名
+          commentid: 1, // 评论id
+          avatar: 'https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto', // 用户头像
+          text: '这里是一条评论，哎呦不错哦',  // 用户评论内容
+          stamp: '2021/6/10', // 评论时间
+          goodnumber: 297,  // 评论点赞数
+          isgood: true, // 当前用户是否点赞该评论
+          cid: 9, // 评论id
         },
         {
           name: '周杰伦',
@@ -336,6 +376,9 @@ export default {
   },
 
   methods: {
+    textJubao() {
+      this.textJ = true;
+    },
     back() {
       this.$router.back();
     },
@@ -400,16 +443,14 @@ export default {
 
     onReset() {
       this.text = null
-      this.context = marked("# Marked in browser\n" +
-        "## 睡觉！" +
-        "\nRendered by **marked**.");
       this.$refs.text.resetValidation()
     }
   },
 
 
   mounted() {
-    this.context = this.context.replace(/\n/g, '<br>');
+    // this.context = this.context.replace(/\n/g, '<br>');
+    this.context = marked(this.context);
     if (this.comments / 5 !== 0) {
       this.length = this.comments.length / 5 + 1;
     } else {
@@ -420,8 +461,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.test {
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  max-width: 1200px
+  margin: 0 auto
+  padding: 10px
 
-}
+//.PostView
+  //background-image: url('../../../public/彼岸双生.png')
 </style>
