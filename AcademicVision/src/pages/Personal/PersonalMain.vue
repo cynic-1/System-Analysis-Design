@@ -1,11 +1,11 @@
 <template>
   <div>
-    <q-banner inline-actions class="bg-primary text-white">
-      模拟导航栏
-      <template v-slot:action>
-        <q-btn flat color="white" label="个人中心" @click="checkinfor"/>
-      </template>
-    </q-banner>
+<!--    <q-banner inline-actions class="bg-primary text-white">-->
+<!--      模拟导航栏-->
+<!--      <template v-slot:action>-->
+<!--        <q-btn flat color="white" label="个人中心" @click="checkinfor"/>-->
+<!--      </template>-->
+<!--    </q-banner>-->
 
     <q-layout view="hHh lpR fFf">
       <q-card class="personal-menu-card">
@@ -56,7 +56,9 @@
 </template>
 
 <script>
-import PersonalInformation from "pages/Personal/PersonalInformation";
+import { defineAsyncComponent } from 'vue'
+
+const PersonalInformation = defineAsyncComponent(() => import('./PersonalInformation'))
 
 export default {
   name: "PersonalMain",

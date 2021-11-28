@@ -12,19 +12,11 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Academic Vision 学术视界
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
-
-    <q-page-container>
-      <div class="q-pa-md q-gutter-sm">
-        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="帖子功能测试入口" @click="ChangetoPosts" no-caps/>
-        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="个人主页测试入口" @click="ChangetoPersonal" no-caps/>
-      </div>
-    </q-page-container>
 
     <q-drawer
       v-model="leftDrawerOpen"
@@ -58,47 +50,17 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: '帖子测试入口',
+    caption: 'post.dev',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/posts'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: '个人主页测试入口',
+    caption: 'personalInfo.dev',
+    icon: 'book',
+    link: '/personal'
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ];
 
 import {defineComponent, ref} from 'vue'
