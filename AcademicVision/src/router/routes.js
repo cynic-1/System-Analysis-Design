@@ -27,6 +27,10 @@ const routes = [
         path: '/personalinformation',
         component: () => import('pages/Personal/PersonalInformation.vue')
       },
+      {
+        path: '/personalResearch',
+        component: () => import('pages/Personal/PersonalResearch')
+      },
     ]
   },
 

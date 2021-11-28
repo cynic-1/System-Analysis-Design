@@ -31,7 +31,7 @@
         mobile-arrows
         class="text-teal"
         >
-        <q-tab name="1" style="width:200px" label="Information" />
+        <q-tab name="1" style="width:200px" label="Information"/>
         <q-tab name="2" style="width:200px" label="Research" />
         <q-tab name="3" style="width:200px" label="Message" />
         <q-tab name="4" style="width:200px" label="Saved" />
@@ -41,7 +41,7 @@
         <PersonalInformation></PersonalInformation>
       </q-page-container>
       <q-page-container v-else-if="tab==='2'">
-
+        <personal-research></personal-research>
       </q-page-container>
       <q-page-container v-else-if="tab==='3'">
 
@@ -59,6 +59,7 @@
 import { defineAsyncComponent } from 'vue'
 
 const PersonalInformation = defineAsyncComponent(() => import('./PersonalInformation'))
+const PersonalResearch = defineAsyncComponent(() => import('./PersonalResearch'))
 
 export default {
   name: "PersonalMain",
@@ -79,6 +80,7 @@ export default {
   },
 
   components: {
+    PersonalResearch,
     PersonalInformation
   },
 
