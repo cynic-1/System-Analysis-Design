@@ -48,47 +48,17 @@ import NavBar from "components/NavBar";
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: '帖子测试入口',
+    caption: 'post.dev',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/posts'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: '个人主页测试入口',
+    caption: 'personalInfo.dev',
+    icon: 'book',
+    link: '/personal'
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ];
 
 
@@ -109,6 +79,10 @@ export default defineComponent({
     ChangeToRegister() {
       console.log("您点击了登录注册按钮");
       this.$router.push({path: '/register'});
+    },
+    ChangetoPersonal(){
+      console.log("您点击了个人主页按钮");
+      this.$router.push({path: '/personal', query: {id: 123456}});
     }
   },
 
