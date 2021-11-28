@@ -25,7 +25,16 @@ const routes = [
     path: '/posts/view',
     component: () => import('pages/Posts/PostView')
   },
-
+  // 注册个人页面路由
+  {
+    path: '/personal',
+    component: () => import('pages/Personal/PersonalMain.vue')
+  },
+  // 注册个人信息路由
+  {
+    path: '/personalinformation',
+    component: () => import('pages/Personal/PersonalInformation.vue')
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

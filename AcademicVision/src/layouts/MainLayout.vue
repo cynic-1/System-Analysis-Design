@@ -22,6 +22,7 @@
     <q-page-container>
       <div class="q-pa-md q-gutter-sm">
         <q-btn :ripple="{ center: true }" rounded color="blue-6" label="帖子功能测试入口" @click="ChangetoPosts" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="个人主页测试入口" @click="ChangetoPersonal" no-caps/>
       </div>
     </q-page-container>
 
@@ -113,6 +114,10 @@ export default defineComponent({
     ChangetoPosts() {
       console.log("您点击了帖子功能按钮");
       this.$router.push({path: '/posts', query: {id: 123456}});
+    },
+    ChangetoPersonal(){
+      console.log("您点击了个人主页按钮");
+      this.$router.push({path: '/personal', query: {id: 123456}});
     }
   },
 
