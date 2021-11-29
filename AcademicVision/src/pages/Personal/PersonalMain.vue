@@ -1,11 +1,11 @@
 <template>
   <div>
-    <q-banner inline-actions class="bg-primary text-white">
-      模拟导航栏
-      <template v-slot:action>
-        <q-btn flat color="white" label="个人中心" @click="checkinfor"/>
-      </template>
-    </q-banner>
+<!--    <q-banner inline-actions class="bg-primary text-white">-->
+<!--      模拟导航栏-->
+<!--      <template v-slot:action>-->
+<!--        <q-btn flat color="white" label="个人中心" @click="checkinfor"/>-->
+<!--      </template>-->
+<!--    </q-banner>-->
 
     <q-layout view="hHh lpR fFf">
       <q-card class="personal-menu-card">
@@ -31,7 +31,7 @@
         mobile-arrows
         class="text-teal"
         >
-        <q-tab name="1" style="width:200px" label="Information" />
+        <q-tab name="1" style="width:200px" label="Information"/>
         <q-tab name="2" style="width:200px" label="Research" />
         <q-tab name="3" style="width:200px" label="Message" />
         <q-tab name="4" style="width:200px" label="Saved" />
@@ -41,7 +41,7 @@
         <PersonalInformation></PersonalInformation>
       </q-page-container>
       <q-page-container v-else-if="tab==='2'">
-
+        <personal-research></personal-research>
       </q-page-container>
       <q-page-container v-else-if="tab==='3'">
 
@@ -56,8 +56,11 @@
 </template>
 
 <script>
-import PersonalInformation from "pages/Personal/PersonalInformation";
-import PersonalSaved from "pages/Personal/PersonalSaved";
+import { defineAsyncComponent } from 'vue'
+
+const PersonalInformation = defineAsyncComponent(() => import('./PersonalInformation'))
+const PersonalResearch = defineAsyncComponent(() => import('./PersonalResearch'))
+const PersonalSaved = defineAsyncComponent(() => import('./PersonalSaved'))
 
 export default {
   name: "PersonalMain",
@@ -77,8 +80,9 @@ export default {
   },
 
   components: {
+    PersonalSaved,
+    PersonalResearch,
     PersonalInformation,
-    PersonalSaved
   },
 
 

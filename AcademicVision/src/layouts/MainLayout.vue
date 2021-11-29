@@ -1,28 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+      <NavBar></NavBar>
     </q-header>
-
     <q-page-container>
       <div class="q-pa-md q-gutter-sm">
         <q-btn :ripple="{ center: true }" rounded color="blue-6" label="帖子功能测试入口" @click="ChangetoPosts" no-caps/>
-        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="个人主页测试入口" @click="ChangetoPersonal" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="登录注册测试入口" to="/register" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="主页测试入口" to="/home" no-caps/>
+      </div>
+      <div class="q-pa-md q-gutter-sm">
+
       </div>
     </q-page-container>
 
@@ -55,58 +43,31 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import {defineComponent, ref} from 'vue'
+import NavBar from "components/NavBar";
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: '帖子测试入口',
+    caption: 'post.dev',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/posts'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: '个人主页测试入口',
+    caption: 'personalInfo.dev',
+    icon: 'book',
+    link: '/personal'
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ];
 
-import {defineComponent, ref} from 'vue'
+
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
+    NavBar,
     EssentialLink
   },
 
@@ -114,6 +75,10 @@ export default defineComponent({
     ChangetoPosts() {
       console.log("您点击了帖子功能按钮");
       this.$router.push({path: '/posts', query: {id: 123456}});
+    },
+    ChangeToRegister() {
+      console.log("您点击了登录注册按钮");
+      this.$router.push({path: '/register'});
     },
     ChangetoPersonal(){
       console.log("您点击了个人主页按钮");
