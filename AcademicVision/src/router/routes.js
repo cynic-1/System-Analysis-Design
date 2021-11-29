@@ -26,12 +26,24 @@ const routes = [
     component: () => import('pages/Posts/PostView')
   },
 
+  //搜索结果页面路由
+  {
+    path: '/search',
+    component: () => import('pages/Search/SearchResult.vue')
+  },
+  //高级搜索页面路由
+  {
+    path: '/search/advanced',
+    component: () => import('pages/Search/AdvancedSearch.vue')
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue')
-  }
+  },
+
 ]
 
 export default routes
