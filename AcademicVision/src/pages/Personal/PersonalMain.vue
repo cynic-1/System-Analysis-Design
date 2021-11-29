@@ -47,7 +47,7 @@
 
       </q-page-container>
       <q-page-container v-else-if="tab==='4'">
-
+        <PersonalSaved></PersonalSaved>
       </q-page-container>
     </q-layout>
   </div>
@@ -57,10 +57,10 @@
 
 <script>
 import PersonalInformation from "pages/Personal/PersonalInformation";
+import PersonalSaved from "pages/Personal/PersonalSaved";
 
 export default {
   name: "PersonalMain",
-
   data() {
     return {
       tab: "1",
@@ -77,7 +77,8 @@ export default {
   },
 
   components: {
-    PersonalInformation
+    PersonalInformation,
+    PersonalSaved
   },
 
 
