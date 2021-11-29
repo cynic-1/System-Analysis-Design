@@ -7,7 +7,7 @@
          @touchend.stop="handleTouchEnd"
          :style="{left: left + 'px',top: top + 'px',width: itemWidth + 'px',height: itemHeight + 'px'}"
          v-if="isShow">
-      <q-btn icon="arrow_back" size="15px" round color="blue-6"></q-btn>
+      <q-btn icon="arrow_forward" size="15px" round color="blue-6"></q-btn>
     </div>
   </transition>
 </template>
