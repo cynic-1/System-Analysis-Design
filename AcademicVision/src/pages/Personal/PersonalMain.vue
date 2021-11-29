@@ -47,7 +47,7 @@
 
       </q-page-container>
       <q-page-container v-else-if="tab==='4'">
-
+        <PersonalSaved></PersonalSaved>
       </q-page-container>
     </q-layout>
   </div>
@@ -60,10 +60,10 @@ import { defineAsyncComponent } from 'vue'
 
 const PersonalInformation = defineAsyncComponent(() => import('./PersonalInformation'))
 const PersonalResearch = defineAsyncComponent(() => import('./PersonalResearch'))
+const PersonalSaved = defineAsyncComponent(() => import('./PersonalSaved'))
 
 export default {
   name: "PersonalMain",
-
   data() {
     return {
       tab: "1",
@@ -80,8 +80,9 @@ export default {
   },
 
   components: {
+    PersonalSaved,
     PersonalResearch,
-    PersonalInformation
+    PersonalInformation,
   },
 
 

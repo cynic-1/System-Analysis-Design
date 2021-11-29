@@ -1,22 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Academic Vision 学术视界
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <NavBar></NavBar>
     </q-header>
+    <q-page-container>
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="帖子功能测试入口" @click="ChangetoPosts" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="搜索结果测试入口" @click="ChangetoSearch" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="登录注册测试入口" to="/register" no-caps/>
+        <q-btn :ripple="{ center: true }" rounded color="blue-6" label="主页测试入口" to="/home" no-caps/>
+      </div>
+      <div class="q-pa-md q-gutter-sm">
+      </div>
+    </q-page-container>
 
     <q-drawer
       v-model="leftDrawerOpen"
@@ -47,6 +43,8 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import {defineComponent, ref} from 'vue'
+import NavBar from "components/NavBar";
 
 const linksList = [
   {
@@ -63,12 +61,13 @@ const linksList = [
   },
 ];
 
-import {defineComponent, ref} from 'vue'
+
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
+    NavBar,
     EssentialLink
   },
 
@@ -77,9 +76,18 @@ export default defineComponent({
       console.log("您点击了帖子功能按钮");
       this.$router.push({path: '/posts', query: {id: 123456}});
     },
+
+    ChangetoSearch() {
+      this.$router.push('/search');
+    },
+    ChangeToRegister() {
+      console.log("您点击了登录注册按钮");
+      this.$router.push({path: '/register'});
+    },
     ChangetoPersonal(){
       console.log("您点击了个人主页按钮");
       this.$router.push({path: '/personal', query: {id: 123456}});
+
     }
   },
 

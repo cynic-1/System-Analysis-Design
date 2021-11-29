@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md fit row wrap justify-evenly items-start content-start">
     <div class="col-grow q-pa-xl" style="overflow:auto;">
-      <q-card class="information-card-1">
+      <q-card class="information-card-1" style="width: 800px;margin-left: 100px">
         <div class="clearfix">
           <span style="font-size: 28px;">About me</span>
           <q-btn style="float: right; padding: 3px 0" push color="white" text-color="primary" round icon="create"
@@ -16,7 +16,6 @@
             class="q-gutter-md"
           >
             <q-input
-              filled
               v-model="Form.nickname"
               label="您的昵称*"
               :readonly="disabled1"
@@ -25,7 +24,6 @@
             />
 
             <q-input
-              filled
               v-model="Form.name"
               label="您的姓名*"
               :readonly="disabled1"
@@ -34,14 +32,12 @@
             />
 
             <q-input
-              filled
               v-model="Form.disciplines"
               label="学科"
               :readonly="disabled1"
             />
 
             <q-input
-              filled
               v-model="Form.skill"
               label="特长和专业知识"
               :readonly="disabled1"
@@ -55,7 +51,8 @@
           </q-form>
         </div>
       </q-card>
-      <q-card class="information-card-2">
+      <br>
+      <q-card class="information-card-2" style="width: 800px;margin-left: 100px">
         <div class="clearfix">
           <span style="font-size: 28px;">Account</span>
           <q-btn style="float: right; padding: 3px 0" push color="white" text-color="primary" round icon="create"
@@ -71,7 +68,6 @@
           >
             <q-input
               v-if="!disabled2"
-              filled
               v-model="Form.user"
               label="账号*"
               :readonly="true"
@@ -80,7 +76,6 @@
             />
             <q-input
               v-if="!disabled2"
-              filled
               v-model="Form.pass"
               label="密码*"
               :readonly="true"
@@ -112,7 +107,7 @@
               v-model="Form.newpass2"
               label="确认密码*"
               lazy-rules
-              :rules="[ val => val && val.length > 0 && val ===this.Form.newpass1 || 'Please type something as last one']"
+              :rules="[ val => val && val ===this.Form.newpass1 || 'Please type something as last one']"
             />
 
             <div v-if="disabled2">
@@ -125,7 +120,7 @@
       </q-card>
     </div>
     <div class="gt-md q-pa-xl" style="overflow:auto;">
-      <q-card class="information-card-3">
+      <q-card class="information-card-3" style="width:280px;margin-right: 100px">
         <div class="clearfix">
           <span style="font-size: 28px;">Current affiliation</span>
           <q-btn style="float: right; padding: 3px 0" push color="white" text-color="primary" round icon="create"
@@ -166,20 +161,20 @@
               v-if="!disabled3"
               filled
               v-model="Form.position"
-              label="在职岗位*"
+              label="在职岗位"
             />
             <q-input
               v-if="!disabled3"
               filled
               v-model="Form.direction"
-              label="研究方向*"
+              label="研究方向"
             />
 
             <q-input
               v-if="!disabled3"
               filled
               v-model="Form.achievement"
-              label="研究成果*"
+              label="研究成果"
             />
             <div v-if="!disabled3">
               <q-btn label="Submit" type="submit" color="primary"/>
@@ -189,7 +184,8 @@
           </q-form>
         </div>
       </q-card>
-      <q-card class="information-card-4">
+      <br><br>
+      <q-card class="information-card-4" style="width:280px;margin-right: 100px">
         <div class="clearfix">
           <span style="font-size: 28px;">Network</span>
         </div>
