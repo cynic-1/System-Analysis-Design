@@ -1,3 +1,4 @@
+/* eslint-disable vue/multi-word-component-names */
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
@@ -5,7 +6,10 @@
         404
       </div>
 
-      <div class="text-h2" style="opacity:.4">
+      <div
+        class="text-h2"
+        style="opacity:.4"
+      >
         Oops. Nothing here...
       </div>
 
@@ -23,9 +27,9 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'Error404'
-})
+    "name": "Error404"
+});
 </script>

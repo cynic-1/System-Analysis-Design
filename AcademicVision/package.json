@@ -6,7 +6,8 @@
   "author": "BUAA",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "lint": "eslint --ext .js,.vue ./ --fix"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -22,8 +23,12 @@
     "vuex": "^4.0.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.3",
     "@quasar/app": "^3.0.0",
-    "vue": "^3.2.22"
+    "eslint": "^8.3.0",
+    "eslint-plugin-vue": "^8.1.1",
+    "vue": "^3.2.22",
+    "vue-eslint-parser": "^7.10.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

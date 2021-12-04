@@ -1,49 +1,72 @@
+/* eslint-disable vue/multi-word-component-names */
 <template>
   <div class="login">
     <div class="card">
       <div class="front">
         <div class="items-center q-mx-md">
-          <q-form ref="form" v-model="valid" lazy-validation>
-            <q-icon size="100px" name="person_add" /><br>
+          <q-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <q-icon
+              size="100px"
+              name="person_add"
+            /><br>
             <div>
               <q-field
                 v-model="id"
                 :rules="idRules"
                 label="用户名"
                 required
-              ></q-field>
+              />
 
               <q-field
                 v-model="password"
                 :rules="passwordRules"
                 label="密码"
                 required
-              ></q-field>
+              />
 
               <q-field
                 v-model="rePassword"
                 :rules="rePasswordRules"
                 label="确认密码"
                 required
-              ></q-field>
+              />
 
               <q-field
                 v-model="Email"
                 :rules="emailRules"
                 label="E-mail"
                 required
-              ></q-field>
+              />
 
-              <q-btn :disabled="!valid" class="button" @click="validate" large href="/Login">
-                <p class="login_">注册</p>
+              <q-btn
+                :disabled="!valid"
+                class="button"
+                large
+                href="/Login"
+                @click="validate"
+              >
+                <p class="login_">
+                  注册
+                </p>
               </q-btn>
             </div>
           </q-form>
         </div>
         <div>
           <div class="row">
-            <div class="col-12 items-center" >
-              <q-btn flat color="primary" class="return" to="/login">登录</q-btn>
+            <div class="col-12 items-center">
+              <q-btn
+                flat
+                color="primary"
+                class="return"
+                to="/login"
+              >
+                登录
+              </q-btn>
             </div>
           </div>
         </div>
@@ -54,36 +77,42 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    id: "",
-    idRules: [(v) => !!v || "ID is required"],
-    password: "",
-    passwordRules: [(v) => !!v || "Password is required"],
-    rePassword:"",
-    rePasswordRules: [
-      v => !!v || "Password is required",
-      v => v===this.password || "Not equle",
-    ],
-    Email:"",
-    emailRules:[
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    checkbox: false,
-  }),
+    "data": () => ({
+        "valid": true,
+        "id": "",
+        "idRules": [(v) => !!v || "ID is required"],
+        "password": "",
+        "passwordRules": [(v) => !!v || "Password is required"],
+        "rePassword": "",
+        "rePasswordRules": [
+            v => !!v || "Password is required",
+            v => v === this.password || "Not equle",
+        ],
+        "Email": "",
+        "emailRules": [
+            v => !!v || "E-mail is required",
+            v => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        ],
+        "checkbox": false,
+    }),
 
-  methods: {
-    validate() {
-      this.$refs.form.validate();
+    "methods": {
+        validate () {
+
+            this.$refs.form.validate();
+
+        },
+        reset () {
+
+            this.$refs.form.reset();
+
+        },
+        resetValidation () {
+
+            this.$refs.form.resetValidation();
+
+        },
     },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
-  },
 };
 </script>
 
