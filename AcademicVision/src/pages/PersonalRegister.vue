@@ -14,28 +14,28 @@
               name="person_add"
             /><br>
             <div>
-              <q-field
+              <q-input
                 v-model="id"
                 :rules="idRules"
                 label="用户名"
                 required
               />
 
-              <q-field
+              <q-input
                 v-model="password"
                 :rules="passwordRules"
                 label="密码"
                 required
               />
 
-              <q-field
+              <q-input
                 v-model="rePassword"
                 :rules="rePasswordRules"
                 label="确认密码"
                 required
               />
 
-              <q-field
+              <q-input
                 v-model="Email"
                 :rules="emailRules"
                 label="E-mail"

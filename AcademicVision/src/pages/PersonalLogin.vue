@@ -22,14 +22,14 @@
             <div>
               <div class="row items-center">
                 <div class="col-12 ">
-                  <q-field
+                  <q-input
                     v-model="id"
                     :rules="idRules"
-                    label="用户名"
+                    label="用户名/邮箱"
                     required
                   />
 
-                  <q-field
+                  <q-input
                     v-model="password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="passwordRules"
@@ -93,14 +93,14 @@
             <div>
               <div class="row items-center">
                 <div class="col-12">
-                  <q-field
+                  <q-input
                     v-model="id"
                     :rules="idRules"
                     label="用户名"
                     required
                   />
 
-                  <q-field
+                  <q-input
                     v-model="password"
                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="passwordRules"
@@ -110,7 +110,7 @@
                     @click:append="show2 = !show2"
                   />
 
-                  <q-field
+                  <q-input
                     v-model="rePassword"
                     :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show3 ? 'text' : 'password'"
@@ -120,7 +120,7 @@
                     @click:append="show3 = !show3"
                   />
 
-                  <q-field
+                  <q-input
                     v-model="Email"
                     :rules="emailRules"
                     label="E-mail"
@@ -201,27 +201,18 @@ export default {
     },
     "methods": {
         toRegister () {
-
             if (!this.isTop) {
-
                 this.isTop = true;
                 this.clear();
-
             }
-
         },
         toLogin () {
-
             if (this.isTop) {
-
                 this.isTop = false;
                 this.clear();
-
             }
-
         },
         Login () {
-
             this.validate();
             this.$http({
                 "method": "post",
@@ -232,39 +223,26 @@ export default {
                 },
             })
                 .then((res) => {
-
                     this.message = res.data.message;
-
                     if (res.data.success) {
-
                         this.$store.commit("setLogin");
                         this.$store.commit("setUserID", this.id);
-
                         if (res.data.isAdmin) {
-
                             this.$store.commit("setAdmin");
                             this.$router.push({ "path": "/Admin" });
-
                         } else {
-
                             this.$store.commit("setIsTeacher", res.data.user.isTeacher);
                             this.$router.push({ "path": "/" });
-
                         }
-
                     }
-
                 })
                 .catch((err) => {
-
                     console.log(err);
-
                 });
             this.snackbar = true;
 
         },
         Register () {
-
             this.validate();
             this.$http({
                 "method": "post",
@@ -277,64 +255,45 @@ export default {
                 },
             })
                 .then((res) => {
-
                     console.log(res.data.message);
                     this.message = res.data.message;
                     this.snackbar = true;
                     if (res.data.success) {
-
                         this.$store.commit("setLogin");
                         this.timer = setTimeout(() => {
-
                             // 设置延迟执行
                             this.reload();
-
                         }, 1000);
-
                     } else {
-
                         this.clear();
-
                     }
-
                 })
                 .catch((err) => {
-
                     console.log(err);
-
                 });
-
         },
         validate () {
-
             this.$refs.form.validate();
-
         },
         clear () {
-
             this.id = "";
             this.password = "";
             // this.message = "";
             this.rePassword = "";
             this.Email = "";
-
         },
         affirmPass (val) {
-
             if (val !== this.password) {
-
                 return "两次密码不一致";
-
             }
             return true;
-
         },
     },
 };
 </script>
 
 <style>
-.login-cl {
+.login-register {
   background-image: url('../assets/bg1.jpeg');
   width: 100%;
   height: 100vh;

@@ -1,7 +1,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
-    <NavBar /><br>
+<!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
       style="margin-top: 0;padding-top: 0"
@@ -198,6 +198,7 @@
         />
       </div>
     </div>
+    <!--评论测试>-->
   </div>
 </template>
 
@@ -205,13 +206,15 @@
 import EachRanking from "components/Posts/EachRanking";
 // import RankingList from "components/Posts/RankingList";
 import NavBar from "components/NavBar";
+import PaperComment from "components/PaperComment";
 
 export default {
     "name": "Home",
 
     "components": {
         NavBar,
-        EachRanking
+        EachRanking,
+        PaperComment
     },
 
     data () {
