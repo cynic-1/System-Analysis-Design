@@ -69,8 +69,6 @@
                       <template #prepend>
                         <q-select
                           v-model="search_type"
-                          multiple
-                          clearable
                           style="min-width: 125px"
                           borderless
                           :options="search_type_options"
@@ -218,7 +216,6 @@ export default {
     },
 
     data () {
-
         return {
             "type_accepted_user": [],
             "type_options_user": [
@@ -267,7 +264,7 @@ export default {
                 },
             ],
 
-            "search_type": null,
+            "search_type": "主题",
             "search_type_options": [
                 "主题", "关键字", "作者", "第一作者", "参考文献", "摘要", "文献来源", "作者单位", "DOI"
             ],
