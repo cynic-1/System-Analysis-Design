@@ -23,17 +23,58 @@
 
               <q-input
                 v-model="password"
-                :rules="passwordRules"
+                :rules="[passwordRules]"
+                :type="show2 ? 'text' : 'password'"
                 label="密码"
                 required
-              />
+              >
+                <template #append>
+                  <q-avatar v-if="show2">
+                    <q-btn
+                      icon="visibility_off"
+                      round
+                      size="14px"
+                      @click="show2 = !show2"
+                    />
+                  </q-avatar>
+                  <q-avatar v-else>
+                    <q-btn
+                      icon="visibility"
+                      round
+                      size="14px"
+                      @click="show2 = !show2"
+                    />
+                  </q-avatar>
+                </template>
+              </q-input>
 
               <q-input
                 v-model="rePassword"
-                :rules="rePasswordRules"
+                :type="show3 ? 'text' : 'password'"
+                :rules="[passwordRules, affirmPass]"
                 label="确认密码"
                 required
-              />
+              >
+                <template #append>
+                  <q-avatar v-if="show3">
+                    <q-btn
+                      icon="visibility_off"
+                      round
+                      size="14px"
+                      @click="show3 = !show3"
+                    />
+                  </q-avatar>
+                  <q-avatar v-else>
+                    <q-btn
+                      icon="visibility"
+                      round
+                      size="14px"
+                      @click="show3 = !show3"
+                    />
+                  </q-avatar>
+                </template>
+              </q-input>
+
 
               <q-input
                 v-model="Email"
@@ -47,7 +88,7 @@
                 class="button"
                 large
                 href="/Login"
-                @click="validate"
+                @click="Register"
               >
                 <p class="login_">
                   注册
@@ -77,17 +118,15 @@
 
 <script>
 export default {
-    "data": () => ({
+    data: () => ({
+        "show2": false,
+        "show3": false,
         "valid": true,
         "id": "",
         "idRules": [(v) => !!v || "ID is required"],
         "password": "",
-        "passwordRules": [(v) => !!v || "Password is required"],
+        "passwordRules": (v) => !!v || "请填写密码",
         "rePassword": "",
-        "rePasswordRules": [
-            v => !!v || "Password is required",
-            v => v === this.password || "Not equle",
-        ],
         "Email": "",
         "emailRules": [
             v => !!v || "E-mail is required",
@@ -96,21 +135,51 @@ export default {
         "checkbox": false,
     }),
 
-    "methods": {
+    methods: {
+      Register () {
+        this.validate();
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/register/',
+          data: {
+            user: this.id,
+            pass1: this.password,
+            pass2: this.rePassword,
+            Email: this.Email
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          console.log("注册", response)
+          if (response.data.code === 200) {
+            alert("注册成功，正在前往登录界面");
+            this.$router.push({ path: "/login" });
+          }
+          else if (response.data.code === 0) {
+            alert(response.data.message);
+            this.clear();
+          }
+        })
+      },
         validate () {
-
             this.$refs.form.validate();
-
         },
-        reset () {
-
-            this.$refs.form.reset();
-
-        },
-        resetValidation () {
-
-            this.$refs.form.resetValidation();
-
+      clear () {
+        this.id = "";
+        this.password = "";
+        this.rePassword = "";
+        this.Email = "";
+      },
+        affirmPass (val) {
+          if (val !== this.password) {
+            return "两次密码不一致";
+          }
+          return true;
         },
     },
 };

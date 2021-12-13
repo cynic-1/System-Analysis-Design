@@ -31,13 +31,30 @@
 
                   <q-input
                     v-model="password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="passwordRules"
                     :type="show1 ? 'text' : 'password'"
                     label="密码"
                     required
-                    @click:append="show1 = !show1"
-                  />
+                  >
+                    <template #append>
+                      <q-avatar v-if="show1">
+                        <q-btn
+                          icon="visibility_off"
+                          round
+                          size="14px"
+                          @click="show1 = !show1"
+                        />
+                      </q-avatar>
+                      <q-avatar v-else>
+                        <q-btn
+                          icon="visibility"
+                          round
+                          size="14px"
+                          @click="show1 = !show1"
+                        />
+                      </q-avatar>
+                    </template>
+                  </q-input>
 
                   <q-btn
                     :disabled="!valid"
@@ -60,7 +77,7 @@
               flat
               color="primary"
               class="register"
-              @click="toRegister"
+              to="/register"
             >
               注册
             </q-btn>
@@ -75,202 +92,60 @@
           </div>
         </div>
       </div>
-      <div
-        id="2"
-        class="back"
-        :class="isTop ? 'contain-After' : ''"
-      >
-        <div class="items-center q-mx-md">
-          <q-form
-            ref="form"
-            lazy-validation
-          >
-            <q-icon
-              id="logo1"
-              size="100px"
-              name="person_add"
-            /><br>
-            <div>
-              <div class="row items-center">
-                <div class="col-12">
-                  <q-input
-                    v-model="id"
-                    :rules="idRules"
-                    label="用户名"
-                    required
-                  />
-
-                  <q-input
-                    v-model="password"
-                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="passwordRules"
-                    :type="show2 ? 'text' : 'password'"
-                    label="密码"
-                    required
-                    @click:append="show2 = !show2"
-                  />
-
-                  <q-input
-                    v-model="rePassword"
-                    :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show3 ? 'text' : 'password'"
-                    :rules="[affirmPass]"
-                    label="确认密码"
-                    required
-                    @click:append="show3 = !show3"
-                  />
-
-                  <q-input
-                    v-model="Email"
-                    :rules="emailRules"
-                    label="E-mail"
-                    required
-                  />
-
-                  <q-btn
-                    :disabled="!valid"
-                    class="button"
-                    @click="Register"
-                  >
-                    <p class="register_">
-                      注册
-                    </p>
-                  </q-btn>
-                </div>
-              </div>
-            </div>
-          </q-form>
-        </div>
-        <div>
-          <div class="row">
-            <div class="col-12 items-center">
-              <q-btn
-                flat
-                color="primary"
-                class="return"
-                @click="toLogin"
-              >
-                登录
-              </q-btn>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--      <v-snackbar-->
-      <!--        v-model="snackbar"-->
-      <!--        :timeout="3000"-->
-      <!--        color="blue-grey"-->
-      <!--        absolute-->
-      <!--        rounded="pill"-->
-      <!--        top-->
-      <!--      >-->
-      <!--        {{ message }}-->
-      <!--      </v-snackbar>-->
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
     "inject": ["reload"],
     data () {
-
         return {
             "valid": true,
             "show1": false,
             "show2": false,
             "show3": false,
             "isTop": false,
-            "timer": null,
-            "snackbar": false,
             "id": "",
-            "idRules": [(v) => !!v || "请填写用户名"],
-            "pass": "",
+            "idRules": [(v) => !!v || "请填写用户名/邮箱"],
             "password": "",
             "passwordRules": [(v) => !!v || "请填写密码"],
-            "rePassword": "",
-            "Email": "",
-            "emailRules": [
-                (v) => !!v || "请填写邮箱",
-                (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
-            ],
-            "checkbox": false,
             "message": "error",
         };
-
     },
-    "methods": {
-        toRegister () {
-            if (!this.isTop) {
-                this.isTop = true;
-                this.clear();
-            }
-        },
-        toLogin () {
-            if (this.isTop) {
-                this.isTop = false;
-                this.clear();
-            }
-        },
+    methods: {
         Login () {
-            this.validate();
-            this.$http({
-                "method": "post",
-                "url": "/Login",
-                "data": {
-                    "UserID": this.id,
-                    "Password": this.password,
-                },
-            })
-                .then((res) => {
-                    this.message = res.data.message;
-                    if (res.data.success) {
-                        this.$store.commit("setLogin");
-                        this.$store.commit("setUserID", this.id);
-                        if (res.data.isAdmin) {
-                            this.$store.commit("setAdmin");
-                            this.$router.push({ "path": "/Admin" });
-                        } else {
-                            this.$store.commit("setIsTeacher", res.data.user.isTeacher);
-                            this.$router.push({ "path": "/" });
-                        }
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            this.snackbar = true;
-
-        },
-        Register () {
-            this.validate();
-            this.$http({
-                "method": "post",
-                "url": "/Register",
-                "data": {
-                    "UserID": this.id,
-                    "Password": this.password,
-                    "rePassword": this.rePassword,
-                    "Email": this.Email,
-                },
-            })
-                .then((res) => {
-                    console.log(res.data.message);
-                    this.message = res.data.message;
-                    this.snackbar = true;
-                    if (res.data.success) {
-                        this.$store.commit("setLogin");
-                        this.timer = setTimeout(() => {
-                            // 设置延迟执行
-                            this.reload();
-                        }, 1000);
-                    } else {
-                        this.clear();
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+          this.validate();
+          this.$axios({
+            method: 'POST',
+            url: 'http://114.116.235.94/login/',
+            data: {
+              user_id: this.id,
+              post_id: this.password
+            },
+            transformRequest: [function (data) {
+              let ret = ''
+              for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then(response => {
+            console.log("登录", response)
+            if (response.data.code === 200) {
+              alert("登录成功");
+              this.$store.commit("setLogin");
+              this.$store.commit("setUserID",response.data.data.username);
+              this.$store.commit("setUserHeadImage",response.data.data.image);
+              this.$store.commit("setUserAssociated",response.data.data.is_associated);
+              this.$router.push({ path: "/home" });
+            }
+            else if (response.data.code === 0) {
+              alert(response.data.message);
+              this.clear();
+            }
+          })
         },
         validate () {
             this.$refs.form.validate();
@@ -278,9 +153,6 @@ export default {
         clear () {
             this.id = "";
             this.password = "";
-            // this.message = "";
-            this.rePassword = "";
-            this.Email = "";
         },
         affirmPass (val) {
             if (val !== this.password) {
@@ -302,10 +174,6 @@ export default {
   align-items: center;
 }
 #logo {
-  position: relative;
-  bottom: -20px;
-}
-#logo1 {
   position: relative;
   bottom: -20px;
 }
@@ -334,10 +202,6 @@ export default {
   transition: font-size 0.2s ease-out;
 }
 .login_ {
-  font-size: 20px;
-  margin-top: 15px;
-}
-.register_ {
   font-size: 20px;
   margin-top: 15px;
 }

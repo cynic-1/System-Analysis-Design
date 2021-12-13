@@ -31,46 +31,86 @@
                 <div>
                   <div class="row">
                     <div class="col-12">
-                      <q-field
+                      <q-input
                         v-model="code"
-                        :rules="codeRules"
+                        :rules="[codeRules, affirmCode]"
                         label="验证码"
-                        required
+                        lazy-rules="ondemand"
                       >
                         <template #append>
                           <q-btn
+                            v-if="!have_acquired"
                             flat
                             offset-y
                             color="cyan"
-                            @click="getCode"
-                          >
-                            获取验证码
-                          </q-btn>
+                            @click="waitCode"
+                          >获取验证码</q-btn>
+                          <q-btn
+                            v-if="have_acquired"
+                            disable
+                            flat
+                            offset-y
+                            color="cyan"
+                          >重新获取 {{ time }}</q-btn>
                         </template>
-                      </q-field>
+                      </q-input>
                     </div>
                   </div>
                 </div>
 
                 <q-input
                   v-model="password"
-                  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[passwordRules]"
                   :type="show2 ? 'text' : 'password'"
                   label="密码"
                   required
-                  @click:append="show2 = !show2"
-                />
+                >
+                  <template #append>
+                    <q-avatar v-if="show2">
+                      <q-btn
+                        icon="visibility_off"
+                        round
+                        size="14px"
+                        @click="show2 = !show2"
+                      />
+                    </q-avatar>
+                    <q-avatar v-else>
+                      <q-btn
+                        icon="visibility"
+                        round
+                        size="14px"
+                        @click="show2 = !show2"
+                      />
+                    </q-avatar>
+                  </template>
+                </q-input>
 
                 <q-input
                   v-model="rePassword"
-                  :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="show3 ? 'text' : 'password'"
                   :rules="[passwordRules, affirmPass]"
                   label="确认密码"
                   required
-                  @click:append="show3 = !show3"
-                />
+                >
+                  <template #append>
+                    <q-avatar v-if="show3">
+                      <q-btn
+                        icon="visibility_off"
+                        round
+                        size="14px"
+                        @click="show3 = !show3"
+                      />
+                    </q-avatar>
+                    <q-avatar v-else>
+                      <q-btn
+                        icon="visibility"
+                        round
+                        size="14px"
+                        @click="show3 = !show3"
+                      />
+                    </q-avatar>
+                  </template>
+                </q-input>
 
                 <q-btn
                   :disabled="!valid"
@@ -96,14 +136,31 @@
             </div>
           </q-form>
         </div>
+        <div>
+          <div class="row">
+            <div class="col-12 items-center">
+              <q-btn
+                flat
+                color="primary"
+                class="return"
+                to="/login"
+              >
+                登录
+              </q-btn>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mdiEyeOff } from '@mdi/js';
 export default {
-    "data": () => ({
+    data: () => ({
+        have_acquired: false,
+        time: 0,
         "show2": false,
         "show3": false,
         "valid": true,
@@ -119,16 +176,60 @@ export default {
             (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
         ],
         "code": "",
-        "codeRules": [(v) => !!v || "请填写验证码"],
-        "checkbox": false,
+      "codeRules": (v) => !!v || "请填写验证码",
         "message": "",
+        "ran_str":""
     }),
 
-    "methods": {
+    methods: {
+      affirmCode (val) {
+        if (val !== this.ran_str) {
+          return "验证码错误";
+        }
+        return true;
+      },
+      waitCode () {
+        this.have_acquired = true
+        this.time = 60
+        this.timer()
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/change_email1/',
+          data: {
+            user_id: this.id,
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          console.log("发送验证码", response)
+          if (response.data.code === 200) {
+            alert("已发送");
+            this.ran_str = response.data.str
+          }
+          else if (response.data.code === 0) {
+            alert(response.data.message);
+          }
+        })
+      },
+      timer () {
+        if(this.time <= 0)
+        {
+          this.have_acquired = false;
+        }
+        else
+        {
+          this.time--
+          setTimeout(this.timer, 1000)
+        }
+      },
         resetPassword () {
-
             this.validate();
-            this.$http({
+            this.$axios({
                 "method": "POST",
                 "url": "/code",
                 "data": {
@@ -147,29 +248,6 @@ export default {
                         this.$router.push({ "path": "/Login" });
 
                     }
-
-                })
-                .catch((err) => {
-
-                    console.log(err);
-
-                });
-
-        },
-        getCode () {
-
-            this.$http({
-                "method": "post",
-                "url": "/ForgetPassword",
-                "data": {
-                    "UserID": this.id,
-                    "Email": this.Email,
-                },
-            })
-                .then((res) => {
-
-                    this.message = res.data.message;
-                    this.snackbar = true;
 
                 })
                 .catch((err) => {
@@ -246,7 +324,7 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  height: 600px;
+  height: 650px;
   width: 550px;
 
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -263,5 +341,8 @@ export default {
   display: flex;
   flex-direction: column;
   transition: 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.return{
+  top:40px;
 }
 </style>
