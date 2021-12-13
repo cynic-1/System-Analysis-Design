@@ -15,12 +15,12 @@
           name="account_circle"
           color="blue-6"
         />
-        {{author}}&nbsp;&nbsp;&nbsp;
+        {{ author }}&nbsp;&nbsp;&nbsp;
         <q-icon
           name="watch_later"
           color="blue-6"
         />
-        {{time}}
+        {{ time }}
       </h5>
     </q-card>
     <br>
@@ -59,6 +59,17 @@
           color="blue-6"
           icon="bookmark"
           size="19px"
+          @click="unstar"
+          v-show="isStar"
+        />
+        <q-btn
+          flat
+          round
+          color="grey-6"
+          icon="bookmark"
+          size="19px"
+          @click="star"
+          v-show="!isStar"
         />
         <q-btn
           flat
@@ -190,16 +201,17 @@
       class="q-pa-md row justify-center"
       style="width: 1300px;margin-left: 150px"
     >
+      <h5 style="color: lightgray" v-show="hasComment">暂时还没有评论</h5>
       <div
         v-for="comment in comments.slice(left,right)"
         :key="comment"
         style="width: 100%; max-width: 1200px"
       >
         <q-chat-message
-          :name="comment.name"
-          :avatar="comment.avatar"
-          :text="[comment.text]"
-          :stamp="comment.stamp"
+          :name="comment.comment_user_name"
+          avatar="https://img1.baidu.com/it/u=2176556412,2854184110&fm=26&fmt=auto"
+          :text="[comment.comment_content]"
+          :stamp="comment.com_time"
           style="font-size: 23px;width: 1100px"
           bg-color="blue-2"
         />
@@ -207,30 +219,30 @@
         <div style="float: right;margin-right: 100px">
           &nbsp;
           <q-btn
-            v-show="!comment.isgood"
+            v-show="!comment.is_like"
             icon="thumb_up_off_alt"
             round
             size="10px"
             style="color: deepskyblue"
-            @click="good(comment.cid)"
+            @click="good(comment.com_id)"
           />
           <q-btn
-            v-show="comment.isgood"
+            v-show="comment.is_like"
             icon="thumb_up_alt"
             round
             color="blue"
             size="10px"
-            @click="bad(comment.cid)"
+            @click="bad(comment.com_id)"
           />
           &nbsp;
-          <span>({{ comment.goodnumber }})</span>
+          <span>({{ comment.like_num }})</span>
           &nbsp;
           <q-btn
             icon="error_outline"
             round
             size="10px"
             style="color: red"
-            @click="prompt = true"
+            @click="this.prompt = true"
           />
         </div>
         <br><br>
@@ -272,7 +284,7 @@
                 v-close-popup
                 flat
                 label="举报"
-                @click="jubao(comment.cid)"
+                @click="commentJubao(comment.comment_user_id,comment.com_id)"
               />
             </q-card-actions>
           </q-card>
@@ -284,6 +296,7 @@
     <div
       class="q-pa-lg flex flex-center"
       style="width: 1000px;margin: 0 auto"
+      v-show="!hasComment"
     >
       <q-pagination
         v-model="current"
@@ -332,6 +345,8 @@ export default {
   data() {
 
     return {
+      "isStar": false,
+      "hasComment": false,
       "title": '帖子标题',
       "author": '作者',
       "time": '2021/6/10',
@@ -549,8 +564,17 @@ export default {
       this.author = response.data.all_info.user
       this.time = response.data.all_info.datetime
       this.context = response.data.all_info.content
-      this.isgood = response.data.all_info.islike
+      this.isgood = response.data.all_info.is_like
+      this.comments = response.data.all_info.comment
+      this.isStar = response.data.all_info.is_col
+      this.markdownToHtml();
+      if (this.comments.length === 0) {
+        this.hasComment = true
+      }
     })
+
+    // http://114.116.235.94/get_report_post/
+
     // this.context = this.context.replace(/\n/g, '<br>');
     this.context = marked(this.context);
     if (this.comments / 5 !== 0) {
@@ -566,8 +590,68 @@ export default {
   },
 
   "methods": {
+    unstar() {
+      this.isStar = false
+      // http://114.116.235.94/del_my_col_post/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/del_my_col_post/',
+        data: {
+          user_id: this.$route.query.user_id,
+          // 这里有问题
+          col_post_id: this.$route.query.post_id,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("取消收藏帖子", response)
+      })
+    },
+    star() {
+      // http://114.116.235.94/col_post/
+      this.isStar = true
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/col_post/',
+        data: {
+          user_id: this.$route.query.user_id,
+          post_id: this.$route.query.post_id,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("收藏帖子", response)
+      })
+    },
     postGood() {
       this.isgood = true
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/like_post/',
+        data: {
+          user_id: this.$route.query.user_id,
+          post_id: this.$route.query.post_id,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("点赞帖子", response)
+      })
     },
     postNotGood() {
       this.isgood = false
@@ -578,7 +662,6 @@ export default {
 
     },
     textJubao() {
-
       this.textJ = true;
 
     },
@@ -587,21 +670,40 @@ export default {
       this.$router.back();
 
     },
-    jubao(cid) {
-
+    jubao(user_id,cid) {
       // 举报axios请求
+      // http://114.116.235.94/report_post/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/report_post/',
+        data: {
+          user_id: this.$route.query.user_id,
+          post_id: this.$route.query.post_id,
+          reason: this.reason
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("举报帖子", response)
+        this.reason = ""
+      })
       alert("举报成功");
 
     },
     good(cid) {
-
+      // http://114.116.235.94/like_post/
       let index = 0;
       for (index = 0; index < this.comments.length; index += 1) {
 
-        if (this.comments[index].cid === cid) {
+        if (this.comments[index].com_id === cid) {
 
-          this.comments[index].goodnumber += 1;
-          this.comments[index].isgood = true;
+          this.comments[index].like_num += 1;
+          this.comments[index].is_like = true;
           break;
 
         }
@@ -614,10 +716,10 @@ export default {
       let index = 0;
       for (index = 0; index < this.comments.length; index += 1) {
 
-        if (this.comments[index].cid === cid) {
+        if (this.comments[index].com_id === cid) {
 
-          this.comments[index].goodnumber -= 1;
-          this.comments[index].isgood = false;
+          this.comments[index].like_num -= 1;
+          this.comments[index].is_like = false;
           break;
 
         }
@@ -644,7 +746,7 @@ export default {
 
     },
     onSubmit() {
-
+      console.log("点击了发布按钮");
       this.$refs.text.validate();
 
       if (this.$refs.text.hasError) {
@@ -652,23 +754,58 @@ export default {
         this.formHasError = true;
 
       } else {
-
-        this.alert = true;
         this.$refs.text.resetValidation();
         // 调用评论axios请求
-        this.comments.splice(0, 0, {
-          "name": this.$route.params.id,
-          "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171208%2Ff1d2aa196b2248abb59d50bff5c7376a.jpeg&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640140175&t=fbcd874f84cac90de991d827a58808ae",
-          "text": this.text,
-          "stamp": "2021/6/10",
-          "goodnumber": 0,
-          "isgood": false,
-          "cid": -1,
-        });
-        this.text = "";
-
+        // http://114.116.235.94/comment_post/
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/comment_post/',
+          data: {
+            user_id: this.$route.query.user_id,
+            post_id: this.$route.query.post_id,
+            content: this.text,
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          console.log("发表评论", response)
+          if (response.data.code === 200) {
+            this.alert = true;
+          }
+          this.hasComment = false;
+        })
+        let d = new Date(),
+          str = '';
+        str += d.getFullYear() + '/'; //获取当前年份
+        str += d.getMonth() + 1 + '/'; //获取当前月份（0——11）
+        str += d.getDate() + '/ ';
+        str += d.getHours() + ':';
+        str += d.getMinutes() + ':';
+        str += d.getSeconds();
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/view_post/',
+          data: {
+            user_id: this.$route.query.user_id,
+            post_id: this.$route.query.post_id
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          console.log("查看帖子", response)
+          this.comments = response.data.all_info.comment
+        })
       }
-
     },
 
     onReset() {
@@ -676,6 +813,30 @@ export default {
       this.text = null;
       this.$refs.text.resetValidation();
 
+    },
+
+    commentJubao(user_id,com_id) {
+      // http://114.116.235.94/report_comment/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/report_comment/',
+        data: {
+          user_id: user_id,
+          comment_id: com_id,
+          reason: this.reason
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("举报评论", response)
+        this.prompt = true
+        this.reason = ""
+      })
     }
   },
 

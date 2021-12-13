@@ -19,7 +19,7 @@
       >
         <q-carousel-slide
           name="first"
-          img-src="https://cdn.quasar.dev/img/mountains.jpg"
+          img-src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2Fc95f482214a43304a2072b813bc6ddf855d7e83d.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641987019&t=229987192e032261fff3b46ebedc7894"
         >
           <q-input
             v-model="text"
@@ -50,7 +50,7 @@
         </q-carousel-slide>
         <q-carousel-slide
           name="second"
-          img-src="https://cdn.quasar.dev/img/parallax1.jpg"
+          img-src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic2.zhimg.com%2Fv2-242270951d2d80da8d17271629567301_r.jpg&refer=http%3A%2F%2Fpic2.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641987249&t=5b7df4efb89a2044a6e61150d67f24bf"
         >
           <q-input
             v-model="text"
@@ -65,7 +65,6 @@
                   round
                   color="blue-6"
                   size="12px"
-                  @click="search"
                 />
               </q-avatar>
             </template>

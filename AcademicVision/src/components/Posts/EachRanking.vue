@@ -4,7 +4,7 @@
       class="q-pa-md q-gutter-sm"
       style="padding: 0;margin: 0"
     >
-      <q-banner class="bg-grey-3">
+      <q-banner class="bg-grey-3" @click="viewPost(this.pid)">
         <template #avatar>
           <q-icon
             v-if="rank===1"
@@ -40,9 +40,20 @@
 
 <script>
 export default {
-    "name": "EachRanking",
-
-    "props": ["rank", "context", "author"]
+  "name": "EachRanking",
+  methods: {
+    viewPost(post_id) {
+      console.log("点击了查看帖子方法",post_id)
+      this.$router.push({
+        "path": "/posts/view",
+        "query": {
+          "user_id": 1,
+          "post_id": post_id,
+        }
+      })
+    },
+  },
+  "props": ["rank", "context", "author","pid"]
 };
 </script>
 

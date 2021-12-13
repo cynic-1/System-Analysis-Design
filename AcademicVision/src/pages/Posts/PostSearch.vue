@@ -56,18 +56,14 @@
             bg-color="light-blue-1"
           >
             <template #control>
-              <a
-                href="https://y.qq.com/n/ryqq/songDetail/0039MnYb0qxYhV"
-                style="text-decoration: none;color: #1D1D1D"
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+                style="font-size: 20px"
+                @click="viewPost(test.post_id)"
               >
-                <div
-                  class="self-center full-width no-outline"
-                  tabindex="0"
-                  style="font-size: 20px"
-                >
-                  {{ test.author }}&nbsp;&nbsp;&nbsp;{{ test.context }}
-                </div>
-              </a>
+                {{ test.author }}&nbsp;&nbsp;&nbsp;{{ test.title }}&nbsp;&nbsp;&nbsp;{{ test.lable }}
+              </div>
             </template>
           </q-field>
         </transition>
@@ -84,49 +80,78 @@
 
 <script>
 export default {
-    "name": "PostSearch",
+  "name": "PostSearch",
 
-    data () {
+  data() {
 
-        return {
-            "text": this.$route.query.context,
-            "dense": false,
-            "visible": true,
-            "showSimulatedReturnData": true,
-            "list": [],
-        };
+    return {
+      "text": this.$route.query.context,
+      "dense": false,
+      "visible": true,
+      "showSimulatedReturnData": true,
+      "list": [],
+    };
+
+  },
+
+  "methods": {
+    viewPost(post_id) {
+      console.log("搜索帖子")
+      this.$router.push({
+        "path": "/posts/view",
+        "query": {
+          "user_id": 1,
+          "post_id": post_id,
+        }
+      })
+    },
+    back() {
+
+      this.$router.go(-1);
 
     },
+    search() {
 
-    "methods": {
-        back () {
+      console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+      this.visible = true;
+      this.showSimulatedReturnData = false;
 
-            this.$router.go(-1);
-
+      // http://114.116.235.94/search_post/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/search_post/',
+        data: {
+          title: this.text
         },
-        search () {
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("搜索帖子", response)
+        this.list = response.data.info
+      })
+      // setTimeout(() => {
+      //
+      //   this.list = [
+      //     {"rank": 1, "context": "新的推荐帖子", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //   ];
+      // }, 1000);
 
-            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-            this.visible = true;
-            this.showSimulatedReturnData = false;
-            setTimeout(() => {
+      this.visible = false;
+      this.showSimulatedReturnData = true;
+      // 更新List数据
 
-                this.list = [
-                    { "rank": 1, "context": "新的推荐帖子", "author": "周杰伦" },
-                    { "rank": 1, "context": "新的推荐数据", "author": "周杰伦" },
-                    { "rank": 1, "context": "新的推荐数据", "author": "周杰伦" },
-                    { "rank": 1, "context": "新的推荐数据", "author": "周杰伦" },
-                    { "rank": 1, "context": "新的推荐数据", "author": "周杰伦" },
-                    { "rank": 1, "context": "新的推荐数据", "author": "周杰伦" },
-                ];
-                this.visible = false;
-                this.showSimulatedReturnData = true;
-
-            }, 1000);
-            // 更新List数据
-
-        }
     }
+  }
 };
 </script>
 

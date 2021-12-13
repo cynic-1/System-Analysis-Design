@@ -201,6 +201,7 @@
             filled
             stack-label
             bg-color="light-blue-1"
+            @click="viewPost(test.post_id)"
           >
             <template #control>
                 <div
@@ -497,6 +498,7 @@ export default {
 
   methods: {
     viewPost(post_id) {
+      console.log("点击了查看帖子方法")
       this.$router.push({
         "path": "/posts/view",
         "query": {
@@ -531,7 +533,7 @@ export default {
         url: 'http://114.116.235.94/publish_post/',
         data: {
           user_id: 1,
-          content: this.content,
+          content: this.context,
           label: this.type,
           title: this.title
         },
