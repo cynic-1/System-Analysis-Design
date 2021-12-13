@@ -30,7 +30,7 @@
                     active-color="white"
                     indicator-color="white"
                   >
-                    <q-tab name="search" icon="mail" label="文献检索" /><br><br><br>
+                    <q-tab name="search"  icon="mail" label="文献检索" /><br><br><br>
                     <q-tab name="user_search" icon="alarm" label="用户检索" />
                   </q-tabs>
                 </template>
