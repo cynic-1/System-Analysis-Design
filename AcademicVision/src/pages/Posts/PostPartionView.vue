@@ -179,20 +179,20 @@ export default {
         this.name1 = response.data.all_info[0].user_name
         this.title1 = response.data.all_info[0].title
         if (this.title1.length >= 20) {
-          this.title1 = this.title1.substring(0,9) + "......"
+          this.title1 = this.title1.substring(0, 9) + "......"
         }
         this.pid1 = response.data.all_info[0].post_id
         this.name2 = response.data.all_info[1].user_name
         this.title2 = response.data.all_info[1].title
         this.pid2 = response.data.all_info[1].post_id
         if (this.title2.length >= 10) {
-          this.title2 = this.title2.substring(0,9) + "......"
+          this.title2 = this.title2.substring(0, 9) + "......"
         }
         this.name3 = response.data.all_info[2].user_name
         this.title3 = response.data.all_info[2].title
         this.pid3 = response.data.all_info[2].post_id
         if (this.title3.length >= 10) {
-          this.title3 = this.title3.substring(0,9) + "......"
+          this.title3 = this.title3.substring(0, 9) + "......"
         }
       })
     }
@@ -263,7 +263,7 @@ export default {
           return ret
         }],
       }).then(response => {
-        console.log("改变推荐方式",response)
+        console.log("改变推荐方式", response)
         this.list = response.data.all_info
       })
       setTimeout(() => {
