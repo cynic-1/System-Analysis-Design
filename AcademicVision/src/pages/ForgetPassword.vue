@@ -15,14 +15,14 @@
             /><br>
             <div class="row items-center">
               <div class="col-12">
-                <q-field
+                <q-input
                   v-model="id"
                   :rules="idRules"
                   label="用户名"
                   required
                 />
 
-                <q-field
+                <q-input
                   v-model="Email"
                   :rules="emailRules"
                   label="E-mail"
@@ -52,7 +52,7 @@
                   </div>
                 </div>
 
-                <q-field
+                <q-input
                   v-model="password"
                   :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[passwordRules]"
@@ -62,7 +62,7 @@
                   @click:append="show2 = !show2"
                 />
 
-                <q-field
+                <q-input
                   v-model="rePassword"
                   :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="show3 ? 'text' : 'password'"
@@ -145,16 +145,16 @@ export default {
                     if (res.data.success) {
 
                         this.$router.push({ "path": "/Login" });
-                    
+
                     }
-                
+
                 })
                 .catch((err) => {
 
                     console.log(err);
-                
+
                 });
-        
+
         },
         getCode () {
 
@@ -170,29 +170,29 @@ export default {
 
                     this.message = res.data.message;
                     this.snackbar = true;
-                
+
                 })
                 .catch((err) => {
 
                     console.log(err);
-                
+
                 });
-        
+
         },
         validate () {
 
             this.$refs.form.validate();
-        
+
         },
         affirmPass (val) {
 
             if (val !== this.password) {
 
                 return "两次密码不一致";
-            
+
             }
             return true;
-        
+
         },
     },
 };

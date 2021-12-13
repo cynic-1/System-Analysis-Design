@@ -69,6 +69,7 @@
                     <q-btn
                       color="secondary"
                       label="个人收藏"
+                      size="md"
                     />
                   </div>
                   <br>
@@ -104,17 +105,17 @@ export default {
         toPersonalInfo (){
 
             this.$router.push({ "path": `/PersonalInfo/${this.$store.state.person.userID}` });
-        
+
         },
         toggleLeftDrawer () {
 
             leftDrawerOpen.value = !leftDrawerOpen.value;
-        
+
         },
         toBlogs () {
 
             this.$router.push({ "path": "/BlogList" });
-        
+
         },
         logout (){
 
@@ -130,9 +131,9 @@ export default {
                     this.$store.commit("setLogout");
                     this.$router.push({ "path": "/" });
                     sessionStorage.clear();
-                
+
                 }
-            
+
             });
 
         }
