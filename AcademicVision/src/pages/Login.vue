@@ -1,12 +1,24 @@
+/* eslint-disable vue/multi-word-component-names */
 <template>
-  <div class="login">
+  <div class="login-register">
     <div class="card">
-      <div class="front" :class="isTop ? 'contain-Before' : ''" id="1">
+      <div
+        id="1"
+        class="front"
+        :class="isTop ? 'contain-Before' : ''"
+      >
         <div class="q-mb-lg">
-          <q-icon size="100px" id="logo" name="person_outline" /><br><br><br><br>
+          <q-icon
+            id="logo"
+            size="100px"
+            name="person_outline"
+          /><br><br><br><br>
         </div>
         <div class="items-center q-mx-md">
-          <q-form ref="form" lazy-validation>
+          <q-form
+            ref="form"
+            lazy-validation
+          >
             <div>
               <div class="row items-center">
                 <div class="col-12 ">
@@ -15,7 +27,7 @@
                     :rules="idRules"
                     label="用户名"
                     required
-                  ></q-field>
+                  />
 
                   <q-field
                     v-model="password"
@@ -25,10 +37,17 @@
                     label="密码"
                     required
                     @click:append="show1 = !show1"
-                  ></q-field>
+                  />
 
-                  <q-btn :disabled="!valid" class="button" @click="Login" large>
-                    <p class="login_">登录</p>
+                  <q-btn
+                    :disabled="!valid"
+                    class="button"
+                    large
+                    @click="Login"
+                  >
+                    <p class="login_">
+                      登录
+                    </p>
                   </q-btn>
                 </div>
               </div>
@@ -36,29 +55,50 @@
           </q-form>
         </div>
         <div>
-          <div class="col-12 items-center" >
-            <q-btn flat color="primary" class="register" @click="toRegister"
-            >注册</q-btn
+          <div class="col-12 items-center">
+            <q-btn
+              flat
+              color="primary"
+              class="register"
+              @click="toRegister"
             >
-            <q-btn flat color="primary" class="forget" to="/forgetPassword"
-            >忘记密码</q-btn
+              注册
+            </q-btn>
+            <q-btn
+              flat
+              color="primary"
+              class="forget"
+              to="/forgetPassword"
             >
+              忘记密码
+            </q-btn>
           </div>
         </div>
       </div>
-      <div class="back" :class="isTop ? 'contain-After' : ''" id="2">
+      <div
+        id="2"
+        class="back"
+        :class="isTop ? 'contain-After' : ''"
+      >
         <div class="items-center q-mx-md">
-          <q-form ref="form" lazy-validation>
-            <q-icon size="100px" id="logo1" name="person_add" /><br>
+          <q-form
+            ref="form"
+            lazy-validation
+          >
+            <q-icon
+              id="logo1"
+              size="100px"
+              name="person_add"
+            /><br>
             <div>
-              <div class="row items-center" >
-                <div class="col-12" >
+              <div class="row items-center">
+                <div class="col-12">
                   <q-field
                     v-model="id"
                     :rules="idRules"
                     label="用户名"
                     required
-                  ></q-field>
+                  />
 
                   <q-field
                     v-model="password"
@@ -68,7 +108,7 @@
                     label="密码"
                     required
                     @click:append="show2 = !show2"
-                  ></q-field>
+                  />
 
                   <q-field
                     v-model="rePassword"
@@ -78,17 +118,23 @@
                     label="确认密码"
                     required
                     @click:append="show3 = !show3"
-                  ></q-field>
+                  />
 
                   <q-field
                     v-model="Email"
                     :rules="emailRules"
                     label="E-mail"
                     required
-                  ></q-field>
+                  />
 
-                  <q-btn :disabled="!valid" class="button" @click="Register">
-                    <p class="register_">注册</p>
+                  <q-btn
+                    :disabled="!valid"
+                    class="button"
+                    @click="Register"
+                  >
+                    <p class="register_">
+                      注册
+                    </p>
                   </q-btn>
                 </div>
               </div>
@@ -97,151 +143,198 @@
         </div>
         <div>
           <div class="row">
-            <div class="col-12 items-center" >
-              <q-btn flat color="primary" class="return" @click="toLogin"
-              >登录</q-btn
+            <div class="col-12 items-center">
+              <q-btn
+                flat
+                color="primary"
+                class="return"
+                @click="toLogin"
               >
+                登录
+              </q-btn>
             </div>
           </div>
         </div>
       </div>
-<!--      <v-snackbar-->
-<!--        v-model="snackbar"-->
-<!--        :timeout="3000"-->
-<!--        color="blue-grey"-->
-<!--        absolute-->
-<!--        rounded="pill"-->
-<!--        top-->
-<!--      >-->
-<!--        {{ message }}-->
-<!--      </v-snackbar>-->
+      <!--      <v-snackbar-->
+      <!--        v-model="snackbar"-->
+      <!--        :timeout="3000"-->
+      <!--        color="blue-grey"-->
+      <!--        absolute-->
+      <!--        rounded="pill"-->
+      <!--        top-->
+      <!--      >-->
+      <!--        {{ message }}-->
+      <!--      </v-snackbar>-->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  inject: ["reload"],
-  data() {
-    return {
-      valid: true,
-      show1: false,
-      show2: false,
-      show3: false,
-      isTop: false,
-      timer: null,
-      snackbar: false,
-      id: "",
-      idRules: [(v) => !!v || "请填写用户名"],
-      pass: "",
-      password: "",
-      passwordRules: [(v) => !!v || "请填写密码"],
-      rePassword: "",
-      Email: "",
-      emailRules: [
-        (v) => !!v || "请填写邮箱",
-        (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
-      ],
-      checkbox: false,
-      message: "error",
-    };
-  },
-  methods: {
-    toRegister() {
-      if (!this.isTop) {
-        this.isTop = true;
-        this.clear();
-      }
-    },
-    toLogin() {
-      if (this.isTop) {
-        this.isTop = false;
-        this.clear();
-      }
-    },
-    Login() {
-      this.validate();
-      this.$http({
-        method: "post",
-        url: "/Login",
-        data: {
-          UserID: this.id,
-          Password: this.password,
-        },
-      })
-        .then((res) => {
-          this.message = res.data.message;
+    "inject": ["reload"],
+    data () {
 
-          if (res.data.success) {
-            this.$store.commit("setLogin");
-            this.$store.commit("setUserID",this.id);
+        return {
+            "valid": true,
+            "show1": false,
+            "show2": false,
+            "show3": false,
+            "isTop": false,
+            "timer": null,
+            "snackbar": false,
+            "id": "",
+            "idRules": [(v) => !!v || "请填写用户名"],
+            "pass": "",
+            "password": "",
+            "passwordRules": [(v) => !!v || "请填写密码"],
+            "rePassword": "",
+            "Email": "",
+            "emailRules": [
+                (v) => !!v || "请填写邮箱",
+                (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
+            ],
+            "checkbox": false,
+            "message": "error",
+        };
 
-            if (res.data.isAdmin) {
-              this.$store.commit("setAdmin");
-              this.$router.push({ path: "/Admin" });
-            } else {
-              this.$store.commit("setIsTeacher",res.data.user.isTeacher);
-              this.$router.push({ path: "/" });
+    },
+    "methods": {
+        toRegister () {
+
+            if (!this.isTop) {
+
+                this.isTop = true;
+                this.clear();
+
             }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      this.snackbar = true;
-    },
-    Register() {
-      this.validate();
-      this.$http({
-        method: "post",
-        url: "/Register",
-        data: {
-          UserID: this.id,
-          Password: this.password,
-          rePassword: this.rePassword,
-          Email: this.Email,
+
         },
-      })
-        .then((res) => {
-          console.log(res.data.message);
-          this.message = res.data.message;
-          this.snackbar = true;
-          if (res.data.success) {
-            this.$store.commit("setLogin");
-            this.timer = setTimeout(() => {
-              //设置延迟执行
-              this.reload();
-            }, 1000);
-          } else {
-            this.clear();
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        toLogin () {
+
+            if (this.isTop) {
+
+                this.isTop = false;
+                this.clear();
+
+            }
+
+        },
+        Login () {
+
+            this.validate();
+            this.$http({
+                "method": "post",
+                "url": "/Login",
+                "data": {
+                    "UserID": this.id,
+                    "Password": this.password,
+                },
+            })
+                .then((res) => {
+
+                    this.message = res.data.message;
+
+                    if (res.data.success) {
+
+                        this.$store.commit("setLogin");
+                        this.$store.commit("setUserID", this.id);
+
+                        if (res.data.isAdmin) {
+
+                            this.$store.commit("setAdmin");
+                            this.$router.push({ "path": "/Admin" });
+
+                        } else {
+
+                            this.$store.commit("setIsTeacher", res.data.user.isTeacher);
+                            this.$router.push({ "path": "/" });
+
+                        }
+
+                    }
+
+                })
+                .catch((err) => {
+
+                    console.log(err);
+
+                });
+            this.snackbar = true;
+
+        },
+        Register () {
+
+            this.validate();
+            this.$http({
+                "method": "post",
+                "url": "/Register",
+                "data": {
+                    "UserID": this.id,
+                    "Password": this.password,
+                    "rePassword": this.rePassword,
+                    "Email": this.Email,
+                },
+            })
+                .then((res) => {
+
+                    console.log(res.data.message);
+                    this.message = res.data.message;
+                    this.snackbar = true;
+                    if (res.data.success) {
+
+                        this.$store.commit("setLogin");
+                        this.timer = setTimeout(() => {
+
+                            // 设置延迟执行
+                            this.reload();
+
+                        }, 1000);
+
+                    } else {
+
+                        this.clear();
+
+                    }
+
+                })
+                .catch((err) => {
+
+                    console.log(err);
+
+                });
+
+        },
+        validate () {
+
+            this.$refs.form.validate();
+
+        },
+        clear () {
+
+            this.id = "";
+            this.password = "";
+            // this.message = "";
+            this.rePassword = "";
+            this.Email = "";
+
+        },
+        affirmPass (val) {
+
+            if (val !== this.password) {
+
+                return "两次密码不一致";
+
+            }
+            return true;
+
+        },
     },
-    validate() {
-      this.$refs.form.validate();
-    },
-    clear() {
-      this.id = "";
-      this.password = "";
-      //this.message = "";
-      this.rePassword = "";
-      this.Email = "";
-    },
-    affirmPass(val) {
-      if (val !== this.password) {
-        return "两次密码不一致";
-      }
-      return true;
-    },
-  },
 };
 </script>
 
 <style>
-.login {
+.login-cl {
   background-image: url('../assets/bg1.jpeg');
   width: 100%;
   height: 100vh;

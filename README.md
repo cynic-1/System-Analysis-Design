@@ -37,7 +37,7 @@ cd 项目名称
 
 ![image-20211118150702734](README.assets/image-20211118150702734.png)
 
-项目添加了Auex，Axios功能，取消了Eslint语法检查
+项目添加了Vuex，Axios功能，取消了Eslint语法检查
 
 `quasar`版本：`1.2.2`
 

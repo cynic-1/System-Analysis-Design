@@ -3,8 +3,16 @@
     <div class="card">
       <div class="front">
         <div class="items-center q-mx-md">
-          <q-form ref="form" v-model="valid" lazy-validation>
-            <q-icon size="100px" id="logo" name="construction" /><br>
+          <q-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <q-icon
+              id="logo"
+              size="100px"
+              name="construction"
+            /><br>
             <div class="row items-center">
               <div class="col-12">
                 <q-field
@@ -12,14 +20,14 @@
                   :rules="idRules"
                   label="用户名"
                   required
-                ></q-field>
+                />
 
                 <q-field
                   v-model="Email"
                   :rules="emailRules"
                   label="E-mail"
                   required
-                ></q-field>
+                />
                 <div>
                   <div class="row">
                     <div class="col-12">
@@ -27,8 +35,9 @@
                         v-model="code"
                         :rules="codeRules"
                         label="验证码"
-                        required>
-                        <template v-slot:append>
+                        required
+                      >
+                        <template #append>
                           <q-btn
                             flat
                             offset-y
@@ -51,7 +60,7 @@
                   label="密码"
                   required
                   @click:append="show2 = !show2"
-                ></q-field>
+                />
 
                 <q-field
                   v-model="rePassword"
@@ -61,26 +70,28 @@
                   label="确认密码"
                   required
                   @click:append="show3 = !show3"
-                ></q-field>
+                />
 
                 <q-btn
                   :disabled="!valid"
                   class="button"
-                  @click="resetPassword"
                   large
                   :to="'/Login'"
+                  @click="resetPassword"
                 >
-                  <p class="pass_">重置密码</p>
+                  <p class="pass_">
+                    重置密码
+                  </p>
                 </q-btn>
-<!--                <v-snackbar-->
-<!--                  v-model="snackbar"-->
-<!--                  :timeout="3000"-->
-<!--                  color="blue-grey"-->
-<!--                  absolute-->
-<!--                  rounded="pill"-->
-<!--                >-->
-<!--                  {{ message }}-->
-<!--                </v-snackbar>-->
+                <!--                <v-snackbar-->
+                <!--                  v-model="snackbar"-->
+                <!--                  :timeout="3000"-->
+                <!--                  color="blue-grey"-->
+                <!--                  absolute-->
+                <!--                  rounded="pill"-->
+                <!--                >-->
+                <!--                  {{ message }}-->
+                <!--                </v-snackbar>-->
               </div>
             </div>
           </q-form>
@@ -92,78 +103,98 @@
 
 <script>
 export default {
-  data: () => ({
-    show2: false,
-    show3: false,
-    valid: true,
-    snackbar: false,
-    id: "",
-    idRules: [(v) => !!v || "请填写账号"],
-    password: "",
-    passwordRules: (v) => !!v || "请填写密码",
-    rePassword: "",
-    Email: "",
-    emailRules: [
-      (v) => !!v || "请填写邮箱",
-      (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
-    ],
-    code: "",
-    codeRules: [(v) => !!v || "请填写验证码"],
-    checkbox: false,
-    message: "",
-  }),
+    "data": () => ({
+        "show2": false,
+        "show3": false,
+        "valid": true,
+        "snackbar": false,
+        "id": "",
+        "idRules": [(v) => !!v || "请填写账号"],
+        "password": "",
+        "passwordRules": (v) => !!v || "请填写密码",
+        "rePassword": "",
+        "Email": "",
+        "emailRules": [
+            (v) => !!v || "请填写邮箱",
+            (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
+        ],
+        "code": "",
+        "codeRules": [(v) => !!v || "请填写验证码"],
+        "checkbox": false,
+        "message": "",
+    }),
 
-  methods: {
-    resetPassword() {
-      this.validate();
-      this.$http({
-        method: "POST",
-        url: "/code",
-        data: {
-          UserID: this.id,
-          Password: this.password,
-          rePassword: this.rePassword,
-          code: this.code,
+    "methods": {
+        resetPassword () {
+
+            this.validate();
+            this.$http({
+                "method": "POST",
+                "url": "/code",
+                "data": {
+                    "UserID": this.id,
+                    "Password": this.password,
+                    "rePassword": this.rePassword,
+                    "code": this.code,
+                },
+            })
+                .then((res) => {
+
+                    this.message = res.data.message;
+                    this.snackbar = true;
+                    if (res.data.success) {
+
+                        this.$router.push({ "path": "/Login" });
+                    
+                    }
+                
+                })
+                .catch((err) => {
+
+                    console.log(err);
+                
+                });
+        
         },
-      })
-        .then((res) => {
-          this.message = res.data.message;
-          this.snackbar = true;
-          if (res.data.success) {
-            this.$router.push({ path: "/Login" });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getCode() {
-      this.$http({
-        method: "post",
-        url: "/ForgetPassword",
-        data: {
-          UserID: this.id,
-          Email: this.Email,
+        getCode () {
+
+            this.$http({
+                "method": "post",
+                "url": "/ForgetPassword",
+                "data": {
+                    "UserID": this.id,
+                    "Email": this.Email,
+                },
+            })
+                .then((res) => {
+
+                    this.message = res.data.message;
+                    this.snackbar = true;
+                
+                })
+                .catch((err) => {
+
+                    console.log(err);
+                
+                });
+        
         },
-      })
-        .then((res) => {
-          this.message = res.data.message;
-          this.snackbar = true;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        validate () {
+
+            this.$refs.form.validate();
+        
+        },
+        affirmPass (val) {
+
+            if (val !== this.password) {
+
+                return "两次密码不一致";
+            
+            }
+            return true;
+        
+        },
     },
-    validate() {
-      this.$refs.form.validate();
-    },
-    affirmPass(val) {
-      if (val !== this.password) {
-        return "两次密码不一致";
-      }
-      return true;
-    },
-  },
 };
 </script>
 
