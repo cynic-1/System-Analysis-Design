@@ -137,8 +137,6 @@ export default {
               alert("登录成功");
               this.$store.commit("setLogin");
               this.$store.commit("setUserName",response.data.data.username);
-              console.log(response.data.data.username);
-              console.log(response.data.data.userid);
               this.$store.commit("setUserID",response.data.data.userid);
               this.$store.commit("setUserHeadImage",response.data.data.image);
               this.$store.commit("setUserAssociated",response.data.data.is_associated);

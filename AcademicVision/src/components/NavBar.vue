@@ -10,7 +10,7 @@
         style="font-size: 18px"
       >
         <q-breadcrumbs-el
-          to="/"
+          to="/home"
           label="主页"
           icon="home"
         />
@@ -33,14 +33,19 @@
             icon="account_circle"
           >
             <q-menu>
-              <div class="row no-wrap q-pa-md">
+              <div class="row no-wrap q-pa-md" v-if="this.$store.state.login">
                 <div class="column items-center">
                   <q-avatar size="72px">
-                    <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+                    <template v-if="this.$store.state.person.headImage!==''">
+                      <img :src="'/'+this.$store.state.person.headImage">
+                    </template>
+                    <template v-else>
+                      <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+                    </template>
                   </q-avatar>
 
                   <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    晓海
+                    {{this.$store.state.person.username}}
                   </div>
 
                   <q-btn
@@ -49,6 +54,7 @@
                     label="Logout"
                     push
                     size="sm"
+                    @click="logout"
                   />
                 </div>
                 <q-separator
@@ -81,6 +87,22 @@
                   </div>
                 </div>
               </div>
+              <div class="row no-wrap q-pa-md" v-else>
+                <div class="row">您尚未登录，请前往</div>
+                <br>
+                <div class="row">
+                  <q-btn
+                    flat
+                    v-close-popup
+                    color="primary"
+                    label="登录"
+                    push
+                    dense
+                    size="sm"
+                    to="/login"
+                  />
+                </div>
+              </div>
             </q-menu>
           </q-btn>
         </q-breadcrumbs-el>
@@ -101,41 +123,11 @@ export default {
         }
     }),
 
-    "methods": {
-        toPersonalInfo (){
-
-            this.$router.push({ "path": `/PersonalInfo/${this.$store.state.person.userID}` });
-
-        },
-        toggleLeftDrawer () {
-
-            leftDrawerOpen.value = !leftDrawerOpen.value;
-
-        },
-        toBlogs () {
-
-            this.$router.push({ "path": "/BlogList" });
-
-        },
+    methods: {
         logout (){
-
-            //        this.$store.commit('setLogout')
-            //        this.$router.push({path:"/"});
-            this.$http({
-                "method": "post",
-                "url": "/logout",
-            }).then(res => {
-
-                if (res.data.success){
-
-                    this.$store.commit("setLogout");
-                    this.$router.push({ "path": "/" });
-                    sessionStorage.clear();
-
-                }
-
-            });
-
+          this.$store.commit("setLogout");
+          sessionStorage.clear();
+          this.$router.push({ "path": "/" });
         }
     },
 };
