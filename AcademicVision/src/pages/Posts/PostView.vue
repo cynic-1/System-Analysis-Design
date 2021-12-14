@@ -654,7 +654,25 @@ export default {
       })
     },
     postNotGood() {
-      this.isgood = false
+      // http://114.116.235.94/dislike_post/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/dislike_post/',
+        data: {
+          user_id: this.$route.query.user_id,
+          post_id: this.$route.query.post_id,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("取消点赞帖子", response)
+        this.isgood = false
+      })
     },
     markdownToHtml() {
 

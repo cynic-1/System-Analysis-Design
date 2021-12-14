@@ -121,8 +121,8 @@ export default {
             method: 'POST',
             url: 'http://114.116.235.94/login/',
             data: {
-              user_id: this.id,
-              post_id: this.password
+              line1: this.id,
+              line2: this.password
             },
             transformRequest: [function (data) {
               let ret = ''
@@ -133,15 +133,17 @@ export default {
             }],
           }).then(response => {
             console.log("登录", response)
-            if (response.data.code === 200) {
+            if (response.data.code === "200") {
               alert("登录成功");
               this.$store.commit("setLogin");
-              this.$store.commit("setUserID",response.data.data.username);
+              this.$store.commit("setUserName",response.data.data.username);
+              this.$store.commit("setUserID",response.data.data.userid);
               this.$store.commit("setUserHeadImage",response.data.data.image);
               this.$store.commit("setUserAssociated",response.data.data.is_associated);
-              this.$router.push({ path: "/home" });
+              this.$router.push({ "path": "/home","query":{"user_id": response.data.data.userid} });
+              // this.$router.push({ path: "/home" });
             }
-            else if (response.data.code === 0) {
+            else if (response.data.code === "0") {
               alert(response.data.message);
               this.clear();
             }

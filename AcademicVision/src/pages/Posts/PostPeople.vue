@@ -140,16 +140,13 @@
             bg-color="light-blue-1"
           >
             <template #control>
-              <a
-                href="https://y.qq.com/n/ryqq/songDetail/0039MnYb0qxYhV"
-                style="text-decoration: none;color: #1D1D1D"
-              >
                 <div
                   class="self-center full-width no-outline"
                   tabindex="0"
                   style="font-size: 25px;margin-top: 10px"
+                  @click="viewPost(test.post_id)"
                 >
-                  {{ test.context }}
+                  {{ test.title }}
                 </div>
                 <div style="width: 1100px;text-align: right;font-size: 18px;margin-bottom: 5px">
                   <span style="text-align: right">
@@ -157,25 +154,24 @@
                       color="green-6"
                       name="watch_later"
                       size="23px"
-                    />{{ test.time }}&nbsp;&nbsp;
+                    />{{ test.datetime }}&nbsp;&nbsp;
                     <q-icon
                       color="red"
                       name="thumb_up"
                       size="23px"
-                    />{{ test.goodNum }}&nbsp;&nbsp;
+                    />{{ test.likes }}&nbsp;&nbsp;
                     <q-icon
                       color="blue-6"
                       name="textsms"
                       size="23px"
-                    />{{ test.commentNum }}&nbsp;&nbsp;
+                    />{{ test.lable }}&nbsp;&nbsp;
                     <q-icon
                       color="orange-6"
                       name="bookmark"
                       size="23px"
                     />
-                    {{ test.starNum }}</span>
+                    {{ test.collections }}</span>
                 </div>
-              </a>
             </template>
           </q-field>
         </transition>
@@ -603,77 +599,95 @@ export default {
       this.isLove = false;
       this.isCreate = false;
       this.isCharts = false;
+      // http://114.116.235.94/my_post/
       // axios请求方法
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/my_post/',
+        data: {
+          user_id: 1
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("查询个人发表帖子", response)
+        this.list = response.data.info
+      })
       setTimeout(() => {
 
-        this.list = [
-          {
-            "rank": 1,  // 文章排名，这个只有在排行榜请求的数据的时候才有用，可以根据点赞数，评论数，收藏数综合排名，在排行榜get请求时返回前十个即可
-            "context": "新的推荐帖子",  // 文章标题
-            "author": "周杰伦",  // 文章作者昵称
-            "time": "2021/6/10",  // 文章发表时间
-            "goodNum": 123, // 文章点赞数
-            "commentNum": 10, // 文章评论数
-            "starNum": 10,  // 文章收藏数
-            "pid": 1, // 作者唯一标识id
-            "postid": 1,  // 文章唯一标识id
-          },
-          {
-            "rank": 1,
-            "context": "新的推荐数据",
-            "author": "周杰伦",
-            "time": "2021/6/10",
-            "goodNum": 123,
-            "commentNum": 10,
-            "starNum": 10,
-            "pid": 2,
-            "postid": 2,
-          },
-          {
-            "rank": 1,
-            "context": "新的推荐数据",
-            "author": "周杰伦",
-            "time": "2021/6/10",
-            "goodNum": 123,
-            "commentNum": 10,
-            "starNum": 10,
-            "pid": 3,
-            "postid": 3,
-          },
-          {
-            "rank": 1,
-            "context": "新的推荐数据",
-            "author": "周杰伦",
-            "time": "2021/6/10",
-            "goodNum": 123,
-            "commentNum": 10,
-            "starNum": 10,
-            "pid": 4,
-            "postid": 4,
-          },
-          {
-            "rank": 1,
-            "context": "新的推荐数据",
-            "author": "周杰伦",
-            "time": "2021/6/10",
-            "goodNum": 123,
-            "commentNum": 10,
-            "starNum": 10,
-            "pid": 5,
-            "postid": 5,
-          },
-          {
-            "rank": 1,
-            "context": "新的推荐数据",
-            "author": "周杰伦",
-            "time": "2021/6/10",
-            "goodNum": 123,
-            "commentNum": 10,
-            "starNum": 10,
-            "pid": 6,
-            "postid": 6,
-          },
-        ];
+        // this.list = [
+        //   {
+        //     "rank": 1,  // 文章排名，这个只有在排行榜请求的数据的时候才有用，可以根据点赞数，评论数，收藏数综合排名，在排行榜get请求时返回前十个即可
+        //     "context": "新的推荐帖子",  // 文章标题
+        //     "author": "周杰伦",  // 文章作者昵称
+        //     "time": "2021/6/10",  // 文章发表时间
+        //     "goodNum": 123, // 文章点赞数
+        //     "commentNum": 10, // 文章评论数
+        //     "starNum": 10,  // 文章收藏数
+        //     "pid": 1, // 作者唯一标识id
+        //     "postid": 1,  // 文章唯一标识id
+        //   },
+        //   {
+        //     "rank": 1,
+        //     "context": "新的推荐数据",
+        //     "author": "周杰伦",
+        //     "time": "2021/6/10",
+        //     "goodNum": 123,
+        //     "commentNum": 10,
+        //     "starNum": 10,
+        //     "pid": 2,
+        //     "postid": 2,
+        //   },
+        //   {
+        //     "rank": 1,
+        //     "context": "新的推荐数据",
+        //     "author": "周杰伦",
+        //     "time": "2021/6/10",
+        //     "goodNum": 123,
+        //     "commentNum": 10,
+        //     "starNum": 10,
+        //     "pid": 3,
+        //     "postid": 3,
+        //   },
+        //   {
+        //     "rank": 1,
+        //     "context": "新的推荐数据",
+        //     "author": "周杰伦",
+        //     "time": "2021/6/10",
+        //     "goodNum": 123,
+        //     "commentNum": 10,
+        //     "starNum": 10,
+        //     "pid": 4,
+        //     "postid": 4,
+        //   },
+        //   {
+        //     "rank": 1,
+        //     "context": "新的推荐数据",
+        //     "author": "周杰伦",
+        //     "time": "2021/6/10",
+        //     "goodNum": 123,
+        //     "commentNum": 10,
+        //     "starNum": 10,
+        //     "pid": 5,
+        //     "postid": 5,
+        //   },
+        //   {
+        //     "rank": 1,
+        //     "context": "新的推荐数据",
+        //     "author": "周杰伦",
+        //     "time": "2021/6/10",
+        //     "goodNum": 123,
+        //     "commentNum": 10,
+        //     "starNum": 10,
+        //     "pid": 6,
+        //     "postid": 6,
+        //   },
+        // ];
 
       }, 100);
       // 更新List数据
