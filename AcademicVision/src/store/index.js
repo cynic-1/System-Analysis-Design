@@ -27,6 +27,7 @@ export default store((/* { ssrContext } */) => {
         isAdmin: false,
         person: {
           userID: "",
+          username: "",
           email: "",
           headImage: "",
           is_associated:"",
@@ -41,6 +42,9 @@ export default store((/* { ssrContext } */) => {
         },
         setUserID(state, UserID) {
           state.person.userID = UserID
+        },
+        setUserName(state, UserName) {
+          state.person.username = UserName
         },
         setUserEmail(state, email) {
           state.person.email = email
