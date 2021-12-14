@@ -80,7 +80,7 @@
         </q-carousel-slide>
         <q-carousel-slide
           name="third"
-          img-src="https://cdn.quasar.dev/img/parallax2.jpg"
+          img-src="https://upload-bbs.mihoyo.com/upload/2021/11/05/73565430/b65c68b1dc3fdadae9b3cf6f1bb04662_1707343588625440344.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg"
         >
           <q-input
             v-model="text"

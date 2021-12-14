@@ -35,7 +35,7 @@
         >
           <q-img
             src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2Fc35f98bc0291f0a9284504fa36b925a13d3cf2f7.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641984928&t=89acbe024e2915f7e16d40e2239cc63a"
-          style="max-height: 180px">
+            style="max-height: 180px">
             <div class="absolute-bottom">
               <div class="text-h6">
                 {{ title2 }}
@@ -63,13 +63,15 @@
           class="my-card"
           style="width: 100%;max-width: 250px;height: 230px"
         >
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <q-img
+            src="https://upload-bbs.mihoyo.com/upload/2021/11/30/74588741/70dc8f8c9225dbe0cda3a1347edecd3a_1964087631698528665.jpg?x-oss-process=image//resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg"
+            style="max-height: 180px">
             <div class="absolute-bottom">
               <div class="text-h6">
-                {{title3}}
+                {{ title3 }}
               </div>
               <div class="text-subtitle2">
-                {{name3}}
+                {{ name3 }}
               </div>
             </div>
           </q-img>
@@ -91,13 +93,15 @@
           class="my-card"
           style="width: 100%;max-width: 250px;height: 230px"
         >
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <q-img
+            src="https://upload-bbs.mihoyo.com/upload/2021/11/22/73565430/563512b6920504ccaef1fe7ed1cff4a3_6737861904625463730.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg"
+            style="height: 180px">
             <div class="absolute-bottom">
               <div class="text-h6">
-                {{title4}}
+                {{ title4 }}
               </div>
               <div class="text-subtitle2">
-                {{name4}}
+                {{ name4 }}
               </div>
             </div>
           </q-img>
@@ -119,13 +123,13 @@
           class="my-card"
           style="width: 100%;max-width: 250px;height: 230px"
         >
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <q-img src="https://upload-bbs.mihoyo.com/upload/2021/10/29/73565430/88fda7330415d47c945ac5610f7f965b_6502096957213310465.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg">
             <div class="absolute-bottom">
               <div class="text-h6">
-                {{title5}}
+                {{ title5 }}
               </div>
               <div class="text-subtitle2">
-                {{name5}}
+                {{ name5 }}
               </div>
             </div>
           </q-img>
@@ -173,7 +177,7 @@ export default {
       this.$router.push({
         "path": "/posts/view",
         "query": {
-          "user_id": 1,
+          "user_id": this.$store.state.person.userID,
           "post_id": post_id,
         }
       })
