@@ -1,6 +1,6 @@
 <template>
-  <div class="login">
-    <div class="card">
+  <div class="forgetPassword">
+    <div class="fcard">
       <div class="front">
         <div class="items-center q-mx-md">
           <q-form
@@ -32,7 +32,7 @@
                   <div class="row">
                     <div class="col-12">
                       <q-input
-                        v-model="code"
+                        v-model="provCode"
                         :rules="[codeRules, affirmCode]"
                         label="验证码"
                         lazy-rules="ondemand"
@@ -116,7 +116,6 @@
                   :disabled="!valid"
                   class="button"
                   large
-                  :to="'/Login'"
                   @click="resetPassword"
                 >
                   <p class="pass_">
@@ -156,7 +155,6 @@
 </template>
 
 <script>
-import { mdiEyeOff } from '@mdi/js';
 export default {
     data: () => ({
         have_acquired: false,
@@ -175,7 +173,7 @@ export default {
             (v) => !!v || "请填写邮箱",
             (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
         ],
-        "code": "",
+        "provCode": "",
       "codeRules": (v) => !!v || "请填写验证码",
         "message": "",
         "ran_str":""
@@ -189,14 +187,12 @@ export default {
         return true;
       },
       waitCode () {
-        this.have_acquired = true
-        this.time = 60
-        this.timer()
+        if(this.Email !== "" ){
         this.$axios({
           method: 'POST',
-          url: 'http://114.116.235.94/change_email1/',
+          url: 'http://114.116.235.94/forget_pass0/',
           data: {
-            user_id: this.id,
+            email: this.Email,
           },
           transformRequest: [function (data) {
             let ret = ''
@@ -207,14 +203,21 @@ export default {
           }],
         }).then(response => {
           console.log("发送验证码", response)
-          if (response.data.code === 200) {
-            alert("已发送");
+          if (response.data.code === "400") {
+            alert("发送成功");
             this.ran_str = response.data.str
           }
-          else if (response.data.code === 0) {
+          else if (response.data.code === "200") {
             alert(response.data.message);
           }
         })
+          this.have_acquired = true
+          this.time = 60
+          this.timer()
+        }
+        else {
+          alert("请输入邮箱");
+        }
       },
       timer () {
         if(this.time <= 0)
@@ -229,45 +232,44 @@ export default {
       },
         resetPassword () {
             this.validate();
+            console.log(this.Email);
+          console.log(this.id);
+          console.log(this.password);
             this.$axios({
-                "method": "POST",
-                "url": "/code",
-                "data": {
-                    "UserID": this.id,
-                    "Password": this.password,
-                    "rePassword": this.rePassword,
-                    "code": this.code,
+                method: 'POST',
+                url: "http://114.116.235.94/forget_pass/",
+                data: {
+                    Email:this.Email,
+                    user_name: this.id,
+                    pass1: this.password,
+                    pass2: this.rePassword,
                 },
+            }).then(response => {
+              console.log("重置密码", response)
+              if (response.data.code === "400") {
+                alert("密码重置成功,正在前往登录界面");
+                this.$router.push({ path: "/login" });
+              }
+              else if (response.data.code === "200") {
+                alert(response.data.message);
+                console.log("出错了");
+                this.clear();
+              }
             })
-                .then((res) => {
-
-                    this.message = res.data.message;
-                    this.snackbar = true;
-                    if (res.data.success) {
-
-                        this.$router.push({ "path": "/Login" });
-
-                    }
-
-                })
-                .catch((err) => {
-
-                    console.log(err);
-
-                });
-
         },
+       clear () {
+        this.id = "";
+        this.password = "";
+        this.Email="",
+          this.provCode="",
+          this.rePassword=""
+      },
         validate () {
-
             this.$refs.form.validate();
-
         },
         affirmPass (val) {
-
             if (val !== this.password) {
-
                 return "两次密码不一致";
-
             }
             return true;
 
@@ -277,7 +279,7 @@ export default {
 </script>
 
 <style>
-.login {
+.forgetPassword {
   background-image: url('../assets/bg1.jpeg');
   background-color: #efeeee;
   width: 100%;
@@ -319,7 +321,7 @@ export default {
   transition: font-size 0.2s ease-out;
 }
 
-.card {
+.fcard {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -329,7 +331,7 @@ export default {
 
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.card .front {
+.fcard .front {
   position: absolute;
   text-align: center;
   box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.1),
