@@ -27,6 +27,7 @@ export default store((/* { ssrContext } */) => {
         isAdmin: false,
         person: {
           userID: "",
+          username: "",
           email: "",
           headImage: "",
           is_associated:"",
