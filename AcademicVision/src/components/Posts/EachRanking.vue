@@ -47,7 +47,7 @@ export default {
       this.$router.push({
         "path": "/posts/view",
         "query": {
-          "user_id": 1,
+          "user_id": this.$store.state.person.userID,
           "post_id": post_id,
         }
       })

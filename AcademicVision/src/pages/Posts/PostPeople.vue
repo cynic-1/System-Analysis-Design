@@ -686,7 +686,7 @@ export default {
         method: 'POST',
         url: 'http://114.116.235.94/my_post/',
         data: {
-          user_id: this.$route.query.user_id
+          user_id: this.$store.state.person.userID
         },
         transformRequest: [function (data) {
           let ret = ''

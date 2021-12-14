@@ -595,11 +595,11 @@ export default {
       // http://114.116.235.94/del_my_col_post/
       this.$axios({
         method: 'POST',
-        url: 'http://114.116.235.94/del_my_col_post/',
+        url: 'http://114.116.235.94/un_col_post/',
         data: {
-          user_id: this.$route.query.user_id,
+          post_id: this.$route.query.post_id,
           // 这里有问题
-          col_post_id: this.$route.query.post_id,
+          user_id: this.$route.query.user_id,
         },
         transformRequest: [function (data) {
           let ret = ''
@@ -688,7 +688,7 @@ export default {
       this.$router.back();
 
     },
-    jubao(user_id,cid) {
+    jubao(user_id, cid) {
       // 举报axios请求
       // http://114.116.235.94/report_post/
       this.$axios({
@@ -714,7 +714,24 @@ export default {
 
     },
     good(cid) {
-      // http://114.116.235.94/like_post/
+      // http://114.116.235.94/like_comment/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/like_comment/',
+        data: {
+          user_id: this.$route.query.user_id,
+          com_id: cid,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("评论点赞", response)
+      })
       let index = 0;
       for (index = 0; index < this.comments.length; index += 1) {
 
@@ -730,7 +747,24 @@ export default {
 
     },
     bad(cid) {
-
+      // http://114.116.235.94/dislike_post/
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/dislike_com/',
+        data: {
+          user_id: this.$route.query.user_id,
+          com_id: cid,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("取消评论点赞", response)
+      })
       let index = 0;
       for (index = 0; index < this.comments.length; index += 1) {
 
@@ -833,7 +867,7 @@ export default {
 
     },
 
-    commentJubao(user_id,com_id) {
+    commentJubao(user_id, com_id) {
       // http://114.116.235.94/report_comment/
       this.$axios({
         method: 'POST',
