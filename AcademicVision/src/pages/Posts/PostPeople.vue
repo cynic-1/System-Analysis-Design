@@ -453,6 +453,85 @@
         style="height: 300px;width: 600px;float: right;margin-right: 200px"
       />
     </div>
+
+    <q-dialog v-model="card1">
+      <q-card class="my-card">
+        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202109%2F04%2F20210904215837_22f1d.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642056027&t=d8c44399142aa3ee2d2fad0698cc8a62" />
+
+        <q-card-section>
+          <q-btn
+            fab
+            color="primary"
+            icon="verified"
+            class="absolute"
+            style="top: 0; right: 12px; transform: translateY(-50%)"
+          />
+
+          <div class="row no-wrap items-center">
+            <div class="col text-h6 ellipsis">
+              您还没有发布过帖子
+            </div>
+            <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
+              0 post
+            </div>
+          </div>
+
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="text-subtitle1">
+            创作，从知贴开始
+          </div>
+          <div class="text-caption text-grey">
+            前往个人创作重新发布一篇帖子吧
+          </div>
+        </q-card-section>
+
+        <br>
+        <q-separator />
+
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="card2">
+      <q-card class="my-card">
+        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.nga.178.com%2Fattachments%2Fmon_202002%2F20%2Ff9Q5-1rynZpT3cSa2-e8.jpeg&refer=http%3A%2F%2Fimg.nga.178.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642056027&t=e6ae10fca4860ae4a9c37a961c3f1109" />
+
+        <q-card-section>
+          <q-btn
+            fab
+            color="primary"
+            icon="verified"
+            class="absolute"
+            style="top: 0; right: 12px; transform: translateY(-50%)"
+          />
+
+          <div class="row no-wrap items-center">
+            <div class="col text-h6 ellipsis">
+              您还没有收藏过帖子
+            </div>
+            <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
+              0 love
+            </div>
+          </div>
+
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="text-subtitle1">
+            收藏，从知贴开始
+          </div>
+          <div class="text-caption text-grey">
+            前往帖子主页收藏一篇帖子吧
+          </div>
+        </q-card-section>
+
+        <br>
+        <q-separator />
+
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
@@ -474,6 +553,8 @@ export default {
   data() {
 
     return {
+      "card1": false,
+      "card2": false,
       "context": "",
       "bar2": false,
       "notice": true,
@@ -498,7 +579,7 @@ export default {
       this.$router.push({
         "path": "/posts/view",
         "query": {
-          "user_id": 1,
+          "user_id": this.$route.query.user_id,
           "post_id": post_id,
         }
       })
@@ -528,7 +609,7 @@ export default {
         method: 'POST',
         url: 'http://114.116.235.94/publish_post/',
         data: {
-          user_id: 1,
+          user_id: this.$route.query.user_id,
           content: this.context,
           label: this.type,
           title: this.title
@@ -605,7 +686,7 @@ export default {
         method: 'POST',
         url: 'http://114.116.235.94/my_post/',
         data: {
-          user_id: 1
+          user_id: this.$route.query.user_id
         },
         transformRequest: [function (data) {
           let ret = ''
@@ -617,6 +698,9 @@ export default {
       }).then(response => {
         console.log("查询个人发表帖子", response)
         this.list = response.data.info
+        if (this.list.length === 0) {
+          this.card1 = true
+        }
       })
       setTimeout(() => {
 
@@ -698,7 +782,7 @@ export default {
         method: 'POST',
         url: 'http://114.116.235.94/my_col_post_list/',
         data: {
-          user_id: 1
+          user_id: this.$route.query.user_id
         },
         transformRequest: [function (data) {
           let ret = ''
@@ -710,6 +794,9 @@ export default {
       }).then(response => {
         console.log("查询个人收藏帖子", response)
         this.list = response.data.info
+        if (this.list.length === 0) {
+          this.card2 = true;
+        }
       })
       this.isPublish = false;
       this.isLove = true;
