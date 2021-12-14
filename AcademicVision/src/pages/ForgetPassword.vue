@@ -12,7 +12,8 @@
               id="logo"
               size="100px"
               name="construction"
-            /><br>
+            />
+            <br>
             <div class="row items-center">
               <div class="col-12">
                 <q-input
@@ -44,14 +45,16 @@
                             offset-y
                             color="cyan"
                             @click="waitCode"
-                          >获取验证码</q-btn>
+                          >获取验证码
+                          </q-btn>
                           <q-btn
                             v-if="have_acquired"
                             disable
                             flat
                             offset-y
                             color="cyan"
-                          >重新获取 {{ time }}</q-btn>
+                          >重新获取 {{ time }}
+                          </q-btn>
                         </template>
                       </q-input>
                     </div>
@@ -156,38 +159,38 @@
 
 <script>
 export default {
-    data: () => ({
-        have_acquired: false,
-        time: 0,
-        "show2": false,
-        "show3": false,
-        "valid": true,
-        "snackbar": false,
-        "id": "",
-        "idRules": [(v) => !!v || "请填写账号"],
-        "password": "",
-        "passwordRules": (v) => !!v || "请填写密码",
-        "rePassword": "",
-        "Email": "",
-        "emailRules": [
-            (v) => !!v || "请填写邮箱",
-            (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
-        ],
-        "provCode": "",
-      "codeRules": (v) => !!v || "请填写验证码",
-        "message": "",
-        "ran_str":""
-    }),
+  data: () => ({
+    have_acquired: false,
+    time: 0,
+    "show2": false,
+    "show3": false,
+    "valid": true,
+    "snackbar": false,
+    "id": "",
+    "idRules": [(v) => !!v || "请填写账号"],
+    "password": "",
+    "passwordRules": (v) => !!v || "请填写密码",
+    "rePassword": "",
+    "Email": "",
+    "emailRules": [
+      (v) => !!v || "请填写邮箱",
+      (v) => /.+@.+\..+/.test(v) || "邮箱格式不合法",
+    ],
+    "provCode": "",
+    "codeRules": (v) => !!v || "请填写验证码",
+    "message": "",
+    "ran_str": ""
+  }),
 
-    methods: {
-      affirmCode (val) {
-        if (val !== this.ran_str) {
-          return "验证码错误";
-        }
-        return true;
-      },
-      waitCode () {
-        if(this.Email !== "" ){
+  methods: {
+    affirmCode(val) {
+      if (val !== this.ran_str) {
+        return "验证码错误";
+      }
+      return true;
+    },
+    waitCode() {
+      if (this.Email !== "") {
         this.$axios({
           method: 'POST',
           url: 'http://114.116.235.94/forget_pass0/',
@@ -206,75 +209,76 @@ export default {
           if (response.data.code === "400") {
             alert("发送成功");
             this.ran_str = response.data.str
-          }
-          else if (response.data.code === "200") {
+          } else if (response.data.code === "200") {
             alert(response.data.message);
           }
         })
-          this.have_acquired = true
-          this.time = 60
-          this.timer()
-        }
-        else {
-          alert("请输入邮箱");
-        }
-      },
-      timer () {
-        if(this.time <= 0)
-        {
-          this.have_acquired = false;
-        }
-        else
-        {
-          this.time--
-          setTimeout(this.timer, 1000)
-        }
-      },
-        resetPassword () {
-            this.validate();
-            console.log(this.Email);
-          console.log(this.id);
-          console.log(this.password);
-            this.$axios({
-                method: 'POST',
-                url: "http://114.116.235.94/forget_pass/",
-                data: {
-                    Email:this.Email,
-                    user_name: this.id,
-                    pass1: this.password,
-                    pass2: this.rePassword,
-                },
-            }).then(response => {
-              console.log("重置密码", response)
-              if (response.data.code === "400") {
-                alert("密码重置成功,正在前往登录界面");
-                this.$router.push({ path: "/login" });
-              }
-              else if (response.data.code === "200") {
-                alert(response.data.message);
-                console.log("出错了");
-                this.clear();
-              }
-            })
-        },
-       clear () {
-        this.id = "";
-        this.password = "";
-        this.Email="",
-          this.provCode="",
-          this.rePassword=""
-      },
-        validate () {
-            this.$refs.form.validate();
-        },
-        affirmPass (val) {
-            if (val !== this.password) {
-                return "两次密码不一致";
-            }
-            return true;
-
-        },
+        this.have_acquired = true
+        this.time = 60
+        this.timer()
+      } else {
+        alert("请输入邮箱");
+      }
     },
+    timer() {
+      if (this.time <= 0) {
+        this.have_acquired = false;
+      } else {
+        this.time--
+        setTimeout(this.timer, 1000)
+      }
+    },
+    resetPassword() {
+      this.validate();
+      console.log("Email = ", this.Email);
+      console.log("UserID = ", this.id);
+      console.log("new_password = ", this.password);
+      this.$axios({
+        method: 'POST',
+        url: "http://114.116.235.94/forget_pass/",
+        data: {
+          Email: this.Email,
+          user_name: this.id,
+          pass1: this.password,
+          pass2: this.rePassword,
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("重置密码", response)
+        if (response.data.code === "400") {
+          alert("密码重置成功,正在前往登录界面");
+          this.$router.push({path: "/login"});
+        } else if (response.data.code === "200") {
+          alert(response.data.message);
+          console.log("出错了");
+          this.clear();
+        }
+      })
+    },
+    clear() {
+      this.id = "";
+      this.password = "";
+      this.Email = "",
+        this.provCode = "",
+        this.rePassword = ""
+    },
+    validate() {
+      this.$refs.form.validate();
+    },
+    affirmPass(val) {
+      if (val !== this.password) {
+        return "两次密码不一致";
+      }
+      return true;
+
+    },
+  },
 };
 </script>
 
@@ -288,6 +292,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 #logo {
   position: relative;
   bottom: -20px;
@@ -308,10 +313,12 @@ export default {
   outline: none;
   border: none;
 }
+
 .pass_ {
   font-size: 18px;
   margin-top: 15px;
 }
+
 .button:hover {
   font-size: 19px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2),
@@ -331,6 +338,7 @@ export default {
 
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .fcard .front {
   position: absolute;
   text-align: center;
@@ -344,7 +352,8 @@ export default {
   flex-direction: column;
   transition: 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
-.return{
-  top:40px;
+
+.return {
+  top: 40px;
 }
 </style>
