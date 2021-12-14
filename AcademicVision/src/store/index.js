@@ -42,6 +42,9 @@ export default store((/* { ssrContext } */) => {
         setUserID(state, UserID) {
           state.person.userID = UserID
         },
+        setUserName(state, username) {
+          state.person.username = username
+        },
         setUserEmail(state, email) {
           state.person.email = email
         },
