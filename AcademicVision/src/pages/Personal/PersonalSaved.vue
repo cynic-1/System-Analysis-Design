@@ -1,56 +1,61 @@
 <template>
-  <div class="q-pa-md fit row wrap justify-evenly items-start content-start">
-    <div
-      class="col-grow q-pa-xl"
-      style="overflow:auto;"
-    >
-      <div
-        class="q-pa-md"
-        style="max-width: 200px;margin-left: 150px"
-      >
-        <q-list
-          bordered
-          padding
+  <left-drawer>
+    <template #leftDrawer>
+      <q-card style="width: 70%;margin-left: 15%" >
+        <div class="q-pa-md text-h5 text-center">
+          我  的  学  术
+        </div>
+        <q-separator />
+        <q-tabs
+          v-model="tab"
+          align="justify"
+          class="text-grey-6 q-py-md"
+          active-color="primary"
+          swipeable
+          vertical
+          transition-prev="jump-up"
+          transition-next="jump-up"
+          inline-label
         >
-          <q-item>
-            <q-item-section>
-              <q-item-label style="text-align: center">
-                收藏列表
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-separator spaced />
-          <q-tabs
-            v-model="tab"
-            vertical
-          >
-            <q-tab
-              name="1"
-              icon="camera"
-              label="文 献 收 藏"
-            />
-            <q-tab
-              name="2"
-              icon="assessment"
-              label="知 贴 收 藏"
-            />
-          </q-tabs>
-        </q-list>
-      </div>
-    </div>
-    <div
-      class="gt-md q-pa-xl"
-      style="overflow:auto;"
-    >
-      <div
-        class="q-pa-md"
-        style="margin-right: 100px"
+          <q-tab
+            v-for="item in tabsList"
+            :key="item"
+            ripple="false"
+            :name="item.name"
+            :icon="item.icon"
+            :label="item.label"
+            content-class="q-py-md"
+          />
+        </q-tabs>
+      </q-card>
+    </template>
+    <template #navBar4SmallWindow>
+      <q-tabs
+        v-model="tab"
+        align="justify"
+        class="text-grey-6 q-py-md"
+        active-color="primary"
+        swipeable
+        transition-prev="jump-up"
+        transition-next="jump-up"
+        inline-label
+        mobile-arrows
       >
+        <q-tab
+          v-for="item in tabsList"
+          :key="item"
+          ripple="false"
+          :name="item.name"
+          :icon="item.icon"
+          :label="item.label"
+        />
+      </q-tabs>
+    </template>
+    <template #main>
         <q-table
           v-if="tab==='1'"
           v-model:pagination="pagination"
-          style="height: 400px;width: 800px"
+          style="height:450px;width: 85%"
           title="文献列表"
           :rows="rows1"
           :columns="columns1"
@@ -139,7 +144,7 @@
         <q-table
           v-if="tab==='2'"
           v-model:pagination="pagination2"
-          style="height: 400px;width: 800px"
+          style="height: 450px;width: 85%"
           title="知贴列表"
           :rows="rows2"
           :columns="columns2"
@@ -225,13 +230,16 @@
             </q-tr>
           </template>
         </q-table>
-      </div>
-    </div>
-  </div>
+    </template>
+  </left-drawer>
 </template>
 
 <script>
 import { ref } from "vue";
+import { defineAsyncComponent } from "vue";
+
+const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer"));
+
 const columns1 = [
     {
         "name": "index",
@@ -443,6 +451,9 @@ rows2.forEach((row, index) => {
 });
 export default {
     "name": "PersonalSaved",
+    "components": {
+      leftDrawer
+    },
     setup (){
 
         return {
@@ -454,21 +465,26 @@ export default {
             columns2,
 
         };
-    
+
     },
 
     data () {
 
         return {
             "tab": "1",
+            "tabsList": [
+            { "name": "1", "icon": "camera", "label": "文 献 收 藏" },
+            { "name": "2", "icon": "assessment", "label": "知 贴 收 藏" },
+          ],
             "pagination": ref({
                 "rowsPerPage": 0
             }),
             "pagination2": ref({
                 "rowsPerPage": 0
             }),
+
         };
-    
+
     },
     "methods": {
         CheckDocument (name){

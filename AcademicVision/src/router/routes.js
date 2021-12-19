@@ -86,6 +86,21 @@ const routes = [
         "component": () => import("pages/Personal/PersonalInformation.vue")
     },
 
+    // 注册他人页面路由
+    {
+      "path": "/otherpersonal",
+      "component": () => import("pages/Personal/OtherPersonalMain.vue")
+    },
+    // 注册他人信息路由
+    {
+      "path": "/otherpersonalinformation",
+      "component": () => import("pages/Personal/OtherPersonalInformation.vue")
+    },
+  // 注册管理员页面路由
+  {
+    "path": "/administrator",
+    "component": () => import("pages/Administrator/Administrator.vue")
+  },
     // 搜索结果页面路由
     {
         "path": "/search",
