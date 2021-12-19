@@ -1,7 +1,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
-    <NavBar /><br>
+<!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
       style="margin-top: 0;padding-top: 0"
@@ -69,8 +69,6 @@
                       <template #prepend>
                         <q-select
                           v-model="search_type"
-                          multiple
-                          clearable
                           style="min-width: 125px"
                           borderless
                           :options="search_type_options"
@@ -198,6 +196,7 @@
         />
       </div>
     </div>
+    <!--评论测试>-->
   </div>
 </template>
 
@@ -205,17 +204,18 @@
 import EachRanking from "components/Posts/EachRanking";
 // import RankingList from "components/Posts/RankingList";
 import NavBar from "components/NavBar";
+import PaperComment from "components/PaperComment";
 
 export default {
     "name": "Home",
 
     "components": {
         NavBar,
-        EachRanking
+        EachRanking,
+        PaperComment
     },
 
     data () {
-
         return {
             "type_accepted_user": [],
             "type_options_user": [
@@ -264,7 +264,7 @@ export default {
                 },
             ],
 
-            "search_type": null,
+            "search_type": "主题",
             "search_type_options": [
                 "主题", "关键字", "作者", "第一作者", "参考文献", "摘要", "文献来源", "作者单位", "DOI"
             ],

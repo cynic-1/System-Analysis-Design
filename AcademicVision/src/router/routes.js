@@ -31,12 +31,16 @@ const routes = [
                 "path": "/personalResearch",
                 "component": () => import("pages/Personal/PersonalResearch")
             },
+            {
+                "path": "/home",
+                "component": () => import("pages/OurHome")
+            },
         ]
     },
     // 注册主页页面路由
     {
         "path": "/home",
-        "component": () => import("pages/Home")
+        "component": () => import("pages/OurHome")
     },
 
 
@@ -60,13 +64,13 @@ const routes = [
     // 注册登录界面路由
     {
         "path": "/login",
-        "component": () => import("pages/Login.vue")
+        "component": () => import("pages/PersonalLogin.vue")
     },
 
     // 注册注册界面路由
     {
         "path": "/register",
-        "component": () => import("pages/Register")
+        "component": () => import("pages/PersonalRegister")
     },
     // 注册忘记密码界面路由
     {
