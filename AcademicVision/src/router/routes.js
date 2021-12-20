@@ -105,17 +105,28 @@ const routes = [
     "path": "/administrator",
     "component": () => import("pages/Administrator/Administrator.vue")
   },
-    // 搜索结果页面路由
-    {
-        "path": "/search",
-        "component": () => import("pages/Search/SearchResult.vue")
-    },
-    // 高级搜索页面路由
-    {
-        "path": "/search/advanced",
-        "component": () => import("pages/Search/AdvancedSearch.vue")
-    },
-
+  // 搜索结果页面路由
+  {
+    "path": "/search",
+    "component": () => import("pages/Search/SearchResult.vue")
+  },
+  // 高级搜索页面路由
+  {
+    "path": "/search/advanced",
+    "component": () => import("pages/Search/AdvancedSearch.vue")
+  },
+  {
+    "path" : "/search/user",
+    "component": () => import("pages/Search/UserSearch.vue")
+  },
+  {
+    "path" : "/search/quoted",
+    "component": () => import("pages/Search/QuotedResult.vue")
+  },
+  {
+    "path" : "/paper/check",
+    "component": () => import("pages/Paper/PaperCheck.vue")
+  },
     // Always leave this as last one,
     // but you can also remove it
     {
