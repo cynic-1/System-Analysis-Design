@@ -20,7 +20,7 @@
 
     <div
       class="col q-px-lg"
-      style="overflow:auto; max-width: 1200px; max-height: 600px;"
+      style="overflow:auto; max-width: 1200px;"
     >
       <slot name="main">
         <div>好像不太对</div>

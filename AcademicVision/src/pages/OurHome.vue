@@ -1,7 +1,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
-<!--    <NavBar /><br>-->
+    <!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
       style="margin-top: 0;padding-top: 0"
@@ -216,6 +216,7 @@ export default {
     },
 
     data () {
+
         return {
             "type_accepted_user": [],
             "type_options_user": [

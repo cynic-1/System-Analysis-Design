@@ -80,78 +80,86 @@
 
 <script>
 export default {
-  "name": "PostSearch",
+    "name": "PostSearch",
 
-  data() {
+    data () {
 
-    return {
-      "text": this.$route.query.context,
-      "dense": false,
-      "visible": true,
-      "showSimulatedReturnData": true,
-      "list": [],
-    };
-
-  },
-
-  "methods": {
-    viewPost(post_id) {
-      console.log("搜索帖子")
-      this.$router.push({
-        "path": "/posts/view",
-        "query": {
-          "user_id": this.$store.state.person.userID,
-          "post_id": post_id,
-        }
-      })
-    },
-    back() {
-
-      this.$router.go(-1);
+        return {
+            "text": this.$route.query.context,
+            "dense": false,
+            "visible": true,
+            "showSimulatedReturnData": true,
+            "list": [],
+        };
 
     },
-    search() {
 
-      console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-      this.visible = true;
-      this.showSimulatedReturnData = false;
+    "methods": {
+        viewPost (post_id) {
 
-      // http://114.116.235.94/search_post/
-      this.$axios({
-        method: 'POST',
-        url: 'http://114.116.235.94/search_post/',
-        data: {
-          title: this.text
+            console.log("搜索帖子");
+            this.$router.push({
+                "path": "/posts/view",
+                "query": {
+                    "user_id": this.$store.state.person.userID,
+                    post_id,
+                }
+            });
+        
         },
-        transformRequest: [function (data) {
-          let ret = ''
-          for (let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          }
-          return ret
-        }],
-      }).then(response => {
-        console.log("搜索帖子", response)
-        this.list = response.data.info
-      })
-      // setTimeout(() => {
-      //
-      //   this.list = [
-      //     {"rank": 1, "context": "新的推荐帖子", "author": "周杰伦"},
-      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-      //   ];
-      // }, 1000);
+        back () {
 
-      this.visible = false;
-      this.showSimulatedReturnData = true;
-      // 更新List数据
+            this.$router.go(-1);
 
+        },
+        search () {
+
+            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+            this.visible = true;
+            this.showSimulatedReturnData = false;
+
+            // http://114.116.235.94/search_post/
+            this.$axios({
+                "method": "POST",
+                "url": "http://114.116.235.94/search_post/",
+                "data": {
+                    "title": this.text
+                },
+                "transformRequest": [function (data) {
+
+                    let ret = "";
+                    for (const it in data) {
+
+                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                    
+                    }
+                    return ret;
+                
+                }],
+            }).then(response => {
+
+                console.log("搜索帖子", response);
+                this.list = response.data.info;
+            
+            });
+            // setTimeout(() => {
+            //
+            //   this.list = [
+            //     {"rank": 1, "context": "新的推荐帖子", "author": "周杰伦"},
+            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+            //   ];
+            // }, 1000);
+
+            this.visible = false;
+            this.showSimulatedReturnData = true;
+            // 更新List数据
+
+        }
     }
-  }
 };
 </script>
 

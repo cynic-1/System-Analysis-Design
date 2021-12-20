@@ -1,13 +1,18 @@
 <template>
   <div>
-
     <q-layout view="hHh lpR fFf">
       <q-card class="personal-menu-card">
         <q-card class="my-card">
-          <q-card-section horizontal style="padding-top: 30px">
-            <q-btn round @click="alert = true">
+          <q-card-section
+            horizontal
+            style="padding-top: 30px"
+          >
+            <q-btn
+              round
+              @click="alert = true"
+            >
               <q-avatar size="180px">
-                <img src="../../../public/彼岸双生.png" />
+                <img src="../../../public/彼岸双生.png">
               </q-avatar>
             </q-btn>
 
@@ -23,7 +28,7 @@
                 姓名：{{ name }}
               </div>
               <div style="font-size :125%">
-                所属单位：{{ institution }}·{{department}}
+                所属单位：{{ institution }}·{{ department }}
               </div>
             </q-card-actions>
           </q-card-section>
@@ -73,7 +78,9 @@
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
-          <div class="text-h6">请选择您要上传的头像</div>
+          <div class="text-h6">
+            请选择您要上传的头像
+          </div>
         </q-card-section>
         <q-uploader
           style="max-width: 300px"
@@ -88,7 +95,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 
 const PersonalInformation = defineAsyncComponent(() => import("./PersonalInformation"));
@@ -104,9 +111,11 @@ export default {
         PersonalInformation,
     },
     setup () {
-      return {
-        alert: ref(false),
-      }
+
+        return {
+            "alert": ref(false),
+        };
+    
     },
     data () {
 
@@ -115,7 +124,7 @@ export default {
             "nickname": "双笙",
             "name": "路人甲",
             "institution": "北京航空航天大学",
-            "department" :"Software",
+            "department": "Software",
         };
 
     },

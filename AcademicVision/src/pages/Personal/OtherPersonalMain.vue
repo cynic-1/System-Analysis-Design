@@ -1,13 +1,15 @@
 <template>
   <div>
-
     <q-layout view="hHh lpR fFf">
       <q-card class="other-personal-menu-card">
         <q-card class="other-card">
-          <q-card-section horizontal style="padding-top: 30px">
-            <q-btn round >
+          <q-card-section
+            horizontal
+            style="padding-top: 30px"
+          >
+            <q-btn round>
               <q-avatar size="180px">
-                <img src="../../../public/彼岸双生.png" />
+                <img src="../../../public/彼岸双生.png">
               </q-avatar>
             </q-btn>
 
@@ -23,7 +25,7 @@
                 姓名：{{ name }}
               </div>
               <div style="font-size :125%">
-                所属单位：{{ institution }}·{{department}}
+                所属单位：{{ institution }}·{{ department }}
               </div>
             </q-card-actions>
             <q-card-actions
@@ -31,8 +33,22 @@
               class="justify-around"
               style="margin-left: 100px"
             >
-              <q-btn v-if="!isFollowed" color="primary" style="width: 100px" no-caps label="Follow" @click="changeFollow"/>
-              <q-btn v-if="isFollowed" color="grey" style="width: 100px" no-caps label="Unfollow"  @click="changeFollow"/>
+              <q-btn
+                v-if="!isFollowed"
+                color="primary"
+                style="width: 100px"
+                no-caps
+                label="Follow"
+                @click="changeFollow"
+              />
+              <q-btn
+                v-if="isFollowed"
+                color="grey"
+                style="width: 100px"
+                no-caps
+                label="Unfollow"
+                @click="changeFollow"
+              />
             </q-card-actions>
           </q-card-section>
         </q-card>
@@ -68,52 +84,59 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 
 const OtherPersonalInformation = defineAsyncComponent(() => import("./OtherPersonalInformation"));
 const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
 
 export default {
-  "name": "OtherPersonalMain",
+    "name": "OtherPersonalMain",
 
-  "components": {
-    PersonalResearch,
-    OtherPersonalInformation,
-  },
-  setup () {
-    return {
-      alert: ref(false),
-    }
-  },
-  data () {
+    "components": {
+        PersonalResearch,
+        OtherPersonalInformation,
+    },
+    setup () {
 
-    return {
-      "tab": "1",
-      "nickname": "双笙",
-      "name": "路人甲",
-      "institution": "北京航空航天大学",
-      "department" :"Software",
-      "isFollowed":false,
-    };
+        return {
+            "alert": ref(false),
+        };
+    
+    },
+    data () {
 
-  },
-
-  "methods": {
-    checkotherinfor (){
-
-      this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
+        return {
+            "tab": "1",
+            "nickname": "双笙",
+            "name": "路人甲",
+            "institution": "北京航空航天大学",
+            "department": "Software",
+            "isFollowed": false,
+        };
 
     },
-    changeFollow(){
-      if(this.isFollowed){
-        this.isFollowed=false;
-      }
-      else {
-        this.isFollowed=true;
-      }
-    }
-  },
+
+    "methods": {
+        checkotherinfor (){
+
+            this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
+
+        },
+        changeFollow (){
+
+            if (this.isFollowed){
+
+                this.isFollowed = false;
+            
+            } else {
+
+                this.isFollowed = true;
+            
+            }
+        
+        }
+    },
 
 
 };
