@@ -45,6 +45,22 @@
           to="/personal"
           no-caps
         />
+        <q-btn
+          :ripple="{ center: true }"
+          rounded
+          color="blue-6"
+          label="他人中心测试入口"
+          to="/otherpersonal"
+          no-caps
+        />
+        <q-btn
+          :ripple="{ center: true }"
+          rounded
+          color="blue-6"
+          label="管理员界面测试入口"
+          to="/administrator"
+          no-caps
+        />
       </div>
       <div class="q-pa-md q-gutter-sm" />
     </q-page-container>
@@ -78,30 +94,37 @@ export default defineComponent({
             toggleLeftDrawer () {
 
                 leftDrawerOpen.value = !leftDrawerOpen.value;
-            
+
             }
         };
-    
+
     },
 
     "methods": {
         ChangetoPosts () {
 
             console.log("您点击了帖子功能按钮");
-            this.$router.push({ "path": "/posts", "query": { "id": 123456 } });
-        
+
+            if (this.$store.state.person.userID === "") {
+              alert("您还没有登录，即将为您跳转到登录界面")
+              this.$router.push({"path": "/login"})
+            } else {
+              this.$router.push({"path": "/posts", "query": {"user_id": this.$store.state.person.userID}});
+            }
+
+
         },
 
         ChangetoSearch () {
 
             this.$router.push("/search");
-        
+
         },
         ChangeToRegister () {
 
             console.log("您点击了登录注册按钮");
             this.$router.push({ "path": "/register" });
-        
+
         },
         ChangetoPersonal (){
 
