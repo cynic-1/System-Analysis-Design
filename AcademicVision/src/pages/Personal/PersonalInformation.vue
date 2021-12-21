@@ -42,9 +42,9 @@
                   </div>
                   <br>
                   <div class="text-caption text-grey">
-                    Institution and department
+                    Institution
                   </div>
-                  <p>{{ Form.institution }}·{{ Form.department }}</p>
+                  <p>{{ Form.institution }}</p>
                   <div class="text-caption text-grey">
                     Skills and expertise
                   </div>
