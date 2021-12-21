@@ -57,7 +57,7 @@
             <q-icon
               name="search"
               class="cursor-pointer"
-              @click="key = ''"
+              @click="simpleSearch"
             />
           </template>
         </q-input>
@@ -73,6 +73,7 @@
           stretch
           style="margin-left: 10px"
           no-wrap
+          @click="searchOnResult()"
         >
           结果中检索
         </q-btn>
@@ -198,6 +199,7 @@
               color="grey-3"
               text-color="blue"
               size="18px"
+              @click="test"
             >
               科技
             </q-btn>
@@ -284,21 +286,50 @@
           :rows="rows"
           :columns="columns"
           row-key="name"
-          selection="multiple"
-          v-model:selected="selected"
           hide-pagination
         >
-          <template v-slot:body-cell-desc="props">
+          <template v-slot:body-cell-title="props">
+            <q-td :props="props">
+              <div class="my-table-details" style="cursor: pointer" @click="check(props.row.id)">
+                {{props.value}}
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-author="props">
+            <q-td :props="props">
+              <div class="my-table-details2">
+                <span v-for="item in props.value" :key="item">{{item}}&nbsp;&nbsp;</span>
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-org="props">
+            <q-td :props="props">
+              <div class="my-table-details2">
+                {{props.value}}
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-time="props">
+            <q-td :props="props">
+              <div class="my-table-details2">
+                {{props.value}}
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-keyword="props">
             <q-td :props="props">
               <div class="my-table-details">
-                {{props.value}}
+                <span v-for="item in props.value" :key="item">{{item}}&nbsp;&nbsp;</span>
               </div>
             </q-td>
           </template>
 
           <template v-slot:body-cell-operation="props">
             <q-td :props="props">
-              <q-btn icon="download" round flat size="sm"/>
               <q-btn icon="star" round flat size="sm"/>
               <q-btn icon="share" round flat size="sm"/>
             </q-td>
@@ -310,6 +341,7 @@
             v-model="pagination.page"
             color="grey-8"
             :max="pagesNumber"
+            :max-pages="6"
             size="sm"
           />
         </div>
@@ -329,263 +361,24 @@
 
 <script>
 import { computed, ref } from "vue";
-
-const columns = [
-    {
-        "name": "desc",
-        "required": true,
-        "label": "题名",
-        "align": "center",
-        "field": row => row.name,
-        "format": val => `${val}`
-    },
-    { "name": "calories", "align": "center", "label": "作者", "field": "calories" },
-    { "name": "fat", "align": "center", "label": "来源", "field": "fat" },
-    { "name": "carbs", "align": "center", "label": "发表时间", "field": "carbs" },
-    { "name": "protein", "align": "center", "label": "数据库", "field": "protein" },
-    { "name": "protein", "align": "center", "label": "被引", "field": "protein" },
-    { "name": "protein", "align": "center", "label": "下载", "field": "protein" },
-    { "name": "operation", "align": "center", "label": "操作", "field": "protein" }
-];
-
-const rows = [
-    {
-        "name": "基于确定性因子的启发式属性值约简模型",
-        "calories": 159,
-        "fat": 6.0,
-        "carbs": 24,
-        "protein": 4.0
-    },
-    {
-        "name": "智能时代乡村教师队伍建设的困境与出路",
-        "calories": 237,
-        "fat": 9.0,
-        "carbs": 37,
-        "protein": 4.3
-    },
-    {
-        "name": "从虚拟现实到元宇宙：在线教育的新方向",
-        "calories": 262,
-        "fat": 16.0,
-        "carbs": 23,
-        "protein": 6.0
-    },
-    {
-        "name": "“泛在智能”时代警务人工智能“奇点”与警察未来",
-        "calories": 305,
-        "fat": 3.7,
-        "carbs": 67,
-        "protein": 4.3
-    },
-    {
-        "name": "人工智能对出口产品质量促进的异质效应与影响路径",
-        "calories": 356,
-        "fat": 16.0,
-        "carbs": 49,
-        "protein": 3.9
-    },
-    {
-        "name": "机器人辅助椎体成形骨水泥注射治疗胸腰椎多椎体病理性骨折",
-        "calories": 375,
-        "fat": 0.0,
-        "carbs": 94,
-        "protein": 0.0
-    },
-    {
-        "name": "基于专利语义表征的技术预见方法及其应用",
-        "calories": 392,
-        "fat": 0.2,
-        "carbs": 98,
-        "protein": 0
-    },
-    {
-        "name": "浅析人工智能与大数据板块上市公司",
-        "calories": 408,
-        "fat": 3.2,
-        "carbs": 87,
-        "protein": 6.5
-    },
-    {
-        "name": "人工智能时代会计信息生成路径优化研究",
-        "calories": 452,
-        "fat": 25.0,
-        "carbs": 51,
-        "protein": 4.9
-    },
-    {
-        "name": "数字时代的隐私权保护研究",
-        "calories": 518,
-        "fat": 26.0,
-        "carbs": 65,
-        "protein": 7
-    },
-    {
-        "name": "基于确定性因子的启发式属性值约简模型",
-        "calories": 159,
-        "fat": 6.0,
-        "carbs": 24,
-        "protein": 4.0
-    },
-    {
-        "name": "智能时代乡村教师队伍建设的困境与出路",
-        "calories": 237,
-        "fat": 9.0,
-        "carbs": 37,
-        "protein": 4.3
-    },
-    {
-        "name": "从虚拟现实到元宇宙：在线教育的新方向",
-        "calories": 262,
-        "fat": 16.0,
-        "carbs": 23,
-        "protein": 6.0
-    },
-    {
-        "name": "“泛在智能”时代警务人工智能“奇点”与警察未来",
-        "calories": 305,
-        "fat": 3.7,
-        "carbs": 67,
-        "protein": 4.3
-    },
-    {
-        "name": "人工智能对出口产品质量促进的异质效应与影响路径",
-        "calories": 356,
-        "fat": 16.0,
-        "carbs": 49,
-        "protein": 3.9
-    },
-    {
-        "name": "机器人辅助椎体成形骨水泥注射治疗胸腰椎多椎体病理性骨折",
-        "calories": 375,
-        "fat": 0.0,
-        "carbs": 94,
-        "protein": 0.0
-    },
-    {
-        "name": "基于专利语义表征的技术预见方法及其应用",
-        "calories": 392,
-        "fat": 0.2,
-        "carbs": 98,
-        "protein": 0
-    },
-    {
-        "name": "浅析人工智能与大数据板块上市公司",
-        "calories": 408,
-        "fat": 3.2,
-        "carbs": 87,
-        "protein": 6.5
-    },
-    {
-        "name": "人工智能时代会计信息生成路径优化研究",
-        "calories": 452,
-        "fat": 25.0,
-        "carbs": 51,
-        "protein": 4.9
-    },
-    {
-        "name": "数字时代的隐私权保护研究",
-        "calories": 518,
-        "fat": 26.0,
-        "carbs": 65,
-        "protein": 7
-    },
-    {
-        "name": "基于确定性因子的启发式属性值约简模型",
-        "calories": 159,
-        "fat": 6.0,
-        "carbs": 24,
-        "protein": 4.0
-    },
-    {
-        "name": "智能时代乡村教师队伍建设的困境与出路",
-        "calories": 237,
-        "fat": 9.0,
-        "carbs": 37,
-        "protein": 4.3
-    },
-    {
-        "name": "从虚拟现实到元宇宙：在线教育的新方向",
-        "calories": 262,
-        "fat": 16.0,
-        "carbs": 23,
-        "protein": 6.0
-    },
-    {
-        "name": "“泛在智能”时代警务人工智能“奇点”与警察未来",
-        "calories": 305,
-        "fat": 3.7,
-        "carbs": 67,
-        "protein": 4.3
-    },
-    {
-        "name": "人工智能对出口产品质量促进的异质效应与影响路径",
-        "calories": 356,
-        "fat": 16.0,
-        "carbs": 49,
-        "protein": 3.9
-    },
-    {
-        "name": "机器人辅助椎体成形骨水泥注射治疗胸腰椎多椎体病理性骨折",
-        "calories": 375,
-        "fat": 0.0,
-        "carbs": 94,
-        "protein": 0.0
-    },
-    {
-        "name": "基于专利语义表征的技术预见方法及其应用",
-        "calories": 392,
-        "fat": 0.2,
-        "carbs": 98,
-        "protein": 0
-    },
-    {
-        "name": "浅析人工智能与大数据板块上市公司",
-        "calories": 408,
-        "fat": 3.2,
-        "carbs": 87,
-        "protein": 6.5
-    },
-    {
-        "name": "人工智能时代会计信息生成路径优化研究",
-        "calories": 452,
-        "fat": 25.0,
-        "carbs": 51,
-        "protein": 4.9
-    },
-    {
-        "name": "数字时代的隐私权保护研究",
-        "calories": 518,
-        "fat": 26.0,
-        "carbs": 65,
-        "protein": 7
-    }
-];
+import qs from "qs";
 
 export default {
     "name": "SearchResult",
-    setup () {
-
+    data () {
         const pagination = ref({
-            "sortBy": "desc",
-            "descending": false,
-            "page": 1,
-            "rowsPerPage": 20
-            // rowsNumber: xx if getting data from a server
+          "sortBy": "desc",
+          "descending": false,
+          "page": 1,
+          "rowsPerPage": 20
+          // rowsNumber: xx if getting data from a server
         });
         return {
             pagination,
-            columns,
-            rows,
-            "pagesNumber": computed(() => Math.ceil(rows.length / pagination.value.rowsPerPage))
-        };
-
-    },
-    data () {
-
-        return {
-            "list": ["主题", "篇关摘", "关键词", "篇名", "第一作者"],
-            "searchBy": "主题",
+            "list": ["不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"],
+            "searchBy": "不限",
             "key": "",
+            "result" : "",
             "tab": "学术期刊",
             "categories": [
                 { "name": "学术期刊", "num": "13.47万", "selection": [] },
@@ -603,20 +396,109 @@ export default {
             "related": [
                 "人工智能技术", "人工智能应用", "人工智能领域", "AI", "智能机器人", "人工智能发展", "人工智能", "弱人工智能", "智能科学"
             ],
-            "selected": [ rows[1] ],
+            "columns" : [
+              {
+                "name": "title",
+                "required": true,
+                "label": "题名",
+                "align": "center",
+                "field": row => row.title,
+                "format": val => `${val}`
+              },
+              { "name": "author", "align": "center", "label": "作者", "field": "author_name" },
+              { "name": "org", "align": "center", "label": "来源", "field": "org" },
+              { "name": "time", "align": "center", "label": "发表时间", "field": "publish_time",sortable: true },
+              { "name": "keyword", "align": "center", "label": "关键词", "field": "keyword" },
+              { "name": "quote", "align": "center", "label": "被引", "field": "quote", sortable: true },
+              { "name": "operation", "align": "center", "label": "操作", "field": "protein" }
+            ],
+            "rows" : [],
+            "pagesNumber": computed(() => Math.ceil(this.rows.length / pagination.value.rowsPerPage)),
+            oldrows: []
         };
 
     },
+
+    created() {
+      this.key = this.$route.query.key;
+      this.searchBy = this.$route.query.searchBy;
+      this.simpleSearch();
+    },
+
     "methods": {
         onItemClick (item) {
+          this.searchBy = item;
+        },
+        simpleSearch () {
+          if(this.key === '') {
+            alert("关键词不能为空！")
+            return
+          }
+          this.result = this.key;
+          let want = "";
+          if(this.searchBy === "不限")
+            want = "11111";
+          if(this.searchBy === "篇名")
+            want = "00100";
+          else if(this.searchBy === "摘要")
+            want = "10000";
+          else if(this.searchBy === "关键词")
+            want = "01000";
+          else if(this.searchBy === "第一作者")
+            want = "00010";
+          else if(this.searchBy === "发表时间")
+            want = "00001";
+          else
+            console.log("searchBy error!");
 
-            this.searchBy = item;
-
+          this.$axios.get("http://114.116.235.94/search/",{
+            params:{
+              q : this.key,
+              method : 1,
+              want : want,
+            },
+          }).then(res => {
+            this.key = "";
+            this.rows = res.data.data.goods;
+            this.oldrows = res.data.data.goods;
+            //console.log((this.rows[11].author_name).match(/(?<=\').*?(?=\')/g))
+            for(let item of this.rows){
+              item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
+              item.keyword = item.keyword.match(/(?<=\')[^,].*?(?=\')/g);
+              if(item.publish_time === "N/A")
+                item.publish_time = "";
+              if(item.quote === "N/A")
+                item.quote = 0;
+              if(item.org === "N/A")
+                item.org = "";
+            }
+          })
+        },
+        searchOnResult(){
+          this.key = this.result + " " + this.key;
+          this.simpleSearch ();
         },
         advanced () {
-
-            this.$router.push("/search/advanced");
-
+          this.$router.push("/search/advanced");
+        },
+        check (id){
+          this.$router.push({ "path": "/paper/check", "query": { "id": id } });
+        },
+        test () {
+          this.$axios({
+            method:"post",
+            url: "http://114.116.235.94/count_search/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {all_info : this.oldrows},
+            traditional: true,
+            paramsSerializer: data => {
+              return qs.stringify(data, { indices: false })
+            }
+          }).then((res)=>{
+            console.log(res.data)
+          })
         }
     }
 };
@@ -633,5 +515,11 @@ export default {
   white-space: normal;
   color: #555;
   text-align: left;
+}
+.my-table-details2 {
+  font-size: 1.0em;
+  max-width: 200px;
+  white-space: normal;
+  text-align: center;
 }
 </style>
