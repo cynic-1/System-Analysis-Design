@@ -1,13 +1,15 @@
 <template>
   <div>
-
     <q-layout view="hHh lpR fFf">
       <q-card class="other-personal-menu-card">
         <q-card class="other-card">
-          <q-card-section horizontal style="padding-top: 30px">
-            <q-btn round >
+          <q-card-section
+            horizontal
+            style="padding-top: 30px"
+          >
+            <q-btn round>
               <q-avatar size="180px">
-                <img src="../../../public/彼岸双生.png" />
+                <img src="../../../public/彼岸双生.png">
               </q-avatar>
             </q-btn>
 
@@ -32,8 +34,22 @@
               class="justify-around"
               style="margin-left: 100px"
             >
-              <q-btn v-if="!isFollowed" color="primary" style="width: 100px" no-caps label="Follow" @click="changeFollow"/>
-              <q-btn v-if="isFollowed" color="grey" style="width: 100px" no-caps label="Unfollow"  @click="changeFollow"/>
+              <q-btn
+                v-if="!isFollowed"
+                color="primary"
+                style="width: 100px"
+                no-caps
+                label="Follow"
+                @click="changeFollow"
+              />
+              <q-btn
+                v-if="isFollowed"
+                color="grey"
+                style="width: 100px"
+                no-caps
+                label="Unfollow"
+                @click="changeFollow"
+              />
             </q-card-actions>
           </q-card-section>
         </q-card>
@@ -69,7 +85,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 
 const OtherPersonalInformation = defineAsyncComponent(() => import("./OtherPersonalInformation"));
@@ -143,19 +159,16 @@ export default {
       })
     },
     checkotherinfor (){
-
       this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
-
     },
-    changeFollow(){
-      if(this.isFollowed){
-        this.isFollowed=false;
+    changeFollow (){
+      if (this.isFollowed){
+        this.isFollowed = false;           
+      } else {
+        this.isFollowed = true;
+          }
       }
-      else {
-        this.isFollowed=true;
-      }
-    }
-  },
+    },
 
 
 };

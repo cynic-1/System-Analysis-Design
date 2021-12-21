@@ -12,7 +12,7 @@
         style="height: 60px"
       >
         <q-btn-dropdown
-          :label="searchby"
+          :label="searchBy"
           color="white"
           style="width: 15%; height: 60%"
           text-color="black"
@@ -284,8 +284,41 @@
           :rows="rows"
           :columns="columns"
           row-key="name"
+          selection="multiple"
+          v-model:selected="selected"
           hide-pagination
-        />
+        >
+          <template #body-cell-desc="props">
+            <q-td :props="props">
+              <div class="my-table-details">
+                {{ props.value }}
+              </div>
+            </q-td>
+          </template>
+
+          <template #body-cell-operation="props">
+            <q-td :props="props">
+              <q-btn
+                icon="download"
+                round
+                flat
+                size="sm"
+              />
+              <q-btn
+                icon="star"
+                round
+                flat
+                size="sm"
+              />
+              <q-btn
+                icon="share"
+                round
+                flat
+                size="sm"
+              />
+            </q-td>
+          </template>
+        </q-table>
 
         <div class="row justify-center q-mt-md">
           <q-pagination
@@ -326,7 +359,8 @@ const columns = [
     { "name": "carbs", "align": "center", "label": "发表时间", "field": "carbs" },
     { "name": "protein", "align": "center", "label": "数据库", "field": "protein" },
     { "name": "protein", "align": "center", "label": "被引", "field": "protein" },
-    { "name": "protein", "align": "center", "label": "下载", "field": "protein" }
+    { "name": "protein", "align": "center", "label": "下载", "field": "protein" },
+    { "name": "operation", "align": "center", "label": "操作", "field": "protein" }
 ];
 
 const rows = [
@@ -565,7 +599,7 @@ export default {
 
         return {
             "list": ["主题", "篇关摘", "关键词", "篇名", "第一作者"],
-            "searchby": "主题",
+            "searchBy": "主题",
             "key": "",
             "tab": "学术期刊",
             "categories": [
@@ -583,14 +617,15 @@ export default {
             ],
             "related": [
                 "人工智能技术", "人工智能应用", "人工智能领域", "AI", "智能机器人", "人工智能发展", "人工智能", "弱人工智能", "智能科学"
-            ]
+            ],
+            "selected": [rows[1]],
         };
 
     },
     "methods": {
         onItemClick (item) {
 
-            this.searchby = item;
+            this.searchBy = item;
 
         },
         advanced () {
@@ -606,5 +641,12 @@ export default {
 .my-card {
   width: 100%;
   max-width: 250px;
+}
+.my-table-details {
+  font-size: 1.0em;
+  max-width: 200px;
+  white-space: normal;
+  color: #555;
+  text-align: left;
 }
 </style>

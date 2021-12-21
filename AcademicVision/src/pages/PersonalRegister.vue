@@ -118,7 +118,7 @@
 
 <script>
 export default {
-    data: () => ({
+    "data": () => ({
         "show2": false,
         "show3": false,
         "valid": true,
@@ -135,51 +135,70 @@ export default {
         "checkbox": false,
     }),
 
-    methods: {
-      Register () {
-        this.validate();
-        this.$axios({
-          method: 'POST',
-          url: 'http://114.116.235.94/register/',
-          data: {
-            user: this.id,
-            pass1: this.password,
-            pass2: this.rePassword,
-            Email: this.Email
-          },
-          transformRequest: [function (data) {
-            let ret = ''
-            for (let it in data) {
-              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-            }
-            return ret
-          }],
-        }).then(response => {
-          console.log("注册", response)
-          if (response.data.code === "200") {
-            alert("注册成功，正在前往登录界面");
-            this.$router.push({ path: "/login" });
-          }
-          else if (response.data.code === "0") {
-            alert(response.data.message);
-            this.clear();
-          }
-        })
-      },
-        validate () {
-            this.$refs.form.validate();
+    "methods": {
+        Register () {
+
+            this.validate();
+            this.$axios({
+                "method": "POST",
+                "url": "http://114.116.235.94/register/",
+                "data": {
+                    "user": this.id,
+                    "pass1": this.password,
+                    "pass2": this.rePassword,
+                    "Email": this.Email
+                },
+                "transformRequest": [function (data) {
+
+                    let ret = "";
+                    for (const it in data) {
+
+                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                    
+                    }
+                    return ret;
+                
+                }],
+            }).then(response => {
+
+                console.log("注册", response);
+                if (response.data.code === "200") {
+
+                    alert("注册成功，正在前往登录界面");
+                    this.$router.push({ "path": "/login" });
+                
+                } else if (response.data.code === "0") {
+
+                    alert(response.data.message);
+                    this.clear();
+                
+                }
+            
+            });
+        
         },
-      clear () {
-        this.id = "";
-        this.password = "";
-        this.rePassword = "";
-        this.Email = "";
-      },
+        validate () {
+
+            this.$refs.form.validate();
+        
+        },
+        clear () {
+
+            this.id = "";
+            this.password = "";
+            this.rePassword = "";
+            this.Email = "";
+        
+        },
         affirmPass (val) {
-          if (val !== this.password) {
-            return "两次密码不一致";
-          }
-          return true;
+
+            if (val !== this.password) {
+
+                return "两次密码不一致";
+            
+            }
+            return true;
+        
         },
     },
 };

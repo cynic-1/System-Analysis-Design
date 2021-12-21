@@ -33,7 +33,10 @@
             icon="account_circle"
           >
             <q-menu>
-              <div class="row no-wrap q-pa-md" v-if="this.$store.state.login">
+              <div
+                class="row no-wrap q-pa-md"
+                v-if="this.$store.state.login"
+              >
                 <div class="column items-center">
                   <q-avatar size="72px">
                     <template v-if="this.$store.state.person.headImage!==''">
@@ -45,7 +48,7 @@
                   </q-avatar>
 
                   <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    {{this.$store.state.person.username}}
+                    {{ this.$store.state.person.username }}
                   </div>
 
                   <q-btn
@@ -90,8 +93,13 @@
                   </div>
                 </div>
               </div>
-              <div class="row no-wrap q-pa-md" v-else>
-                <div class="row">您尚未登录，请前往</div>
+              <div
+                class="row no-wrap q-pa-md"
+                v-else
+              >
+                <div class="row">
+                  您尚未登录，请前往
+                </div>
                 <br>
                 <div class="row">
                   <q-btn
@@ -126,7 +134,7 @@ export default {
         }
     }),
 
-    methods: {
+    "methods": {
         logout (){
           this.$store.commit("setLogout");
           sessionStorage.clear();

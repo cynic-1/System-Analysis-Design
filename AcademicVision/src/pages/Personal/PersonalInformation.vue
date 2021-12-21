@@ -1,174 +1,268 @@
 <template>
   <right-drawer>
-  <template #main>
-    <q-card
-      class="information-card-1"
-      style="width: 80%;margin-left: 160px;padding: 10px 25px"
-    >
-      <div v-if="disabled">
-        <div class="clearfix">
-          <span style="font-size: 20px;">
-            <q-icon name="lock"></q-icon>
-            This preview is private — only you can see it on your profile</span>
-          <q-btn flat color="black" label="Edit" icon-right="create" style="float: right; padding: 3px 0" @click="chgcard()"/>
-        </div>
-        <q-separator />
-        <br>
-        <div>
-          <p style="font-size : 1.5em"> Business card </p>
-          <div class="text-caption text-grey">Your business card is a short summary of your profile which can be displayed to others across the platform. Make sure it's up to date so others can easily learn about you when they discover your card.</div>
+    <template #main>
+      <q-card
+        class="information-card-1"
+        style="width: 80%;margin-left: 160px;padding: 10px 25px"
+      >
+        <div v-if="disabled">
+          <div class="clearfix">
+            <span style="font-size: 20px;">
+              <q-icon name="lock" />
+              This preview is private — only you can see it on your profile</span>
+            <q-btn
+              flat
+              color="black"
+              label="Edit"
+              icon-right="create"
+              style="float: right; padding: 3px 0"
+              @click="chgcard()"
+            />
+          </div>
+          <q-separator />
           <br>
-          <q-card class="my-card" flat bordered style="padding:30px 30px">
-            <q-card-section horizontal>
-              <q-card-section class="q-pt-xs">
-                <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.nickname }}</div>
-                <br>
-                <div class="text-caption text-grey">Institution</div>
-                <p>{{Form.institution}}</p>
-                <div class="text-caption text-grey">Skills and expertise</div>
-                <p>{{Form.skill}}</p>
-              </q-card-section>
-
-              <q-card-section style="padding-left: 300px">
-                <q-avatar size="100px">
-                  <q-img
-                    class="rounded-borders"
-                    src="../../../public/彼岸双生.png"
-                  />
-                </q-avatar>
-              </q-card-section>
-            </q-card-section>
-          </q-card>
-          <br>
-        </div>
-      </div>
-      <div v-if="!disabled">
-        <div class="clearfix">
-          <span style="font-size: 20px;">Edit your business card</span>
-          <div class="text-caption text-grey">Make sure your business card information is accurate and up to date.</div>
-        </div>
-        <q-separator />
-        <br>
-        <div >
-          <div style="padding: 0px 60px 0px 30px" class="text-caption text-grey">When you make changes to the information below, your profile will be updated with the same information.</div>
-          <br>
-          <q-form
-            class="q-gutter-md"
-            @submit="onSubmit1"
-            @reset="onReset"
-          >
-            <div style="padding: 0px 60px 0px 30px" class="text-h5 q-mt-sm q-mb-xs">{{ Form.nickname }}</div>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">昵称*</div>
-            <q-input
-              v-model="Form.nickname"
-              outlined
-              bottom-slots
-              dense
-              filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type something']"
-            >
-            </q-input>
-<!--            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">姓名*</div>-->
-<!--            <q-input-->
-<!--              v-model="Form.name"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              dense-->
-<!--              filled-->
-<!--              style="padding: 0px 60px 0px 30px;margin-top: 0px"-->
-<!--              lazy-rules-->
-<!--              :rules="[ val => val && val.length > 0 || 'Please type something']"-->
-<!--            >-->
-<!--            </q-input>-->
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">机构</div>
-            <q-input
-              v-model="Form.institution"
-              outlined
-              bottom-slots
-              dense
-              filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
-            >
-            </q-input>
-<!--            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">部门</div>-->
-<!--            <q-input-->
-<!--              v-model="Form.department"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              dense-->
-<!--              filled-->
-<!--              style="padding: 0px 60px 0px 30px;margin-top: 0px"-->
-<!--            >-->
-<!--            </q-input>-->
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">特长</div>
-            <q-input
-              v-model="Form.skill"
-              outlined
-              bottom-slots
-              dense
-              filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
-            >
-            </q-input>
-            <br>
-            <div v-if="!disabled">
-              <q-btn
-                label="Submit"
-                style="left:20px"
-                type="submit"
-                color="primary"
-              />
-              <q-btn
-                label="Cancel"
-                style="left:50px"
-                type="cancel"
-                color="primary"
-                @click="Cancel()"
-              />
-              <q-btn
-                label="Reset"
-                style="float: right;"
-                type="reset"
-                color="primary"
-                flat
-                class="q-ml-sm"
-              />
+          <div>
+            <p style="font-size : 1.5em">
+              Business card
+            </p>
+            <div class="text-caption text-grey">
+              Your business card is a short summary of your profile which can be displayed to others across the platform. Make sure it's up to date so others can easily learn about you when they discover your card.
             </div>
-          </q-form>
+            <br>
+            <q-card
+              class="my-card"
+              flat
+              bordered
+              style="padding:30px 30px"
+            >
+              <q-card-section horizontal>
+                <q-card-section class="q-pt-xs">
+                  <div class="text-h5 q-mt-sm q-mb-xs">
+                    {{ Form.nickname }}
+                  </div>
+                  <br>
+                  <div class="text-caption text-grey">
+                    Institution and department
+                  </div>
+                  <p>{{ Form.institution }}·{{ Form.department }}</p>
+                  <div class="text-caption text-grey">
+                    Skills and expertise
+                  </div>
+                  <p>{{ Form.skill }}</p>
+                </q-card-section>
+
+                <q-card-section style="padding-left: 300px">
+                  <q-avatar size="100px">
+                    <q-img
+                      class="rounded-borders"
+                      src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="用户头像"
+                    />
+                  </q-avatar>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <br>
+          </div>
         </div>
-      </div>
-    </q-card>
-    <br>
+        <div v-if="!disabled">
+          <div class="clearfix">
+            <span style="font-size: 20px;">Edit your business card</span>
+            <div class="text-caption text-grey">
+              Make sure your business card information is accurate and up to date.
+            </div>
+          </div>
+          <q-separator />
+          <br>
+          <div>
+            <div
+              style="padding: 0px 60px 0px 30px"
+              class="text-caption text-grey"
+            >
+              When you make changes to the information below, your profile will be updated with the same information.
+            </div>
+            <br>
+            <q-form
+              class="q-gutter-md"
+              @submit="onSubmit"
+              @reset="onReset"
+            >
+              <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-h5 q-mt-sm q-mb-xs"
+              >
+                {{ Form.nickname }}
+              </div>
+              <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-weight-bold"
+              >
+                昵称*
+              </div>
+              <q-input
+                v-model="Form.nickname"
+                outlined
+                bottom-slots
+                dense
+                filled
+                style="padding: 0px 60px 0px 30px;margin-top: 0px"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please type something']"
+              />
+              <!-- <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-weight-bold"
+              >
+                姓名*
+              </div>
+              <q-input
+                v-model="Form.name"
+                outlined
+                bottom-slots
+                dense
+                filled
+                style="padding: 0px 60px 0px 30px;margin-top: 0px"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please type something']"
+              /> -->
+              <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-weight-bold"
+              >
+                机构
+              </div>
+              <q-input
+                v-model="Form.institution"
+                outlined
+                bottom-slots
+                dense
+                filled
+                style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              />
+              <!-- <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-weight-bold"
+              >
+                部门
+              </div>
+              <q-input
+                v-model="Form.department"
+                outlined
+                bottom-slots
+                dense
+                filled
+                style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              /> -->
+              <div
+                style="padding: 0px 60px 0px 30px"
+                class="text-weight-bold"
+              >
+                特长
+              </div>
+              <q-input
+                v-model="Form.skill"
+                outlined
+                bottom-slots
+                dense
+                filled
+                style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              />
+              <br>
+              <div v-if="!disabled">
+                <q-btn
+                  label="Submit"
+                  style="left:20px"
+                  type="submit"
+                  color="primary"
+                />
+                <q-btn
+                  label="Cancel"
+                  style="left:50px"
+                  type="cancel"
+                  color="primary"
+                  @click="Cancel()"
+                />
+                <q-btn
+                  label="Reset"
+                  style="float: right;"
+                  type="reset"
+                  color="primary"
+                  flat
+                  class="q-ml-sm"
+                />
+              </div>
+            </q-form>
+          </div>
+        </div>
+      </q-card>
+      <br>
       <q-card
         class="information-card-2"
         style="width: 80%;margin-left: 160px;padding: 10px 25px"
       >
         <div class="clearfix">
           <span style="font-size: 28px;">About me</span>
-          <q-btn flat color="black" label="Edit" icon-right="create" style="float: right; padding: 3px 0" @click="chgcard1()"/>
+          <q-btn
+            flat
+            color="black"
+            label="Edit"
+            icon-right="create"
+            style="float: right; padding: 3px 0"
+            @click="chgcard1()"
+          />
         </div>
         <q-separator />
         <br>
         <div v-if="disabled1">
-          <div class="text-h6 q-mt-sm q-mb-xs">Introduction</div>
-          <div v-if="Form.introduction.length!==0">{{Form.introduction}}</div>
+          <div class="text-h6 q-mt-sm q-mb-xs">
+            Introduction
+          </div>
+          <div v-if="Form.introduction.length!==0">
+            {{ Form.introduction }}
+          </div>
           <div v-if="Form.introduction.length===0">
-            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
-              <div class="text-h6 q-mt-sm q-mb-xs">Make an introduction for yourself</div>
-              <div class="text-grey">Add an introduction with your research focus and interests to help others understand your work.</div>
+            <q-btn
+              outline
+              no-caps
+              color="black"
+              class="full-width"
+              @click="chgcard1()"
+            >
+              <div class="text-h6 q-mt-sm q-mb-xs">
+                Make an introduction for yourself
+              </div>
+              <div class="text-grey">
+                Add an introduction with your research focus and interests to help others understand your work.
+              </div>
             </q-btn>
           </div>
           <br>
-          <div class="text-h6 q-mt-sm q-mb-xs">Languages</div>
+          <div class="text-h6 q-mt-sm q-mb-xs">
+            Languages
+          </div>
           <div v-if="Form.Language.length!==0">
-            <q-btn outline no-caps rounded color="grey">{{Form.Language}} </q-btn>
+            <q-btn
+              outline
+              no-caps
+              rounded
+              color="grey"
+            >
+              {{ Form.Language }}
+            </q-btn>
           </div>
           <div v-if="Form.Language.length===0">
-            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
-              <div class="text-h6 q-mt-sm q-mb-xs">Which language do you speak</div>
-              <div class="text-grey">Make it easier for others to contact you by listing the languages you speak</div>
+            <q-btn
+              outline
+              no-caps
+              color="black"
+              class="full-width"
+              @click="chgcard1()"
+            >
+              <div class="text-h6 q-mt-sm q-mb-xs">
+                Which language do you speak
+              </div>
+              <div class="text-grey">
+                Make it easier for others to contact you by listing the languages you speak
+              </div>
             </q-btn>
           </div>
           <br>
@@ -198,7 +292,12 @@
             @submit="onSubmit2"
             @reset="onReset1"
           >
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">Introduction</div>
+            <div
+              style="padding: 0px 60px 0px 30px"
+              class="text-weight-bold"
+            >
+              Introduction
+            </div>
             <q-input
               v-model="Form.introduction"
               filled
@@ -207,12 +306,28 @@
               dense
               label="Please make an introduction for yourself"
               style="padding: 0px 60px 0px 30px;margin-top: 0px"
+            />
+            <div
+              style="padding: 0px 60px 0px 30px"
+              class="text-weight-bold"
             >
-            </q-input>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">Languages</div>
-            <q-select dense filled style="padding: 0px 60px 0px 30px;margin-top: 0px" outlined v-model="Form.Language" :options="options1" label="Choose language" >
-            </q-select>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">disciplines</div>
+              Languages
+            </div>
+            <q-select
+              dense
+              filled
+              style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              outlined
+              v-model="Form.Language"
+              :options="options1"
+              label="Choose language"
+            />
+            <div
+              style="padding: 0px 60px 0px 30px"
+              class="text-weight-bold"
+            >
+              disciplines
+            </div>
             <q-input
               v-model="Form.disciplines"
               outlined
@@ -220,9 +335,13 @@
               dense
               filled
               style="padding: 0px 60px 0px 30px;margin-top: 0px"
+            />
+            <div
+              style="padding: 0px 60px 0px 30px"
+              class="text-weight-bold"
             >
-            </q-input>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">Skills and expertise</div>
+              Skills and expertise
+            </div>
             <q-input
               v-model="Form.skill"
               outlined
@@ -230,8 +349,7 @@
               dense
               filled
               style="padding: 0px 60px 0px 30px;margin-top: 0px"
-            >
-            </q-input>
+            />
             <br>
             <q-btn
               label="Submit"
@@ -258,7 +376,11 @@
         </div>
       </q-card>
       <br>
-      <div  class="text-h4 q-mt-sm q-mb-xs" style="width: 80%;margin-left: 160px;"> Research
+      <div
+        class="text-h4 q-mt-sm q-mb-xs"
+        style="width: 80%;margin-left: 160px;"
+      >
+        Research
         <q-separator />
       </div>
       <br>
@@ -273,20 +395,28 @@
         <br>
         <div class="q-pa-md row items-start q-gutter-md">
           <q-card style="width: 150px;height: 75px;padding-left:10px">
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.Researchitemnum }}</div>
-            <div >Research item</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ Form.Researchitemnum }}
+            </div>
+            <div>Research item</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.Projectnum }}</div>
-            <div >Project</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ Form.Projectnum }}
+            </div>
+            <div>Project</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.Questionnum }}</div>
-            <div >Questions</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ Form.Questionnum }}
+            </div>
+            <div>Questions</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.Answernum }}</div>
-            <div >Answers</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ Form.Answernum }}
+            </div>
+            <div>Answers</div>
           </q-card>
         </div>
       </q-card>
@@ -298,7 +428,14 @@
       >
         <div class="clearfix">
           <span style="font-size: 28px">Affiliation</span>
-          <q-btn flat color="black" label="Edit" icon-right="create" style="float: right; padding: 3px 0" @click="chgcard3()"/>
+          <q-btn
+            flat
+            color="black"
+            label="Edit"
+            icon-right="create"
+            style="float: right; padding: 3px 0"
+            @click="chgcard3()"
+          />
         </div>
         <q-separator inset />
         <br>
@@ -443,7 +580,7 @@
 </template>
 
 <script>
-import {defineAsyncComponent} from "vue";
+import { defineAsyncComponent } from "vue";
 import RightDrawer from "layouts/RightDrawer";
 import PersonalMain from "pages/Personal/PersonalMain";
 
@@ -452,17 +589,17 @@ const rightDrawer = defineAsyncComponent(() => import("../../layouts/RightDrawer
 export default {
     "name": "PersonalInformation",
 
-    "components": {RightDrawer},
+    "components": { RightDrawer },
 
     data () {
 
         return {
-            "disabled" : true,
+            "disabled": true,
             "disabled1": true,
             "disabled2": false,
             "disabled3": true,
             "accept": false,
-            options1:['Chinese', 'English', 'Japanese', 'French', 'Russian'],
+            "options1": ["Chinese", "English", "Japanese", "French", "Russian"],
             "Form": {
                 "user": "",
                 "pass": "········",
@@ -478,15 +615,15 @@ export default {
                 "department": "",
                 "direction": "",
                 "achievement": "",
-                "introduction":"",
-                "Language":"",
+                "introduction": "",
+                "Language": "",
                 "text": "",
                 "is_associated":1,
                 "follownum": 1,
-                "Researchitemnum":0,
-                "Projectnum":0,
-                "Questionnum":0,
-                "Answernum":0,
+                "Researchitemnum": 0,
+                "Projectnum": 0,
+                "Questionnum": 0,
+                "Answernum": 0,
             }
         };
 
@@ -550,7 +687,6 @@ export default {
             //   this.Form.briefintroduction = info.briefintroduction;
           })
         },
-
         chgcard () {
           this.disabled = false;
         },
@@ -595,10 +731,8 @@ export default {
           this.Form.nickname = null;
           this.Form.institution = null;
           this.Form.skill = null;
-
         },
         Cancel () {
-
           this.disabled = true;
           this.loadInfo();
         },

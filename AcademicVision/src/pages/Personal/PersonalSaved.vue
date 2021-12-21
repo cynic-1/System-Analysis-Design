@@ -1,7 +1,7 @@
 <template>
   <left-drawer>
     <template #leftDrawer>
-      <q-card style="width: 70%;margin-left: 15%" >
+      <q-card style="width: 70%;margin-left: 15%">
         <div class="q-pa-md text-h5 text-center">
           我  的  学  术
         </div>
@@ -52,67 +52,127 @@
       </q-tabs>
     </template>
     <template #main>
-        <q-table
-          v-if="tab==='1'"
-          v-model:pagination="pagination"
-          style="height:450px;width: 85%"
-          title="文献列表"
-          :rows="rows1"
-          :columns="columns1"
-          row-key="index"
-          virtual-scroll
-          :rows-per-page-options="[0]"
-          :filter="filter1"
-        >
-          <template #top-right>
-            <q-input
-              v-model="filter1"
-              borderless
-              dense
-              debounce="300"
-              placeholder="Search"
+      <q-table
+        v-if="tab==='1'"
+        v-model:pagination="pagination"
+        style="height:450px;width: 85%"
+        title="文献列表"
+        :rows="rows1"
+        :columns="columns1"
+        row-key="index"
+        virtual-scroll
+        :rows-per-page-options="[0]"
+        :filter="filter1"
+      >
+        <template #top-right>
+          <q-input
+            v-model="filter1"
+            borderless
+            dense
+            debounce="300"
+            placeholder="Search"
+          >
+            <template #append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+
+        <template #header="props">
+          <q-tr :props="props">
+            <q-th auto-width />
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
             >
-              <template #append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
+              {{ col.label }}
+            </q-th>
+          </q-tr>
+        </template>
 
-          <template #header="props">
-            <q-tr :props="props">
-              <q-th auto-width />
-              <q-th
-                v-for="col in props.cols"
-                :key="col.name"
-                :props="props"
-              >
-                {{ col.label }}
-              </q-th>
-            </q-tr>
-          </template>
-
-          <template #body="props">
-            <q-tr :props="props">
-              <q-td auto-width>
+        <template #body="props">
+          <q-tr :props="props">
+            <q-td auto-width>
+              <q-btn
+                size="sm"
+                color="primary"
+                round
+                dense
+                :icon="props.expand ? 'remove' : 'add'"
+                @click="props.expand = !props.expand"
+              />
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+          <q-tr
+            v-show="props.expand"
+            :props="props"
+          >
+            <q-td colspan="100%">
+              <div class="text-left">
                 <q-btn
-                  size="sm"
-                  color="primary"
-                  round
-                  dense
-                  :icon="props.expand ? 'remove' : 'add'"
-                  @click="props.expand = !props.expand"
+                  push
+                  color="white"
+                  text-color="primary"
+                  label="查看文献详细信息"
+                  @click="CheckDocument(props.row.name)"
                 />
-              </q-td>
-              <q-td
-                v-for="col in props.cols"
-                :key="col.name"
-                :props="props"
-              >
-                {{ col.value }}
-              </q-td>
-            </q-tr>
-            <q-tr
-              v-show="props.expand"
+                <q-btn
+                  style="margin-left: 30px"
+                  color="primary"
+                  label="查看作者详细信息"
+                  @click="CheckWriter(props.row.name)"
+                />
+                <q-btn
+                  style="margin-left: 30px"
+                  color="red"
+                  label="取消关注"
+                  @click="DeleteDocument(props.row.name)"
+                />
+              </div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+      <q-table
+        v-if="tab==='2'"
+        v-model:pagination="pagination2"
+        style="height: 450px;width: 85%"
+        title="知贴列表"
+        :rows="rows2"
+        :columns="columns2"
+        row-key="index"
+        virtual-scroll
+        :rows-per-page-options="[0]"
+        :filter="filter2"
+      >
+        <template #top-right>
+          <q-input
+            v-model="filter2"
+            borderless
+            dense
+            debounce="300"
+            placeholder="Search"
+          >
+            <template #append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+
+        <template #header="props">
+          <q-tr :props="props">
+            <q-th auto-width />
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
               :props="props"
             >
               <q-td colspan="100%">
@@ -167,29 +227,44 @@
             </q-input>
           </template>
 
-          <template #header="props">
-            <q-tr :props="props">
-              <q-th auto-width />
-              <q-th
-                v-for="col in props.cols"
-                :key="col.name"
-                :props="props"
-              >
-                {{ col.label }}
-              </q-th>
-            </q-tr>
-          </template>
-
-          <template #body="props">
-            <q-tr :props="props">
-              <q-td auto-width>
+        <template #body="props">
+          <q-tr :props="props">
+            <q-td auto-width>
+              <q-btn
+                size="sm"
+                color="primary"
+                round
+                dense
+                :icon="props.expand ? 'remove' : 'add'"
+                @click="props.expand = !props.expand"
+              />
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+          <q-tr
+            v-show="props.expand"
+            :props="props"
+          >
+            <q-td colspan="100%">
+              <div class="text-left">
                 <q-btn
-                  size="sm"
+                  push
+                  color="white"
+                  text-color="primary"
+                  label="查看知贴详细信息"
+                  @click="CheckPost(props.row.name2)"
+                />
+                <q-btn
+                  style="margin-left: 30px"
                   color="primary"
-                  round
-                  dense
-                  :icon="props.expand ? 'remove' : 'add'"
-                  @click="props.expand = !props.expand"
+                  label="查看作者详细信息"
+                  @click="CheckPostWriter(props.row.name2)"
                 />
               </q-td>
               <q-td
@@ -440,7 +515,7 @@ const seed2 = [
 export default {
     "name": "PersonalSaved",
     "components": {
-      leftDrawer
+        leftDrawer
     },
     setup (){
 

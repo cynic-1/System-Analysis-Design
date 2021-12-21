@@ -101,6 +101,7 @@ import axios from "axios";
 export default {
     "inject": ["reload"],
     data () {
+
         return {
             "valid": true,
             "show1": false,
@@ -113,54 +114,74 @@ export default {
             "passwordRules": [(v) => !!v || "请填写密码"],
             "message": "error",
         };
+    
     },
-    methods: {
+    "methods": {
         Login () {
-          this.validate();
-          this.$axios({
-            method: 'POST',
-            url: 'http://114.116.235.94/login/',
-            data: {
-              line1: this.id,
-              line2: this.password
-            },
-            transformRequest: [function (data) {
-              let ret = ''
-              for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-              }
-              return ret
-            }],
-          }).then(response => {
-            console.log("登录", response)
-            if (response.data.code === "200") {
-              alert("登录成功");
-              this.$store.commit("setLogin");
-              this.$store.commit("setUserName",response.data.data.username);
-              this.$store.commit("setUserID",response.data.data.userid);
-              this.$store.commit("setUserHeadImage",response.data.data.image);
-              this.$store.commit("setUserAssociated",response.data.data.is_associated);
-              this.$router.push({ "path": "/home","query":{"user_id": response.data.data.userid} });
-              // this.$router.push({ path: "/home" });
-            }
-            else if (response.data.code === "0") {
-              alert(response.data.message);
-              this.clear();
-            }
-          })
+
+            this.validate();
+            this.$axios({
+                "method": "POST",
+                "url": "http://114.116.235.94/login/",
+                "data": {
+                    "line1": this.id,
+                    "line2": this.password
+                },
+                "transformRequest": [function (data) {
+
+                    let ret = "";
+                    for (const it in data) {
+
+                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                    
+                    }
+                    return ret;
+                
+                }],
+            }).then(response => {
+
+                console.log("登录", response);
+                if (response.data.code === "200") {
+
+                    alert("登录成功");
+                    this.$store.commit("setLogin");
+                    this.$store.commit("setUserName", response.data.data.username);
+                    this.$store.commit("setUserID", response.data.data.userid);
+                    this.$store.commit("setUserHeadImage", response.data.data.image);
+                    this.$store.commit("setUserAssociated", response.data.data.is_associated);
+                    this.$router.push({ "path": "/home", "query": { "user_id": response.data.data.userid } });
+                    // this.$router.push({ path: "/home" });
+                
+                } else if (response.data.code === "0") {
+
+                    alert(response.data.message);
+                    this.clear();
+                
+                }
+            
+            });
+        
         },
         validate () {
+
             this.$refs.form.validate();
+        
         },
         clear () {
+
             this.id = "";
             this.password = "";
+        
         },
         affirmPass (val) {
+
             if (val !== this.password) {
+
                 return "两次密码不一致";
+            
             }
             return true;
+        
         },
     },
 };

@@ -1,4 +1,4 @@
-<template >
+<template>
   <left-drawer>
     <template #leftDrawer>
       <q-card>
@@ -132,7 +132,7 @@
                   </q-input>
                 </template>
 
-                <template v-slot:header="props">
+                <template #header="props">
                   <q-tr :props="props">
                     <q-th auto-width />
                     <q-th
@@ -145,10 +145,17 @@
                   </q-tr>
                 </template>
 
-                <template v-slot:body="props">
+                <template #body="props">
                   <q-tr :props="props">
                     <q-td auto-width>
-                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+                      <q-btn
+                        size="sm"
+                        color="primary"
+                        round
+                        dense
+                        @click="props.expand = !props.expand"
+                        :icon="props.expand ? 'remove' : 'add'"
+                      />
                     </q-td>
                     <q-td
                       v-for="col in props.cols"
@@ -175,15 +182,17 @@
                       </span>
                     </q-td>
                   </q-tr>
-                  <q-tr v-show="props.expand" :props="props">
+                  <q-tr
+                    v-show="props.expand"
+                    :props="props"
+                  >
                     <q-td colspan="100%">
-                      <div class="text-left">举报原因: {{ props.row.reason }}</div>
+                      <div class="text-left">
+                        举报原因: {{ props.row.reason }}
+                      </div>
                     </q-td>
                   </q-tr>
                 </template>
-
-
-
               </q-table>
             </div>
             <div v-if="item.name==='2'">
@@ -367,19 +376,23 @@
                       <q-icon name="search" />
                     </template>
                   </q-input>
-                  <q-btn color="primary" @click="alert = true">创建账号</q-btn>
+                  <q-btn
+                    color="primary"
+                    @click="alert = true"
+                  >
+                    创建账号
+                  </q-btn>
                 </template>
 
-                <template v-slot:body-cell-operation="props">
+                <template #body-cell-operation="props">
                   <q-td :props="props">
                     <q-btn flat color="primary" @click="gotoCheckUser(props.row.user_id)">查看</q-btn>
                     <q-btn flat color="red" @click="deleteuser(props.rows.id)">删除</q-btn>
                   </q-td>
                 </template>
-
               </q-table>
             </div>
-            <div v-if="item.name==='3'"></div>
+            <div v-if="item.name==='3'" />
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -445,7 +458,7 @@
 </template>
 
 <script>
-import {defineAsyncComponent, ref} from "vue";
+import { defineAsyncComponent, ref } from "vue";
 
 const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer"));
 
@@ -495,14 +508,12 @@ const columns4 = [
   {"name": "email","align": "center", "label": "邮箱", "field": "email"},
   { "name": "operation","align": "center", "label": "操作", "field": "operation" },
 ];
-
 export default {
-  "name": "Administrator",
-  "components": {
-    leftDrawer
-  },
-  setup (){
-
+    "name": "Administrator",
+    "components": {
+        leftDrawer
+    },
+    setup (){
     return {
       "filter1": ref(""),
       "filter2": ref(""),
@@ -673,9 +684,6 @@ export default {
         "path": "/otherpersonal",
       })
     },
-    deleteuser(id){
-
-    },
     deletePost(reportid){
       this.$axios({
         method:"post",
@@ -809,10 +817,16 @@ export default {
     },
     validate () {
 
-      this.$refs.form.validate();
+        },
+        deleteuser (id){
 
-    },
-  }
+        },
+        validate () {
+
+            this.$refs.form.validate();
+
+        },
+    }
 };
 </script>
 
