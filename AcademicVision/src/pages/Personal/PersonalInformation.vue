@@ -23,9 +23,9 @@
               <q-card-section class="q-pt-xs">
                 <div class="text-h5 q-mt-sm q-mb-xs">{{ Form.nickname }}</div>
                 <br>
-                <div class="text-caption text-grey">Institution and department</div>
-                <p>{{Form.institution}}·{{Form.department}}</p>
-                <div class="text-caption text-grey">Skills</div>
+                <div class="text-caption text-grey">Institution</div>
+                <p>{{Form.institution}}</p>
+                <div class="text-caption text-grey">Skills and expertise</div>
                 <p>{{Form.skill}}</p>
               </q-card-section>
 
@@ -54,7 +54,7 @@
           <br>
           <q-form
             class="q-gutter-md"
-            @submit="onSubmit"
+            @submit="onSubmit1"
             @reset="onReset"
           >
             <div style="padding: 0px 60px 0px 30px" class="text-h5 q-mt-sm q-mb-xs">{{ Form.nickname }}</div>
@@ -70,18 +70,18 @@
               :rules="[ val => val && val.length > 0 || 'Please type something']"
             >
             </q-input>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">姓名*</div>
-            <q-input
-              v-model="Form.name"
-              outlined
-              bottom-slots
-              dense
-              filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type something']"
-            >
-            </q-input>
+<!--            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">姓名*</div>-->
+<!--            <q-input-->
+<!--              v-model="Form.name"-->
+<!--              outlined-->
+<!--              bottom-slots-->
+<!--              dense-->
+<!--              filled-->
+<!--              style="padding: 0px 60px 0px 30px;margin-top: 0px"-->
+<!--              lazy-rules-->
+<!--              :rules="[ val => val && val.length > 0 || 'Please type something']"-->
+<!--            >-->
+<!--            </q-input>-->
             <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">机构</div>
             <q-input
               v-model="Form.institution"
@@ -92,16 +92,16 @@
               style="padding: 0px 60px 0px 30px;margin-top: 0px"
             >
             </q-input>
-            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">部门</div>
-            <q-input
-              v-model="Form.department"
-              outlined
-              bottom-slots
-              dense
-              filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
-            >
-            </q-input>
+<!--            <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">部门</div>-->
+<!--            <q-input-->
+<!--              v-model="Form.department"-->
+<!--              outlined-->
+<!--              bottom-slots-->
+<!--              dense-->
+<!--              filled-->
+<!--              style="padding: 0px 60px 0px 30px;margin-top: 0px"-->
+<!--            >-->
+<!--            </q-input>-->
             <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">特长</div>
             <q-input
               v-model="Form.skill"
@@ -173,19 +173,29 @@
           </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">Disciplines</div>
-          <div>
+          <div v-if="Form.disciplines.length!==0">
             <q-btn outline no-caps rounded color="grey">{{Form.disciplines}} </q-btn>
+          </div>
+          <div v-if="Form.disciplines.length===0">
+            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
+              <div class="text-h6 q-mt-sm q-mb-xs">Which discipline do you learn</div>
+            </q-btn>
           </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">Skills and expertise</div>
-          <div>
+          <div v-if="Form.skill.length!==0">
             <q-btn outline no-caps rounded color="grey">{{Form.skill}} </q-btn>
+          </div>
+          <div v-if="Form.skill.length===0">
+            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
+              <div class="text-h6 q-mt-sm q-mb-xs">Please introduce your skills</div>
+            </q-btn>
           </div>
         </div>
         <div v-if="!disabled1">
           <q-form
             class="q-gutter-md"
-            @submit="onSubmit1"
+            @submit="onSubmit2"
             @reset="onReset1"
           >
             <div style="padding: 0px 60px 0px 30px" class="text-weight-bold">Introduction</div>
@@ -280,114 +290,6 @@
           </q-card>
         </div>
       </q-card>
-<!--      <q-card-->
-<!--        class="information-card-3"-->
-<!--        style="width: 80%;margin-left: 160px;padding: 10px 25px"-->
-<!--      >-->
-<!--        <div class="clearfix">-->
-<!--          <span style="font-size: 28px;">Account</span>-->
-<!--          <q-btn flat color="black" label="Edit" icon-right="create" style="float: right; padding: 3px 0" @click="chgcard2()"/>-->
-<!--        </div>-->
-<!--        <q-separator inset />-->
-<!--        <br>-->
-<!--        <div>-->
-<!--          <q-form-->
-<!--            class="q-gutter-md"-->
-<!--            @submit="onSubmit2"-->
-<!--            @reset="onReset2"-->
-<!--          >-->
-<!--            <q-input-->
-<!--              v-if="!disabled2"-->
-<!--              v-model="Form.user"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              style="padding: 0px 60px 0px 30px"-->
-<!--              :readonly="true"-->
-<!--            >-->
-<!--              <template v-slot:before>-->
-<!--                <p style=" font-size : 0.75em;color: #1D1D1D">账号 ：</p>-->
-<!--              </template>-->
-<!--            </q-input>-->
-<!--            <q-input-->
-<!--              v-if="!disabled2"-->
-<!--              v-model="Form.pass"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              style="padding: 0px 60px 0px 30px"-->
-<!--              :readonly="true"-->
-<!--            >-->
-<!--              <template v-slot:before>-->
-<!--                <p style=" font-size : 0.75em;color: #1D1D1D">密码 ：</p>-->
-<!--              </template>-->
-<!--            </q-input>-->
-
-<!--            <q-input-->
-<!--              v-if="disabled2"-->
-<!--              v-model="Form.oldpass"-->
-<!--              style="padding: 0px 60px 0px 30px"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              lazy-rules-->
-<!--              :rules="[ val => val && val.length > 0 || 'Please type something']"-->
-<!--            >-->
-<!--              <template v-slot:before>-->
-<!--                <p style=" font-size : 0.75em;color: #1D1D1D">原密码 ：</p>-->
-<!--              </template>-->
-<!--            </q-input>-->
-
-<!--            <q-input-->
-<!--              v-if="disabled2"-->
-<!--              v-model="Form.newpass1"-->
-<!--              style="padding: 0px 60px 0px 30px"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              lazy-rules-->
-<!--              :rules="[ val => val && val.length > 0 || 'Please type something']"-->
-<!--            >-->
-<!--              <template v-slot:before>-->
-<!--                <p style=" font-size : 0.75em;color: #1D1D1D">新密码 ：</p>-->
-<!--              </template>-->
-<!--            </q-input>-->
-
-<!--            <q-input-->
-<!--              v-if="disabled2"-->
-<!--              v-model="Form.newpass2"-->
-<!--              style="padding: 0px 60px 0px 20px"-->
-<!--              outlined-->
-<!--              bottom-slots-->
-<!--              lazy-rules-->
-<!--              :rules="[ val => val && val ===Form.newpass1 || 'Please type something as last one']"-->
-<!--            >-->
-<!--              <template v-slot:before>-->
-<!--                <p style=" font-size : 0.75em;color: #1D1D1D">确认密码：</p>-->
-<!--              </template>-->
-<!--            </q-input>-->
-
-<!--            <div v-if="disabled2">-->
-<!--              <q-btn-->
-<!--                label="Submit"-->
-<!--                type="submit"-->
-<!--                color="primary"-->
-<!--              />-->
-<!--              <q-btn-->
-<!--                label="Cancel"-->
-<!--                style="left:50px"-->
-<!--                type="cancel"-->
-<!--                color="primary"-->
-<!--                @click="Cancel2()"-->
-<!--              />-->
-<!--              <q-btn-->
-<!--                label="Reset"-->
-<!--                style="float: right;"-->
-<!--                type="reset"-->
-<!--                color="primary"-->
-<!--                flat-->
-<!--                class="q-ml-sm"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </q-form>-->
-<!--        </div>-->
-<!--      </q-card>-->
   </template>
     <template #rightDrawer>
       <q-card
@@ -424,6 +326,8 @@
             <q-input
               v-model="Form.text"
               filled
+              dense
+              disable
               type="textarea"
             />
           </div>
@@ -436,16 +340,16 @@
           >
             <q-input
               v-if="!disabled3"
-              v-model="Form.institution"
+              v-model="Form.department"
               filled
-              label="隶属科研机构*"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type something']"
+              dense
+              label="隶属部门"
             />
             <q-input
               v-if="!disabled3"
               v-model="Form.position"
               filled
+              dense
               label="在职岗位"
             />
             <q-input
@@ -459,7 +363,17 @@
               v-if="!disabled3"
               v-model="Form.achievement"
               filled
+              dense
               label="研究成果"
+            />
+            <q-input
+              v-if="!disabled3"
+              v-model="Form.text"
+              filled
+              autogrow
+              type="textarea"
+              dense
+              label="所属机构介绍"
             />
             <div v-if="!disabled3">
               <q-btn
@@ -531,6 +445,7 @@
 <script>
 import {defineAsyncComponent} from "vue";
 import RightDrawer from "layouts/RightDrawer";
+import PersonalMain from "pages/Personal/PersonalMain";
 
 const rightDrawer = defineAsyncComponent(() => import("../../layouts/RightDrawer"));
 
@@ -549,23 +464,24 @@ export default {
             "accept": false,
             options1:['Chinese', 'English', 'Japanese', 'French', 'Russian'],
             "Form": {
-                "user": "19231051",
+                "user": "",
                 "pass": "········",
                 "oldpass": "",
                 "newpass1": "",
                 "newpass2": "",
-                "nickname": "双笙",
-                "name": "路人甲",
-                "institution": "北京航空航天大学",
-                "disciplines": "Computer",
-                "skill": "智能计算机，网页制作",
-                "position": "学生",
-                "department": "Software",
-                "direction": "Robot",
+                "nickname": "",
+                "name": "",
+                "institution": "",
+                "disciplines": "",
+                "skill": "",
+                "position": "",
+                "department": "",
+                "direction": "",
                 "achievement": "",
                 "introduction":"",
                 "Language":"",
                 "text": "",
+                "is_associated":1,
                 "follownum": 1,
                 "Researchitemnum":0,
                 "Projectnum":0,
@@ -575,176 +491,199 @@ export default {
         };
 
     },
-
+    "mounted": function () {
+      this.loadInfo()
+    },
     "methods": {
-        save1 (formName) {
-
+        loadInfo(){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/check_my_info/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.info )
+            let info = res.data.info ;
+            this.Form.nickname = info.user_name;
+            if (info.org!==null){
+              this.Form.institution = info.org;
+            }
+            if (info.is_associated!==null) {
+              this.Form.is_associated = info.is_associated;
+            }
+            if (info.hobby!==null) {
+              this.Form.skill = info.hobby;
+            }
+            if (info.bio!==null) {
+              this.Form.introduction = info.bio;
+            }
+            if (info.subject!==null) {
+              this.Form.disciplines = info.subject;
+            }
+            if (info.language!==null) {
+              this.Form.Language = info.language;
+            }
+            if (info.department!==null) {
+              this.Form.department = info.department;
+            }
+            if (info.direction!==null) {
+              this.Form.direction = info.direction;
+            }
+            if (info.achievement!==null) {
+              this.Form.achievement = info.achievement;
+            }
+            if (info.position!==null) {
+              this.Form.position = info.position;
+            }
+            // if(info.briefintroduction !== null)
+            //   this.Form.briefintroduction = info.briefintroduction;
+          })
         },
+
         chgcard () {
-
-        this.disabled = false;
-
+          this.disabled = false;
         },
         chgcard1 () {
-
             this.disabled1 = false;
-
-        },
-        chgcard2 () {
-
-            this.disabled2 = true;
-
         },
         chgcard3 () {
-
             this.disabled3 = false;
-
         },
-        onSubmit () {
-
-          if (this.accept !== true) {
-
-            this.$q.notify({
-              "color": "red-5",
-              "textColor": "white",
-              "icon": "warning",
-              "message": "You need to accept the license and terms first"
+        onSubmit1 () {
+            this.$axios({
+              method: "post",
+              url: "http://114.116.235.94/change_base_info/",
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: {
+                user_id: this.$store.state.person.userID,
+                name: this.Form.nickname,
+                org: this.Form.institution,
+                hobby:this.Form.skill,
+              },
+              transformRequest: [function (data) {
+                let ret = ''
+                for (let it in data) {
+                  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                }
+                return ret
+              }],
+            }).then((res) => {
+              console.log(res.data)
+              if (res.data.code !== '400') return alert(res.data.message);
+              alert('修改个人信息成功');
+              this.disabled = true;
+              // PersonalMain.methods.loadpersonalInfo();
             });
-
-          } else {
-
-            this.$q.notify({
-              "color": "green-4",
-              "textColor": "white",
-              "icon": "cloud_done",
-              "message": "Submitted"
-            });
-
-          }
-
+          this.disabled = true;
+          // PersonalMain.methods.loadpersonalInfo();
         },
         onReset () {
 
           this.Form.nickname = null;
-          this.Form.name = null;
           this.Form.institution = null;
-          this.Form.position = null;
+          this.Form.skill = null;
 
         },
         Cancel () {
 
           this.disabled = true;
-
-        },
-        onSubmit1 () {
-
-            if (this.accept !== true) {
-
-                this.$q.notify({
-                    "color": "red-5",
-                    "textColor": "white",
-                    "icon": "warning",
-                    "message": "You need to accept the license and terms first"
-                });
-
-            } else {
-
-                this.$q.notify({
-                    "color": "green-4",
-                    "textColor": "white",
-                    "icon": "cloud_done",
-                    "message": "Submitted"
-                });
-
-            }
-
-        },
-        onReset1 () {
-
-            this.Form.nickname = null;
-            this.Form.name = null;
-            this.Form.institution = null;
-            this.Form.position = null;
-
-        },
-        Cancel1 () {
-
-            this.disabled1 = true;
-
+          this.loadInfo();
         },
         onSubmit2 () {
-
-            if (this.accept !== true) {
-
-                this.$q.notify({
-                    "color": "red-5",
-                    "textColor": "white",
-                    "icon": "warning",
-                    "message": "You need to accept the license and terms first"
-                });
-
-            } else {
-
-                this.$q.notify({
-                    "color": "green-4",
-                    "textColor": "white",
-                    "icon": "cloud_done",
-                    "message": "Submitted"
-                });
-
-            }
-
+              this.$axios({
+                method: "post",
+                url: "http://114.116.235.94/change_base_info/",
+                header: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                  user_id: this.$store.state.person.userID,
+                  bio: this.Form.introduction,
+                  hobby: this.Form.skill,
+                  language: this.Form.Language,
+                  subject: this.Form.disciplines,
+                },
+                transformRequest: [function (data) {
+                  let ret = ''
+                  for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                  }
+                  return ret
+                }],
+              }).then((res) => {
+                console.log(res.data)
+                if (res.data.code !== '400') return alert(res.data.message);
+                alert('修改个人信息成功');
+                this.disabled1 = true;
+              });
+          this.disabled1 = true;
         },
-        onReset2 () {
-
-            this.Form.oldpass = null;
-            this.Form.newpass1 = null;
-            this.Form.newpass2 = null;
-
+        onReset1 () {
+            this.Form.introduction = '';
+            this.Form.Language = "";
+            this.Form.disciplines = "";
+            this.Form.skill ="";
         },
-        Cancel2 () {
-
-            this.disabled2 = false;
-
+        Cancel1 () {
+          this.disabled1 = true;
+          this.loadInfo();
         },
         onSubmit3 () {
-
-            if (this.accept !== true) {
-
-                this.$q.notify({
-                    "color": "red-5",
-                    "textColor": "white",
-                    "icon": "warning",
-                    "message": "You need to accept the license and terms first"
-                });
-
-            } else {
-
-                this.$q.notify({
-                    "color": "green-4",
-                    "textColor": "white",
-                    "icon": "cloud_done",
-                    "message": "Submitted"
-                });
-
-            }
-
+          this.$axios({
+            method: "post",
+            url: "http://114.116.235.94/change_base_info/",
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+              user_id: this.$store.state.person.userID,
+              department: this.Form.department,
+              position: this.Form.position ,
+              direction:this.Form.direction ,
+              achievement:this.Form.achievement ,
+            },
+            transformRequest: [function (data) {
+              let ret = ''
+              for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res) => {
+            console.log(res.data)
+            if (res.data.code !== '400') return alert(res.data.message);
+            alert('修改个人信息成功');
+            this.disabled3 = true;
+          });
+          this.disabled3 = true;
         },
         onReset3 () {
-
-            this.Form.institution = null;
-            this.Form.position = null;
-            this.Form.direction = null;
-            this.Form.achievement = null;
-
+            this.Form.institution = "";
+            this.Form.position = "";
+            this.Form.direction = "";
+            this.Form.achievement = "";
+            this.Form.text="";
         },
         Cancel3 () {
-
-            this.disabled3 = true;
-
+          this.disabled3 = true;
+          this.loadInfo();
         },
     },
-};
+
+}
 
 </script>
 

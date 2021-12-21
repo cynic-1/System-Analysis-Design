@@ -148,7 +148,7 @@
           title="知贴列表"
           :rows="rows2"
           :columns="columns2"
-          row-key="index"
+          row-key="col_post_id"
           virtual-scroll
           :rows-per-page-options="[0]"
           :filter="filter2"
@@ -211,19 +211,19 @@
                     color="white"
                     text-color="primary"
                     label="查看知贴详细信息"
-                    @click="CheckPost(props.row.name2)"
+                    @click="CheckPost(props.row.post_id,props.row.user_id)"
                   />
                   <q-btn
                     style="margin-left: 30px"
                     color="primary"
                     label="查看作者详细信息"
-                    @click="CheckPostWriter(props.row.name2)"
+                    @click="CheckPostWriter(props.row.user_id)"
                   />
                   <q-btn
                     style="margin-left: 30px"
                     color="red"
                     label="取消关注"
-                    @click="DeletePost(props.row.name2)"
+                    @click="DeletePost(props.row.post_id,props.row.user_id)"
                   />
                 </div>
               </q-td>
@@ -350,23 +350,18 @@ rows1.forEach((row, index) => {
 });
 const columns2 = [
     {
-        "name": "index",
-        "label": "#",
-        "field": "index"
-    },
-    {
-        "name": "name2",
+        "name": "title",
         "required": true,
         "label": "帖子主题",
         "align": "left",
-        "field": row => row.name2,
+        "field": row => row.title,
         "format": val => `${val}`,
         "sortable": true
     },
-    { "name": "writer2", "label": "作者", "field": "writer2" },
-    { "name": "view2", "align": "center", "label": "浏览次数", "field": "view2", "sortable": true },
-    { "name": "like", "align": "center", "label": "获赞数", "field": "like", "sortable": true },
-    { "name": "date2", "label": "发布日期", "field": "date2" },
+    { "name": "lable", "align": "center", "label": "分类", "field": "lable", "sortable": true },
+    { "name": "user_name","align": "center", "label": "作者", "field": "user_name" },
+    { "name": "goodnum", "align": "center", "label": "获赞数", "field": "goodnum", "sortable": true },
+    { "name": "time", "align": "center","label": "发布日期", "field": "time" },
 ];
 
 const seed2 = [
@@ -442,13 +437,6 @@ const seed2 = [
     }
 ];
 
-let rows2 = [];
-rows2 = rows2.concat(seed2.slice(0).map(r => ({ ...r })));
-rows2.forEach((row, index) => {
-
-    row.index = index + 1;
-
-});
 export default {
     "name": "PersonalSaved",
     "components": {
@@ -459,10 +447,6 @@ export default {
         return {
             "filter1": ref(""),
             "filter2": ref(""),
-            rows1,
-            columns1,
-            rows2,
-            columns2,
 
         };
 
@@ -471,11 +455,15 @@ export default {
     data () {
 
         return {
+          rows1,
+          columns1,
+          rows2:[],
+          columns2,
             "tab": "1",
             "tabsList": [
             { "name": "1", "icon": "camera", "label": "文 献 收 藏" },
             { "name": "2", "icon": "assessment", "label": "知 贴 收 藏" },
-          ],
+            ],
             "pagination": ref({
                 "rowsPerPage": 0
             }),
@@ -486,7 +474,35 @@ export default {
         };
 
     },
+   "mounted": function () {
+    this.loadPostTable()
+    },
     "methods": {
+        loadPostTable(){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/my_col_post_list/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.info )
+            let info = res.data.info ;
+            this.rows2=info;
+            // if(info.briefintroduction !== null)
+            //   this.Form.briefintroduction = info.briefintroduction;
+          })
+        },
         CheckDocument (name){
 
         },
@@ -496,14 +512,46 @@ export default {
         DeleteDocument (name){
 
         },
-        CheckPost (name){
-
+        CheckPost (postid,userid){
+          console.log(userid)
+          console.log(postid)
+          this.$router.push({
+            "path": "/posts/view",
+            "query": {
+              "user_id": userid,
+              "post_id": postid,
+            }
+          })
         },
-        CheckPostWriter (name){
-
+        CheckPostWriter (userid){
+          console.log(userid)
+          window.sessionStorage.setItem('otherpersonid',userid);
+          this.$router.push({
+            "path": "/otherpersonal",
+          })
         },
-        DeletePost (name){
-
+        async DeletePost (postid,userid){
+         this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/un_col_post/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id: userid,
+              post_id: postid
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          })
+          this.loadPostTable()
+          alert('取消关注成功')
+          this.loadPostTable()
         },
     },
 };

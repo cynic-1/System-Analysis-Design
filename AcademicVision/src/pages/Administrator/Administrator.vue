@@ -6,6 +6,47 @@
           管 理 列 表
         </div>
         <q-separator />
+        <q-expansion-item
+          expand-separator
+          :header-inset-level="1"
+          icon="help_center"
+          class="text-grey-6 q-py-md"
+          label="举报处理"
+        >
+          <q-tabs
+            v-model="tab"
+            align="justify"
+            class="text-grey-6 q-py-md"
+            active-color="primary"
+            swipeable
+            vertical
+            transition-prev="jump-up"
+            transition-next="jump-up"
+            inline-label
+          >
+            <q-tab
+              ripple="false"
+              name="1"
+              icon="help_center"
+              label="帖子举报"
+              content-class="q-py-md"
+            />
+            <q-tab
+              ripple="false"
+              name="2"
+              icon="help_center"
+              label="评论举报"
+              content-class="q-py-md"
+            />
+            <q-tab
+              ripple="false"
+              name="3"
+              icon="help_center"
+              label="科研认证举报"
+              content-class="q-py-md"
+            />
+          </q-tabs>
+        </q-expansion-item>
         <q-tabs
           v-model="tab"
           align="justify"
@@ -18,12 +59,10 @@
           inline-label
         >
           <q-tab
-            v-for="item in tabsList"
-            :key="item"
             ripple="false"
-            :name="item.name"
-            :icon="item.icon"
-            :label="item.label"
+            name="4"
+            icon="person"
+            label="账号管理"
             content-class="q-py-md"
           />
         </q-tabs>
@@ -68,47 +107,6 @@
             <q-separator />
             <br>
             <div v-if="item.name==='1'">
-<!--              <div class="q-pa-md row items-start q-gutter-md">-->
-<!--                <div v-for="test in reportList"-->
-<!--                     :key="test">-->
-<!--                  <q-card class="report-card">-->
-<!--                    <q-card-section>-->
-<!--                      <q-scroll-area-->
-<!--                        :thumb-style="thumbStyle"-->
-<!--                        :bar-style="barStyle"-->
-<!--                        style="height: 90px; max-width: 200px;"-->
-<!--                      >-->
-<!--                        <div class="text-subtitle2">类型：{{test.type}}</div>-->
-<!--                        <div class="text-subtitle2">被举报用户：{{test.writer}}</div>-->
-<!--                        <div class="text-subtitle2">举报用户：{{test.reporter}}</div>-->
-<!--                        <div class="text-subtitle2">举报原因：{{test.reason}}</div>-->
-<!--                      </q-scroll-area>-->
-<!--                    </q-card-section>-->
-
-<!--                    <q-separator />-->
-
-<!--                    <q-card-actions>-->
-<!--                      <q-btn flat color="primary" @click="gotocheck">前往查看</q-btn>-->
-<!--                      <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">-->
-<!--                        <q-list>-->
-<!--                          <q-item clickable v-close-popup @click="onItemClick">-->
-<!--                            <q-item-section>-->
-<!--                              <q-item-label>删除{{test.type}}</q-item-label>-->
-<!--                            </q-item-section>-->
-<!--                          </q-item>-->
-
-<!--                          <q-item clickable v-close-popup @click="onItemClick">-->
-<!--                            <q-item-section>-->
-<!--                              <q-item-label>举报无效</q-item-label>-->
-<!--                            </q-item-section>-->
-<!--                          </q-item>-->
-
-<!--                        </q-list>-->
-<!--                      </q-btn-dropdown>-->
-<!--                    </q-card-actions>-->
-<!--                  </q-card>-->
-<!--                </div>-->
-<!--              </div>-->
               <q-table
                 v-model:pagination="pagination"
                 style="height:450px;width: 100%"
@@ -116,7 +114,7 @@
                 :rows="rows1"
                 :columns="columns1"
                 virtual-scroll
-                row-key="id"
+                row-key="report_id"
                 :rows-per-page-options="[0]"
                 :filter="filter1"
               >
@@ -159,15 +157,15 @@
                     >
                       <span v-if="col.name !== 'operation'">{{ col.value }}</span>
                       <span v-else>
-                        <q-btn flat color="primary" @click="gotocheck">前往查看</q-btn>
+                        <q-btn flat color="primary" @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
                         <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
                           <q-list>
-                            <q-item clickable v-close-popup @click="onItemClick">
+                            <q-item clickable v-close-popup @click="deletePost(props.row.report_id)">
                               <q-item-section>
-                                <q-item-label>删除{{props.row.type}}</q-item-label>
+                                <q-item-label>删除帖子</q-item-label>
                               </q-item-section>
                             </q-item>
-                            <q-item clickable v-close-popup @click="onItemClick">
+                            <q-item clickable v-close-popup @click="deletePostReport(props.row.report_id)">
                               <q-item-section>
                                 <q-item-label>举报无效</q-item-label>
                               </q-item-section>
@@ -190,19 +188,175 @@
             </div>
             <div v-if="item.name==='2'">
               <q-table
-                v-model:pagination="pagination2"
-                style="height:450px;width: 100%"
-                title="账号列表"
-                :rows="rows2"
-                :columns="columns2"
-                virtual-scroll
-                row-key="id"
-                :rows-per-page-options="[0]"
-                :filter="filter2"
+                  v-model:pagination="pagination2"
+                  style="height:450px;width: 100%"
+                  title="举报列表"
+                  :rows="rows2"
+                  :columns="columns2"
+                  virtual-scroll
+                  row-key="report_id"
+                  :rows-per-page-options="[0]"
+                  :filter="filter2"
               >
                 <template #top-right>
                   <q-input
-                    v-model="filter2"
+                      v-model="filter2"
+                      borderless
+                      dense
+                      debounce="300"
+                      placeholder="Search"
+                  >
+                    <template #append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </template>
+
+                <template v-slot:header="props">
+                  <q-tr :props="props">
+                    <q-th auto-width />
+                    <q-th
+                        v-for="col in props.cols"
+                        :key="col.name"
+                        :props="props"
+                    >
+                      {{ col.label }}
+                    </q-th>
+                  </q-tr>
+                </template>
+
+                <template v-slot:body="props">
+                  <q-tr :props="props">
+                    <q-td auto-width>
+                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+                    </q-td>
+                    <q-td
+                        v-for="col in props.cols"
+                        :key="col.name"
+                        :props="props"
+                    >
+                      <span v-if="col.name !== 'operation'">{{ col.value }}</span>
+                      <span v-else>
+                        <q-btn flat color="primary" @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
+                        <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
+                          <q-list>
+                            <q-item clickable v-close-popup @click="deleteComment(props.row.report_id)">
+                              <q-item-section>
+                                <q-item-label>删除评论</q-item-label>
+                              </q-item-section>
+                            </q-item>
+                            <q-item clickable v-close-popup @click="deleteCommentReport(props.row.report_id)">
+                              <q-item-section>
+                                <q-item-label>举报无效</q-item-label>
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+                        </q-btn-dropdown>
+                      </span>
+                    </q-td>
+                  </q-tr>
+                  <q-tr v-show="props.expand" :props="props">
+                    <q-td colspan="100%">
+                      <div class="text-left">举报原因: {{ props.row.reason }}</div>
+                    </q-td>
+                  </q-tr>
+                </template>
+              </q-table>
+            </div>
+
+
+            <div v-if="item.name==='3'">
+              <q-table
+                  v-model:pagination="pagination3"
+                  style="height:450px;width: 100%"
+                  title="举报列表"
+                  :rows="rows3"
+                  :columns="columns3"
+                  virtual-scroll
+                  row-key="report_id"
+                  :rows-per-page-options="[0]"
+                  :filter="filter3"
+              >
+                <template #top-right>
+                  <q-input
+                      v-model="filter3"
+                      borderless
+                      dense
+                      debounce="300"
+                      placeholder="Search"
+                  >
+                    <template #append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </template>
+
+                <template v-slot:header="props">
+                  <q-tr :props="props">
+                    <q-th auto-width />
+                    <q-th
+                        v-for="col in props.cols"
+                        :key="col.name"
+                        :props="props"
+                    >
+                      {{ col.label }}
+                    </q-th>
+                  </q-tr>
+                </template>
+
+                <template v-slot:body="props">
+                  <q-tr :props="props">
+                    <q-td auto-width>
+                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+                    </q-td>
+                    <q-td
+                        v-for="col in props.cols"
+                        :key="col.name"
+                        :props="props"
+                    >
+                      <span v-if="col.name !== 'operation'">{{ col.value }}</span>
+                      <span v-else>
+                        <q-btn flat color="primary" @click="gotocheck">前往查看</q-btn>
+                        <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
+                          <q-list>
+                            <q-item clickable v-close-popup @click="onItemClick">
+                              <q-item-section>
+                                <q-item-label>删除科研认证</q-item-label>
+                              </q-item-section>
+                            </q-item>
+                            <q-item clickable v-close-popup @click="onItemClick">
+                              <q-item-section>
+                                <q-item-label>举报无效</q-item-label>
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+                        </q-btn-dropdown>
+                      </span>
+                    </q-td>
+                  </q-tr>
+                  <q-tr v-show="props.expand" :props="props">
+                    <q-td colspan="100%">
+                      <div class="text-left">举报原因: {{ props.row.reason }}</div>
+                    </q-td>
+                  </q-tr>
+                </template>
+              </q-table>
+            </div>
+            <div v-if="item.name==='4'">
+              <q-table
+                v-model:pagination="pagination4"
+                style="height:450px;width: 100%"
+                title="账号列表"
+                :rows="rows4"
+                :columns="columns4"
+                virtual-scroll
+                row-key="id"
+                :rows-per-page-options="[0]"
+                :filter="filter4"
+              >
+                <template #top-right>
+                  <q-input
+                    v-model="filter4"
                     style="margin-right: 80px"
                     borderless
                     dense
@@ -218,7 +372,7 @@
 
                 <template v-slot:body-cell-operation="props">
                   <q-td :props="props">
-                    <q-btn flat color="primary" @click="gotocheck(props.rows.id)">查看</q-btn>
+                    <q-btn flat color="primary" @click="gotoCheckUser(props.row.user_id)">查看</q-btn>
                     <q-btn flat color="red" @click="deleteuser(props.rows.id)">删除</q-btn>
                   </q-td>
                 </template>
@@ -278,7 +432,7 @@
             large
             style="left: 180px;"
             href="/Login"
-            @click="validate"
+            @click="Register"
           >
             <p class="login_">
               创建用户
@@ -297,67 +451,50 @@ const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer")
 
 const columns1 = [
   {
-    "name": "id",
+    "name": "report_id",
     "label": "编号",
-    "field": "id"
+    "field": "report_id"
   },
-  {
-    "name": "type",
-    "required": true,
-    "label": "类型",
-    "align": "center",
-    "field": row => row.type,
-    "format": val => `${val}`,
-    "sortable": true
-  },
-  { "name": "writer","align": "center", "label": "被举报用户", "field": "writer" },
-  { "name": "reporter","align": "center", "label": "举报用户", "field": "reporter" },
-  { "name": "date", "align": "center","label": "举报日期", "field": "date" },
+
+  { "name": "user_name_r","align": "center", "label": "被举报用户", "field": "user_name_r" },
+  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
+  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
   { "name": "operation","align": "center", "label": "操作", "field": "operation" },
 ];
-const seed = [
-  {"id":"1","type":"帖子","reason":"内容涉嫌违法","reporter":"小王","writer":"老张","date":"2021-12-10"},
-  {"id":"2","type":"文献","reason":"我也不知道为什么要举报，不过为了测试就随便举报一下吧","reporter":"小王","writer":"老王","date":"2021-12-11"},
-  {"id":"3","type":"评论","reason":"内容涉嫌违法","reporter":"小王","writer":"老张","date":"2021-12-9"},
-  {"id":"4","type":"科研认证","reason":"我才是该门户的主人，此人盗用我的账户","reporter":"小王","writer":"大黄","date":"2021-12-13"},
-];
-let rows1 = [];
-rows1 = rows1.concat(seed.slice(0).map(r => ({ ...r })));
-rows1.forEach((row, index) => {
-  row.index = index + 1;
-});
-
 const columns2 = [
   {
-    "name": "id",
+    "name": "report_id",
     "label": "编号",
-    "field": "id"
+    "field": "report_id"
   },
-  {
-    "name": "account",
-    "required": true,
-    "label": "账号",
-    "align": "center",
-    "field": row => row.account,
-    "format": val => `${val}`,
-    "sortable": true
-  },
-  { "name": "nickname","align": "center", "label": "昵称", "field": "nickname" },
-  {"name": "e-mail","align": "center", "label": "邮箱", "field": "e-mail"},
-  { "name": "date2", "align": "center","label": "创建日期", "field": "date2" },
+
+  { "name": "user_name_r","align": "center", "label": "被举报用户", "field": "user_name_r" },
+  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
+  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
   { "name": "operation","align": "center", "label": "操作", "field": "operation" },
 ];
-const seed2 = [
-  {"id":"1","account":"hkc123456","e-mail":"123456@qq.com","nickname":"小王","date2":"2021-12-10"},
-  {"id":"2","account":"syx123456","e-mail":"123456@163.com","nickname":"老张","date2":"2021-12-11"},
-  {"id":"3","account":"gy123456","e-mail":"123456@buaa.edu.cn","nickname":"hhh","date2":"2021-12-9"},
-  {"id":"4","account":"jxh123456","e-mail":"123456@qq.com","nickname":"大黄","date2":"2021-12-13"},
+const columns3 = [
+  {
+    "name": "report_id",
+    "label": "编号",
+    "field": "report_id"
+  },
+
+  { "name": "author_name","align": "center", "label": "被举报门户", "field": "author_name" },
+  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
+  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
+  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
 ];
-let rows2 = [];
-rows2 = rows2.concat(seed2.slice(0).map(r => ({ ...r })));
-rows2.forEach((row, index) => {
-  row.index = index + 1;
-});
+const columns4 = [
+  {
+    "name": "user_id",
+    "label": "编号",
+    "field": "user_id"
+  },
+  { "name": "user_name","align": "center", "label": "昵称", "field": "user_name" },
+  {"name": "email","align": "center", "label": "邮箱", "field": "email"},
+  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
+];
 
 export default {
   "name": "Administrator",
@@ -368,35 +505,40 @@ export default {
 
     return {
       "filter1": ref(""),
-      rows1,
-      columns1,
       "filter2": ref(""),
-      rows2,
-      columns2,
+      "filter3": ref(""),
+      "filter4": ref(""),
       alert: ref(false),
     };
   },
   data () {
 
     return {
-      "tab": "1",
+      rows1:[],
+      columns1,
+      rows2:[],
+      columns2,
+      rows3:[],
+      columns3,
+      rows4:[],
+      columns4,
+      "tab": "4",
       "pagination": ref({
         "rowsPerPage": 0
       }),
       "pagination2": ref({
         "rowsPerPage": 0
       }),
+      "pagination4": ref({
+        "rowsPerPage": 0
+      }),
       "tabsList": [
-        { "name": "1", "icon": "help_center", "label": "举报处理" },
-        { "name": "2", "icon": "person", "label": "账号管理" },
-        { "name": "3", "icon": "description", "label": "数据库管理" },
+        { "name": "1", "icon": "help_center", "label": "帖子举报" },
+        { "name": "2", "icon": "help_center", "label": "评论举报" },
+        { "name": "3", "icon": "help_center", "label": "科研认证举报" },
+        { "name": "4", "icon": "person", "label": "账号管理" },
       ],
-      "reportList":[
-        {"type":"帖子","reason":"内容涉嫌违法","reporter":"小王","writer":"老张",},
-        {"type":"文献","reason":"我也不知道为什么要举报，不过为了测试就随便举报一下吧","reporter":"小王","writer":"老王",},
-        {"type":"评论","reason":"内容涉嫌违法","reporter":"小王","writer":"老张",},
-        {"type":"科研认证","reason":"我才是该门户的主人，此人盗用我的账户","reporter":"小王","writer":"大黄",},
-      ],
+      "reportList":[],
       "valid": true,
       "id": "",
       "idRules": [(v) => !!v || "ID is required"],
@@ -414,12 +556,256 @@ export default {
       ],
     };
   },
+  "mounted": function () {
+    this.loadUserTable();
+    this.loadPostTable();
+    this.loadCommentTable();
+    this.loadAuthorTable();
+    },
   methods :{
-    gotocheck(id){
-
+    loadPostTable(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/get_report_post/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{},
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.data.post_reported_list)
+        let info = res.data.data.post_reported_list ;
+        this.rows1=info;
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    },
+    loadCommentTable(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/get_report_comment/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{},
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.data.comment_reported_list)
+        let info = res.data.data.comment_reported_list ;
+        this.rows2=info;
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    },
+    loadUserTable(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/alluser/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{},
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.list_user)
+        let info = res.data.list_user ;
+        this.rows4=info;
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    },
+    loadAuthorTable(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/get_report_author/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{},
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.data)
+        let info = res.data.data.author_reported_list ;
+        this.rows3=info;
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    },
+    gotoCheckPost(postid,userid){
+      console.log(userid)
+      console.log(postid)
+      this.$router.push({
+        "path": "/posts/view",
+        "query": {
+          "user_id": userid,
+          "post_id": postid,
+        }
+      })
+    },
+    gotoCheckUser(userid){
+      console.log(userid)
+      window.sessionStorage.setItem('otherpersonid',userid);
+      this.$router.push({
+        "path": "/otherpersonal",
+      })
     },
     deleteuser(id){
 
+    },
+    deletePost(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_post/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:1,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadPostTable();
+        alert("处理成功");
+      })
+      this.loadPostTable();
+    },
+    deletePostReport(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_post/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:2,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadPostTable();
+        alert("处理成功");
+      })
+      this.loadPostTable();
+    },
+    deleteComment(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_comment/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:1,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadCommentTable();
+        alert("处理成功");
+      })
+      this.loadCommentTable();
+    },
+    deleteCommentReport(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_comment/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:2,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadCommentTable();
+        alert("处理成功");
+      })
+      this.loadCommentTable();
+    },
+    Register () {
+      this.validate();
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/register/',
+        data: {
+          user: this.id,
+          pass1: this.password,
+          pass2: this.rePassword,
+          Email: this.Email
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        console.log("注册", response)
+        if (response.data.code === "200") {
+          this.loadUserTable();
+          alert("创建成功");
+          this.alert=false;
+        }
+        else if (response.data.code === "0") {
+          alert(response.data.message);
+          this.clear();
+        }
+      })
     },
     validate () {
 

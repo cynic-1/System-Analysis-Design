@@ -67,6 +67,7 @@
                     <q-btn
                       color="secondary"
                       label="个人信息"
+                      @click="personalInformation"
                     />
                   </div>
                   <br>
@@ -76,6 +77,7 @@
                       color="secondary"
                       label="个人收藏"
                       size="md"
+                      @click="personalSaved"
                     />
                   </div>
                   <br>
@@ -83,6 +85,7 @@
                     <q-btn
                       color="secondary"
                       label="我的消息"
+                      @click="personalMessage"
                     />
                   </div>
                 </div>
@@ -128,7 +131,31 @@ export default {
           this.$store.commit("setLogout");
           sessionStorage.clear();
           this.$router.push({ "path": "/" });
-        }
+        },
+        personalInformation(){
+          this.$router.push({
+            "path": "/personal",
+            "query": {
+              "tab": "1",
+            }
+          })
+        },
+        personalSaved(){
+          this.$router.push({
+            "path": "/personal",
+            "query": {
+              "tab": "4",
+            }
+          })
+        },
+        personalMessage(){
+          this.$router.push({
+            "path": "/personal",
+            "query": {
+              "tab": "3",
+            }
+          })
+        },
     },
 };
 </script>

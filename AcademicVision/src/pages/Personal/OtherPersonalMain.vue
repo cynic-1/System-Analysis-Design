@@ -20,13 +20,14 @@
                 昵称：{{ nickname }}
               </div>
               <div style="font-size :125%">
-                姓名：{{ name }}
+                所属单位：{{ institution }}
               </div>
               <div style="font-size :125%">
-                所属单位：{{ institution }}·{{department}}
+                特长：{{ hobby }}
               </div>
             </q-card-actions>
             <q-card-actions
+              v-if="this.is_associated===1"
               vertical
               class="justify-around"
               style="margin-left: 100px"
@@ -90,16 +91,57 @@ export default {
 
     return {
       "tab": "1",
-      "nickname": "双笙",
-      "name": "路人甲",
-      "institution": "北京航空航天大学",
-      "department" :"Software",
+      "nickname": "",
+      "name": "",
+      "institution": "",
+      "department" :"",
       "isFollowed":false,
+      "is_associated":0,
+      "hobby":""
     };
 
   },
+  "mounted": function () {
+    this.loadOtherpersonalInfo()
+  },
 
   "methods": {
+    loadOtherpersonalInfo(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/check_my_info/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          user_id:window.sessionStorage.getItem('otherpersonid'),
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.info )
+        let info = res.data.info ;
+        this.nickname = info.user_name;
+        if (info.org!==null){
+          this.institution = info.org;
+        }
+        if (info.is_associated!==null) {
+          this.is_associated = info.is_associated;
+        }
+        if (info.hobby!==null) {
+          this.hobby = info.hobby;
+        }
+        // if(info.signature !== null)
+        //   this.Form.signature = info.signature;
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    },
     checkotherinfor (){
 
       this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
