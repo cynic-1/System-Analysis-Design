@@ -55,7 +55,7 @@
                   <q-avatar size="100px">
                     <q-img
                       class="rounded-borders"
-                      src="../../../public/彼岸双生.png"
+                      src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="用户头像"
                     />
                   </q-avatar>
                 </q-card-section>

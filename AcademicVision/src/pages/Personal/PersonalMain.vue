@@ -11,8 +11,8 @@
               round
               @click="alert = true"
             >
-              <q-avatar size="180px">
-                <img src="../../../public/彼岸双生.png">
+              <q-avatar size="120px">
+                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="用户头像">
               </q-avatar>
             </q-btn>
 
@@ -21,14 +21,11 @@
               class="justify-around"
               style="padding-left: 100px"
             >
-              <div style="padding-top: 10px;font-size :150%">
-                昵称：{{ nickname }}
+              <div class="q-py-sm">
+                <span class="text-weight-bold text-h4">{{ name }}</span>
               </div>
-              <div style="font-size :125%">
-                姓名：{{ name }}
-              </div>
-              <div style="font-size :125%">
-                所属单位：{{ institution }}·{{ department }}
+              <div class="q-py-sm">
+                <span class="text-grey text-h5">{{ institution }}--{{ department }}--{{degree}}</span>
               </div>
             </q-card-actions>
           </q-card-section>
@@ -44,36 +41,47 @@
         >
           <q-tab
             name="1"
-            style="width:200px"
-            label="Information"
+            style="width:200px;font-size: 20px"
+            label="个人信息"
           />
           <q-tab
             name="2"
             style="width:200px"
-            label="Research"
+            label="学者主页"
           />
           <q-tab
             name="3"
             style="width:200px"
-            label="Message"
+            label="消息中心"
           />
           <q-tab
             name="4"
             style="width:200px"
-            label="Saved"
+            label="收藏夹"
           />
         </q-tabs>
       </q-card>
-      <q-page-container v-if="tab==='1'">
-        <PersonalInformation />
-      </q-page-container>
-      <q-page-container v-else-if="tab==='2'">
-        <personal-research />
-      </q-page-container>
-      <q-page-container v-else-if="tab==='3'" />
-      <q-page-container v-else-if="tab==='4'">
-        <PersonalSaved />
-      </q-page-container>
+      <q-separator
+        inset
+        color="grey-11"
+      />
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="1">
+          <PersonalInformation />
+        </q-tab-panel>
+        <q-tab-panel name="2">
+          <personal-research
+            ref="personal-research"
+            @changeTab="changeTab"
+          />
+        </q-tab-panel>
+        <q-tab-panel name="3" >
+          <personal-message/>
+        </q-tab-panel>
+        <q-tab-panel name="4">
+          <PersonalSaved />
+        </q-tab-panel>
+      </q-tab-panels>
     </q-layout>
     <q-dialog v-model="alert">
       <q-card>
@@ -95,12 +103,12 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 
 const PersonalInformation = defineAsyncComponent(() => import("./PersonalInformation"));
 const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
 const PersonalSaved = defineAsyncComponent(() => import("./PersonalSaved"));
+const PersonalMessage = defineAsyncComponent(() => import("./PersonalMessage"));
 
 export default {
     "name": "PersonalMain",
@@ -109,13 +117,14 @@ export default {
         PersonalSaved,
         PersonalResearch,
         PersonalInformation,
+      PersonalMessage
     },
     setup () {
 
         return {
             "alert": ref(false),
         };
-    
+
     },
     data () {
 
@@ -123,8 +132,9 @@ export default {
             "tab": "1",
             "nickname": "双笙",
             "name": "路人甲",
+            "degree": "在读",
             "institution": "北京航空航天大学",
-            "department": "Software",
+            "department": "软件工程",
         };
 
     },
@@ -133,6 +143,11 @@ export default {
         checkinfor (){
 
             this.$router.push({ "path": "/personalinformation", "query": { "id": 123456 } });
+
+        },
+        changeTab (tab) {
+
+            this.tab = tab;
 
         }
     },

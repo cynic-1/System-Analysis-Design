@@ -288,19 +288,34 @@
           v-model:selected="selected"
           hide-pagination
         >
-          <template v-slot:body-cell-desc="props">
+          <template #body-cell-desc="props">
             <q-td :props="props">
               <div class="my-table-details">
-                {{props.value}}
+                {{ props.value }}
               </div>
             </q-td>
           </template>
 
-          <template v-slot:body-cell-operation="props">
+          <template #body-cell-operation="props">
             <q-td :props="props">
-              <q-btn icon="download" round flat size="sm"/>
-              <q-btn icon="star" round flat size="sm"/>
-              <q-btn icon="share" round flat size="sm"/>
+              <q-btn
+                icon="download"
+                round
+                flat
+                size="sm"
+              />
+              <q-btn
+                icon="star"
+                round
+                flat
+                size="sm"
+              />
+              <q-btn
+                icon="share"
+                round
+                flat
+                size="sm"
+              />
             </q-td>
           </template>
         </q-table>
@@ -603,7 +618,7 @@ export default {
             "related": [
                 "人工智能技术", "人工智能应用", "人工智能领域", "AI", "智能机器人", "人工智能发展", "人工智能", "弱人工智能", "智能科学"
             ],
-            "selected": [ rows[1] ],
+            "selected": [rows[1]],
         };
 
     },

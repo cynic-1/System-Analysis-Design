@@ -6,25 +6,38 @@
       style="min-height: 200px; min-width: 800px"
     />
     <div class="col-2 text-center q-py-xl">
-      <div class="text-h6 text-grey">共计</div>
-      <div class="text-h5">{{researchItems.sum}}篇</div>
+      <div class="text-h6 text-grey">
+        共计
+      </div>
+      <div class="text-h5">
+        {{ researchItems.sum }}篇
+      </div>
     </div>
   </div>
 
-  <div class="row q-pa-md" style="min-height: 200px">
-    <div class="col q-px-md" v-for="item in researchItems.items">
+  <div
+    class="row q-pa-md"
+    style="min-height: 200px"
+  >
+    <div
+      class="col q-px-md"
+      v-for="item in researchItems.items"
+    >
       <q-card>
         <q-card-section>
-          <div class="text-h6">{{item.name}}</div>
+          <div class="text-h6">
+            {{ item.name }}
+          </div>
         </q-card-section>
         <q-separator inset />
         <q-card-section>
-          <div class="text-h5">{{item.value}}</div>
+          <div class="text-h5">
+            {{ item.value }}
+          </div>
         </q-card-section>
       </q-card>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -66,60 +79,64 @@ echarts.use([
 export default {
     "name": "PieChart",
     setup () {
-        let researchItems = {
-          items: [{ value: 35, name: '期刊' },
-            { value: 16, name: '会议' },
-            { value: 9, name: '专著' },
-            { value: 3, name: '其他' }],
-          sum: 73
-        }
 
-        let option = {
-          tooltip: {
-            trigger: 'item'
-          },
-          legend: {
-            orient: "vertical",
-            textStyle: {
-              fontSize: "20"
+        const researchItems = {
+            "items": [{ "value": 35, "name": "期刊" },
+                { "value": 16, "name": "会议" },
+                { "value": 9, "name": "专著" },
+                { "value": 3, "name": "其他" }],
+            "sum": 73
+        };
+
+        const option = {
+            "tooltip": {
+                "trigger": "item"
             },
-            left: "5"
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: ['50%', '70%'],
-              avoidLabelOverlap: false,
-              label: {
-                show: true,
-                fontSize: "20",
-                position: "outside",
-                formatter: "{b}: {d}%",
-                emphasis: {
-                  show: true
+            "legend": {
+                "orient": "vertical",
+                "textStyle": {
+                    "fontSize": "20"
+                },
+                "left": "5"
+            },
+            "series": [
+                {
+                    "type": "pie",
+                    "radius": ["50%", "70%"],
+                    "avoidLabelOverlap": false,
+                    "label": {
+                        "show": true,
+                        "fontSize": "20",
+                        "position": "outside",
+                        "formatter": "{b}: {d}%",
+                        "emphasis": {
+                            "show": true
+                        }
+                    },
+                    "labelLine": {
+                        "show": true
+                    },
+                    "data": [
+                        { "value": 35, "name": "期刊" },
+                        { "value": 16, "name": "会议" },
+                        { "value": 9, "name": "专著" },
+                        { "value": 6, "name": "其他" }
+                    ]
                 }
-              },
-              labelLine: {
-                show: true
-              },
-              data: [
-                { value: 35, name: '期刊' },
-                { value: 16, name: '会议' },
-                { value: 9, name: '专著' },
-                { value: 6, name: '其他' }
-              ]
-            }
-          ]
+            ]
         };
         let chart;
         function initChart () {
-          chart = echarts.init(document.getElementById("researchPieMap"));
+
+            chart = echarts.init(document.getElementById("researchPieMap"));
             // 把配置和数据放这里
             // 在 setup 中你应该避免使用 this，因为它不会找到组件实例。setup 的调用发生在 data property、computed property 或 methods 被解析之前，所以它们无法在 setup 中被获取。
             chart.setOption(option);
             window.onresize = function () {
+
                 // 自适应大小
                 chart.resize();
+
             };
 
         }
@@ -136,21 +153,24 @@ export default {
 
         });
 
-      watch(
-        option,
-        (newOptions) => {
-          chart.value.setOption(newOptions);
-        },
-        { deep: true }
-      );
+        // watch(
+        //     option,
+        //     (newOptions) => {
+        //
+        //         chart.value.setOption(newOptions);
+        //
+        //     },
+        //     { "deep": true }
+        // );
 
         return {
-          option,
-          researchItems
+            option,
+            researchItems
         };
+
     },
-  computed: {
-  }
+    "computed": {
+    }
 };
 </script>
 

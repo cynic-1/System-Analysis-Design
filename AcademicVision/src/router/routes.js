@@ -116,16 +116,16 @@ const routes = [
         "component": () => import("pages/Search/AdvancedSearch.vue")
     },
     {
-        "path" : "/search/user",
+        "path": "/search/user",
         "component": () => import("pages/Search/UserSearch.vue")
     },
     {
-      "path" : "/search/quoted",
-      "component": () => import("pages/Search/QuotedResult.vue")
+        "path": "/search/quoted",
+        "component": () => import("pages/Search/QuotedResult.vue")
     },
     {
-      "path" : "/paper/check",
-      "component": () => import("pages/Paper/PaperCheck.vue")
+        "path": "/paper/check",
+        "component": () => import("pages/Paper/PaperCheck.vue")
     },
     // Always leave this as last one,
     // but you can also remove it
