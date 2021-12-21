@@ -61,7 +61,8 @@
       <div class="col-3">
         <q-card class="my-card">
           <q-img
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F020520123437%2F200205123437-2-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640236207&t=4ec6f18b98a2388faa3995243da314da"
+            src="https://pic4.zhimg.com/80/v2-3ee71d53dcb787415a632fdd3ad5eb37_720w.jpg"
+            style="height: 170px"
           >
             <div class="absolute-bottom">
               <div class="text-h6">
@@ -85,31 +86,31 @@
           </q-card-actions>
         </q-card>
       </div>
-      <div class="col-3">
-        <q-card class="my-card">
-          <q-img src="../../../public/希儿.jpg">
-            <div class="absolute-bottom">
-              <div class="text-h6">
-                数据分析
-              </div>
-              <div class="text-subtitle2">
-                Data analysis
-              </div>
-            </div>
-          </q-img>
+<!--      <div class="col-3">-->
+<!--        <q-card class="my-card">-->
+<!--          <q-img src="../../../public/希儿.jpg">-->
+<!--            <div class="absolute-bottom">-->
+<!--              <div class="text-h6">-->
+<!--                数据分析-->
+<!--              </div>-->
+<!--              <div class="text-subtitle2">-->
+<!--                Data analysis-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </q-img>-->
 
-          <q-card-actions>
-            <q-btn
-              flat
-              dark-percentage
-              class="card"
-              @click="charts"
-            >
-              查看
-            </q-btn>
-          </q-card-actions>
-        </q-card>
-      </div>
+<!--          <q-card-actions>-->
+<!--            <q-btn-->
+<!--              flat-->
+<!--              dark-percentage-->
+<!--              class="card"-->
+<!--              @click="charts"-->
+<!--            >-->
+<!--              查看-->
+<!--            </q-btn>-->
+<!--          </q-card-actions>-->
+<!--        </q-card>-->
+<!--      </div>-->
     </div>
 
     <h3 v-show="!isPublish && !isLove && !isCreate && !isCharts">
@@ -386,82 +387,82 @@
       </q-card>
     </q-dialog>
 
-    <div v-show="isCharts === true">
-      <div
-        class="q-pa-md row items-start q-gutter-md"
-        style="float: left"
-      >
-        <q-card class="my-card">
-          <img src="../../../public/彼岸双生.png">
+<!--    <div v-show="isCharts === true">-->
+<!--      <div-->
+<!--        class="q-pa-md row items-start q-gutter-md"-->
+<!--        style="float: left"-->
+<!--      >-->
+<!--        <q-card class="my-card">-->
+<!--          <img src="../../../public/彼岸双生.png">-->
 
-          <q-list>
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon
-                  color="primary"
-                  name="format_list_numbered"
-                />
-              </q-item-section>
+<!--          <q-list>-->
+<!--            <q-item clickable>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon-->
+<!--                  color="primary"-->
+<!--                  name="format_list_numbered"-->
+<!--                />-->
+<!--              </q-item-section>-->
 
-              <q-item-section>
-                <q-item-label class="text-h6">
-                  已发表
-                </q-item-label>
-                <q-item-label caption>
-                  100
-                </q-item-label>
-              </q-item-section>
-            </q-item>
+<!--              <q-item-section>-->
+<!--                <q-item-label class="text-h6">-->
+<!--                  已发表-->
+<!--                </q-item-label>-->
+<!--                <q-item-label caption>-->
+<!--                  100-->
+<!--                </q-item-label>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
 
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon
-                  color="red"
-                  name="favorite"
-                />
-              </q-item-section>
+<!--            <q-item clickable>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon-->
+<!--                  color="red"-->
+<!--                  name="favorite"-->
+<!--                />-->
+<!--              </q-item-section>-->
 
-              <q-item-section>
-                <q-item-label class="text-h6">
-                  被收藏
-                </q-item-label>
-                <q-item-label caption>
-                  100
-                </q-item-label>
-              </q-item-section>
-            </q-item>
+<!--              <q-item-section>-->
+<!--                <q-item-label class="text-h6">-->
+<!--                  被收藏-->
+<!--                </q-item-label>-->
+<!--                <q-item-label caption>-->
+<!--                  100-->
+<!--                </q-item-label>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
 
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon
-                  color="amber"
-                  name="thumb_up_alt"
-                />
-              </q-item-section>
+<!--            <q-item clickable>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon-->
+<!--                  color="amber"-->
+<!--                  name="thumb_up_alt"-->
+<!--                />-->
+<!--              </q-item-section>-->
 
-              <q-item-section>
-                <q-item-label class="text-h6">
-                  获赞数
-                </q-item-label>
-                <q-item-label caption>
-                  100
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </div>
-      <h4>
-        <q-icon
-          name="poll"
-          color="blue-6"
-        />&nbsp;近期获赞数趋势图
-      </h4>
-      <div
-        id="echarts1"
-        style="height: 300px;width: 600px;float: right;margin-right: 200px"
-      />
-    </div>
+<!--              <q-item-section>-->
+<!--                <q-item-label class="text-h6">-->
+<!--                  获赞数-->
+<!--                </q-item-label>-->
+<!--                <q-item-label caption>-->
+<!--                  100-->
+<!--                </q-item-label>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
+<!--          </q-list>-->
+<!--        </q-card>-->
+<!--      </div>-->
+<!--      <h4>-->
+<!--        <q-icon-->
+<!--          name="poll"-->
+<!--          color="blue-6"-->
+<!--        />&nbsp;近期获赞数趋势图-->
+<!--      </h4>-->
+<!--      <div-->
+<!--        id="echarts1"-->
+<!--        style="height: 300px;width: 600px;float: right;margin-right: 200px"-->
+<!--      />-->
+<!--    </div>-->
 
     <q-dialog v-model="card1">
       <q-card class="my-card">
@@ -588,7 +589,7 @@ export default {
                     post_id,
                 }
             });
-        
+
         },
         // 绑定@imgAdd event
         $imgAdd (pos, $file) {
@@ -627,10 +628,10 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
@@ -641,9 +642,9 @@ export default {
                     this.context = "";
                     this.type = "";
                     this.title = "";
-                
+
                 }
-            
+
             });
             // axios方法
             console.log(this.context);
@@ -709,10 +710,10 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
@@ -721,9 +722,9 @@ export default {
                 if (this.list.length === 0) {
 
                     this.card1 = true;
-                
+
                 }
-            
+
             });
             setTimeout(() => {
 
@@ -806,7 +807,7 @@ export default {
                 "method": "POST",
                 "url": "http://114.116.235.94/my_col_post_list/",
                 "data": {
-                    "user_id": this.$route.query.user_id
+                    "user_id": this.$store.state.person.userID
                 },
                 "transformRequest": [function (data) {
 
@@ -814,10 +815,10 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
@@ -826,9 +827,9 @@ export default {
                 if (this.list.length === 0) {
 
                     this.card2 = true;
-                
+
                 }
-            
+
             });
             this.isPublish = false;
             this.isLove = true;

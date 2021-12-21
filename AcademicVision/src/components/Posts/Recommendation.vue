@@ -9,10 +9,10 @@
       >
         <q-card
           class="my-card"
-          style="max-width: 800px"
+          style="max-width: 900px"
         >
           <q-parallax
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F13475370614%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641984928&t=fffc875a451548b80e4805fcecba5889"
+            src="https://pic3.zhimg.com/80/v2-e71ec4340bdd4ba0a43da480139af8ba_720w.jpg"
             :height="150"
           />
 
@@ -34,7 +34,7 @@
           style="width: 100%;max-width: 250px;height: 235px"
         >
           <q-img
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2Fc35f98bc0291f0a9284504fa36b925a13d3cf2f7.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641984928&t=89acbe024e2915f7e16d40e2239cc63a"
+            src="https://pic3.zhimg.com/80/v2-8babc37f3e33dd1b92bedd3d5518233a_720w.jpg"
             style="max-height: 180px"
           >
             <div class="absolute-bottom">
@@ -68,7 +68,7 @@
           style="width: 100%;max-width: 250px;height: 230px"
         >
           <q-img
-            src="https://upload-bbs.mihoyo.com/upload/2021/11/30/74588741/70dc8f8c9225dbe0cda3a1347edecd3a_1964087631698528665.jpg?x-oss-process=image//resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg"
+            src="https://pic4.zhimg.com/80/v2-5b07e06a72e30e6a98f9b73f8703a78b_720w.jpg"
             style="max-height: 180px"
           >
             <div class="absolute-bottom">
@@ -93,70 +93,61 @@
       </div>
     </div>
     <div
-      class="col-4"
+      class="col-8"
       style=""
     >
       <div class="q-pa-md row items-start q-gutter-md">
         <q-card
           class="my-card"
-          style="width: 100%;max-width: 250px;height: 230px"
+          style="max-width: 1500px;margin-right: 10px;float: left"
         >
-          <q-img
-            src="https://upload-bbs.mihoyo.com/upload/2021/11/22/73565430/563512b6920504ccaef1fe7ed1cff4a3_6737861904625463730.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg"
-            style="height: 180px"
-          >
-            <div class="absolute-bottom">
-              <div class="text-h6">
-                {{ title4 }}
-              </div>
-              <div class="text-subtitle2">
-                {{ name4 }}
-              </div>
-            </div>
-          </q-img>
+          <q-parallax
+            src="https://pic1.zhimg.com/80/v2-4a723621a54340be66e253361e72b484_720w.jpg"
+            :height="150"
+          />
 
-          <q-card-actions>
-            <q-btn
-              flat
-              @click="viewPost(pid4)"
-            >
-              <span style="font-size: 18px">查看帖子</span>
-            </q-btn>
-          </q-card-actions>
+          <q-card-section @click="viewPost(pid4)">
+            <div class="text-h6">
+              {{ title4 }}
+            </div>
+            <div class="text-subtitle2">
+              {{ name4 }}
+            </div>
+          </q-card-section>
         </q-card>
       </div>
     </div>
-    <div
-      class="col-4"
-      style=""
-    >
-      <div class="q-pa-md row items-start q-gutter-md">
-        <q-card
-          class="my-card"
-          style="width: 100%;max-width: 250px;height: 230px"
-        >
-          <q-img src="https://upload-bbs.mihoyo.com/upload/2021/10/29/73565430/88fda7330415d47c945ac5610f7f965b_6502096957213310465.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg">
-            <div class="absolute-bottom">
-              <div class="text-h6">
-                {{ title5 }}
-              </div>
-              <div class="text-subtitle2">
-                {{ name5 }}
-              </div>
-            </div>
-          </q-img>
+<!--    <div-->
+<!--      class="col-4"-->
+<!--      style=""-->
+<!--    >-->
+<!--      <div class="q-pa-md row items-start q-gutter-md">-->
+<!--        <q-card-->
+<!--          class="my-card"-->
+<!--          style="width: 100%;max-width: 250px;height: 230px"-->
+<!--        >-->
+<!--          <q-img src="https://upload-bbs.mihoyo.com/upload/2021/10/29/73565430/88fda7330415d47c945ac5610f7f965b_6502096957213310465.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg">-->
+<!--            <div class="absolute-bottom">-->
+<!--              <div class="text-h6">-->
+<!--                {{ title5 }}-->
+<!--              </div>-->
+<!--              <div class="text-subtitle2">-->
+<!--                {{ name5 }}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </q-img>-->
 
-          <q-card-actions>
-            <q-btn
-              flat
-              @click="viewPost(pid5)"
-            >
-              <span style="font-size: 18px">查看帖子</span>
-            </q-btn>
-          </q-card-actions>
-        </q-card>
-      </div>
-    </div>
+<!--          <q-card-actions>-->
+<!--            <q-btn-->
+<!--              flat-->
+<!--              @click="viewPost(pid5)"-->
+<!--            >-->
+<!--              <span style="font-size: 18px">查看帖子</span>-->
+<!--            </q-btn>-->
+<!--          </q-card-actions>-->
+<!--        </q-card>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -185,7 +176,7 @@ export default {
             "pid4": "",
             "pid5": "",
         };
-    
+
     },
 
     "methods": {
@@ -199,7 +190,7 @@ export default {
                     post_id,
                 }
             });
-        
+
         },
         search () {
 
@@ -223,10 +214,10 @@ export default {
                 for (const it in data) {
 
                     ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                
+
                 }
                 return ret;
-            
+
             }],
         }).then(response => {
 
@@ -247,9 +238,9 @@ export default {
             this.pid3 = this.list[2].post_id;
             this.pid4 = this.list[3].post_id;
             this.pid5 = this.list[4].post_id;
-        
+
         });
-    
+
     }
 };
 </script>
