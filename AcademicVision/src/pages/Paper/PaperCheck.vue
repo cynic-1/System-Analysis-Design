@@ -4,7 +4,7 @@
       <div style="font-size: small;color: #7f7f7f">{{instruction}}</div>
       <div style="text-align: right">
         <q-btn icon="download" size="xs" round color="blue" style="margin-right: 5px"></q-btn>
-        <q-btn icon="star" size="xs" round color="blue" style="margin-right: 5px"></q-btn>
+        <q-btn icon="star" size="xs" round color="blue" style="margin-right: 5px" @click="colpaper"></q-btn>
         <q-btn icon="share" size="xs" round color="blue" style="margin-right: 5px"></q-btn>
       </div>
       <div style="margin-top: 30px;text-align: center;font-size: 24px;font-weight: bold">{{title}}</div>
@@ -131,7 +131,7 @@ export default {
   },
   created() {
     this.paper_id = this.$route.query.id
-    this.user_id = 1
+    this.user_id = this.$store.state.person.userID
     this.loadPaper()
   },
   methods : {
@@ -183,6 +183,32 @@ export default {
         }).then(response => {
           this.abstract = response.data.abstract
         })
+    },
+    colpaper(){
+      if(this.is_col===false) {
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/col_paper/',
+          data: {
+            paper_id: this.paper_id,
+            user_id: this.$store.state.person.userID,
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          console.log(response.data.code)
+          alert("收藏成功")
+          this.is_col=true
+        })
+      }
+      else {
+        alert("文献已收藏")
+      }
     }
   }
 }
