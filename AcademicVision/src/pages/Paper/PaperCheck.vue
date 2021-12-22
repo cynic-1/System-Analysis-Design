@@ -9,7 +9,7 @@
       </div>
       <div style="margin-top: 30px;text-align: center;font-size: 24px;font-weight: bold">{{title}}</div>
       <div style="margin-top: 20px;text-align: center">
-        <span v-for="x in author" :key="x" style="margin-left: 30px;color: #006cd6;cursor: pointer;">{{x}}</span>
+        <span v-for="x in author" :key="x" style="margin-left: 30px;color: #006cd6;cursor: pointer;" @click="checkAuthor">{{x}}</span>
       </div>
       <div style="margin-top: 10px;text-align: center;color: #006cd6;cursor: pointer;">{{school}}</div>
 

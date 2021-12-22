@@ -180,6 +180,7 @@
                 text-color="blue"
                 size="14px"
                 style="margin-top: 10px;margin-left: 20px"
+                @click=" pickType(3)"
               >
                 <span style="font-weight: bold">学术期刊</span>
               </q-btn>
@@ -200,6 +201,7 @@
                 text-color="blue"
                 size="14px"
                 style="margin-bottom: 20px;margin-top: 10px"
+                @click=" pickType(2)"
               >
                 <span style="font-weight: bold">学位论文</span>
               </q-btn>
@@ -207,6 +209,7 @@
                 color="grey-3"
                 text-color="blue"
                 size="14px"
+                @click=" pickType(1)"
               >
                 <span style="font-weight: bold">图书书籍</span>
               </q-btn>
@@ -226,18 +229,42 @@
 <!--          </q-card-actions>-->
         </q-card>
 
+        <q-expansion-item
+          expand-separator
+          label="发表时间"
+          class="shadow-2"
+          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
+        >
+          <q-btn v-for="opt in this.topDate" :key="opt" flat @click="pick(opt.name)">
+            {{opt.name}}
+          </q-btn>
+        </q-expansion-item>
 
-<!--        <q-expansion-item-->
-<!--          v-model = "this.top.author_name"-->
-<!--          expand-separator-->
-<!--          label="123"-->
-<!--          class="shadow-2"-->
-<!--          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"-->
-<!--        >-->
-<!--          <q-btn v-for="opt in item" :key="opt">-->
-<!--            {{opt}}-->
-<!--          </q-btn>-->
-<!--        </q-expansion-item>-->
+        <q-expansion-item
+          expand-separator
+          label="作者"
+          class="shadow-2"
+          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
+        >
+          <div>
+            <q-btn v-for="opt in this.topAuthor" :key="opt" flat @click="pick(opt.name)">
+              {{opt.name}}
+            </q-btn>
+          </div>
+        </q-expansion-item>
+
+        <q-expansion-item
+          expand-separator
+          label="机构"
+          class="shadow-2"
+          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
+        >
+          <div>
+            <q-btn v-for="opt in this.topSchool" :key="opt" flat @click="pick(opt.name)">
+              {{opt.name}}
+            </q-btn>
+          </div>
+        </q-expansion-item>
 
         <q-card
           class="my-card"
@@ -254,27 +281,12 @@
               <q-item
                 v-ripple
                 clickable
+                v-for="item in this.relatedPaper"
+                :key="item"
+                @click="check(item.id)"
               >
                 <q-item-section>
-                  财务共享对企业财务绩效的影响研究——以华为公司为例
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                v-ripple
-                clickable
-              >
-                <q-item-section>
-                  碳市场的减排效应研究——来自中国碳交易试点地区的经验证据
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                v-ripple
-                clickable
-              >
-                <q-item-section>
-                  绿色金融与企业绿色创新
+                  {{item.title}}
                 </q-item-section>
               </q-item>
             </q-list>
@@ -354,10 +366,11 @@
         <div style="margin-top: 25px">
           <span style="margin-right: 10px;font-weight: bold;color: #b2b2b2">相关搜索</span>
           <span
-            v-for="item in related"
+            v-for="item in this.topKeyWord"
             :key="item"
             style="margin-right: 25px;color: #006cd6; cursor: pointer;"
-          >{{ item }}</span>
+            @click="relative(item.name)"
+          >{{ item.name }}</span>
         </div>
       </div>
     </div>
@@ -426,7 +439,11 @@ export default {
             "method" : 1,
             "line" : "",
             "oldrows" : [],
-            "top": ""
+            "topAuthor" : [],
+            "topKeyWord" : [],
+            "topDate" : [],
+            "topSchool" : [],
+            "relatedPaper" : []
         };
 
     },
@@ -475,6 +492,11 @@ export default {
           else
             console.log("searchBy error!");
           let row = []
+          this.topKeyWord = []
+          this.topSchool = []
+          this.topDate = []
+          this.topAuthor = []
+          this.relatedPaper = []
           this.$axios.get("http://114.116.235.94/search/",{
             params:{
               q : this.key,
@@ -482,7 +504,86 @@ export default {
               want : want,
             },
           }).then(res => {
-            this.key = "";
+            this.rows = res.data.data.goods;
+            this.oldrows = res.data.data.goods;
+            row = res.data.data.goods;
+            //console.log((this.rows[11].author_name).match(/(?<=\').*?(?=\')/g))
+            for(let item of this.rows){
+              item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
+              item.keyword = item.keyword.match(/(?<=\')[^,].*?(?=\')/g);
+              if(item.publish_time === "N/A")
+                item.publish_time = "";
+              if(item.quote === "N/A")
+                item.quote = 0;
+              if(item.org === "N/A")
+                item.org = "";
+            }
+            for(let idx in [1,2,3]){
+              let i = Math.round(Math.random()*500)
+              //console.log(this.rows[i])
+              this.relatedPaper.push({title : this.rows[i].title, id: this.rows[i].id})
+            }
+            //console.log(this.relatedPaper)
+            this.$axios({
+              method:"post",
+              url: "http://114.116.235.94/count_search/",
+              header:{
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: {all_info : row},
+              traditional: true,
+              paramsSerializer: data => {
+                return qs.stringify(data, { indices: false })
+              }
+            }).then((res)=>{
+              this.top = res.data
+              //console.log(this.top)
+
+              for(let key in this.top.author){
+                if(key !== "None") {
+                  let item = this.top.author[key];
+                  this.topAuthor.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.keywords_count){
+                if(key !== "None") {
+                  let item = this.top.keywords_count[key];
+                  this.topKeyWord.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.org){
+                if(key !== "None") {
+                  let item = this.top.org[key];
+                  this.topSchool.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.publish_time){
+                if(key !== "None") {
+                  let item = this.top.publish_time[key];
+                  this.topDate.push({name:key, value:item})
+                }
+              }
+            })
+          })
+        },
+
+        advancedSearch (){
+          this.topKeyWord = []
+          this.topSchool = []
+          this.topDate = []
+          this.topAuthor = []
+          let row = []
+          this.$axios.get("http://114.116.235.94/search/",{
+            params:{
+              q : this.key,
+              method : 2,
+              line : this.line,
+            },
+          }).then(res => {
+            //console.log(res.data.code)
             this.rows = res.data.data.goods;
             this.oldrows = res.data.data.goods;
             row = res.data.data.goods;
@@ -510,37 +611,36 @@ export default {
               }
             }).then((res)=>{
               this.top = res.data
-              //this.top = JSON.parse(JSON.stringify(this.top))
-              console.log(this.top.author)
-              for(let item of this.top.author)
-                console.log(item)
-            })
-          })
-        },
+              //console.log(this.top)
 
-        advancedSearch (){
-          this.$axios.get("http://114.116.235.94/search/",{
-            params:{
-              q : this.key,
-              method : 2,
-              line : this.line,
-            },
-          }).then(res => {
-            console.log(res.data.code)
-            this.key = "";
-            this.rows = res.data.data.goods;
-            this.oldrows = res.data.data.goods;
-            //console.log((this.rows[11].author_name).match(/(?<=\').*?(?=\')/g))
-            for(let item of this.rows){
-              item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
-              item.keyword = item.keyword.match(/(?<=\')[^,].*?(?=\')/g);
-              if(item.publish_time === "N/A")
-                item.publish_time = "";
-              if(item.quote === "N/A")
-                item.quote = 0;
-              if(item.org === "N/A")
-                item.org = "";
-            }
+              for(let key in this.top.author){
+                if(key !== "None") {
+                  let item = this.top.author[key];
+                  this.topAuthor.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.keywords_count){
+                if(key !== "None") {
+                  let item = this.top.keywords_count[key];
+                  this.topKeyWord.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.org){
+                if(key !== "None") {
+                  let item = this.top.org[key];
+                  this.topSchool.push({name:key, value:item})
+                }
+              }
+
+              for(let key in this.top.publish_time){
+                if(key !== "None") {
+                  let item = this.top.publish_time[key];
+                  this.topDate.push({name:key, value:item})
+                }
+              }
+            })
           })
         },
 
@@ -556,9 +656,19 @@ export default {
         check (id){
           this.$router.push({ "path": "/paper/check", "query": { "id": id } });
         },
-        //test () {
-          //let param = new FormData();
-          //let Obj = JSON.stringify(this.oldrows);
+        pick (cond){
+          this.key = this.key + " " + cond
+          this.search()
+        },
+        relative (cond){
+          this.key = cond
+          this.search()
+        },
+        pickType (type) {
+          this.line = "$" + this.result + "_" + "$" + this.result + "_" + "$" + this.result + "_" + "$" + "_" + "$" + "_" + "$" + type + "_" + "$"
+          this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key , "method" : "2"} });
+          this.advancedSearch()
+        },
 
     }
 };
