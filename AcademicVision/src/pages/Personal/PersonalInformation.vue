@@ -55,7 +55,7 @@
                   <q-avatar size="100px">
                     <img
                       class="rounded-borders"
-                      :src="this.Form.imgUrl" alt="用户头像"
+                      :src="this.imageurl" alt="用户头像"
                     />
                   </q-avatar>
                 </q-card-section>
@@ -822,7 +822,7 @@ export default {
           this.loadInfo();
         },
     },
-
+  props:['imageurl']
 }
 
 </script>

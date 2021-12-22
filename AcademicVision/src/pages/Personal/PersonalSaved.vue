@@ -122,7 +122,7 @@
                   color="white"
                   text-color="primary"
                   label="查看文献详细信息"
-                  @click="CheckDocument(props.row.name)"
+                  @click="CheckDocument(props.row.paper_id)"
                 />
                 <q-btn
                   style="margin-left: 30px"
@@ -353,8 +353,11 @@ export default {
             //   this.Form.briefintroduction = info.briefintroduction;
           })
         },
-        CheckDocument (name){
-
+        CheckDocument (paperid){
+          this.$router.push({
+            "path": "/paper/check",
+            "query":{"id": paperid}
+          })
         },
         CheckWriter (authorid){
           if(authorid!=null) {
@@ -362,7 +365,7 @@ export default {
             window.sessionStorage.setItem('otherpersonid', authorid);
             this.$router.push({
               "path": "/otherpersonal",
-              "tab": "2"
+              "query":{"tab": "2"},
             })
           }
           else {
