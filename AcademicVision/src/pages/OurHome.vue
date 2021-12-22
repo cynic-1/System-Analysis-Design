@@ -1,7 +1,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
-    <!--    <NavBar /><br>-->
+<!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
       style="margin-top: 0;padding-top: 0"
@@ -216,7 +216,6 @@ export default {
     },
 
     data () {
-
         return {
             "type_accepted_user": [],
             "type_options_user": [
@@ -265,9 +264,9 @@ export default {
                 },
             ],
 
-            "search_type": "主题",
+            "search_type": "不限",
             "search_type_options": [
-                "主题", "关键字", "作者", "第一作者", "参考文献", "摘要", "文献来源", "作者单位", "DOI"
+                "不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"
             ],
             "search_text": "",
             "user_search_text": "",
@@ -311,7 +310,7 @@ export default {
         search () {
 
             console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-            this.$router.push({ "path": "/posts/search", "query": { "id": 123456, "context": this.text } });
+            this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
 
         }
     }
