@@ -128,7 +128,7 @@
                   style="margin-left: 30px"
                   color="primary"
                   label="查看作者详细信息"
-                  @click="CheckWriter(props.row.name)"
+                  @click="CheckWriter(props.row.author_id)"
                 />
                 <q-btn
                   style="margin-left: 30px"
@@ -356,8 +356,18 @@ export default {
         CheckDocument (name){
 
         },
-        CheckWriter (name){
-
+        CheckWriter (authorid){
+          if(authorid!=null) {
+            console.log(authorid)
+            window.sessionStorage.setItem('otherpersonid', authorid);
+            this.$router.push({
+              "path": "/otherpersonal",
+              "tab": "2"
+            })
+          }
+          else {
+            alert("该作者未注册")
+          }
         },
         DeleteDocument (paperid){
           console.log(paperid)
@@ -399,6 +409,7 @@ export default {
           window.sessionStorage.setItem('otherpersonid',userid);
           this.$router.push({
             "path": "/otherpersonal",
+            "tab" : "1"
           })
         },
         DeletePost (postid,userid){

@@ -141,6 +141,9 @@ export default {
           return ret
         }],
       }).then((res)=>{
+        if(this.$route.query.tab) {
+          this.tab = this.$route.query.tab;
+        }
         console.log(res.data.info )
         let info = res.data.info ;
         this.nickname = info.user_name;
