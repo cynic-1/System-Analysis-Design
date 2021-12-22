@@ -114,7 +114,7 @@ export default {
             "passwordRules": [(v) => !!v || "请填写密码"],
             "message": "error",
         };
-    
+
     },
     "methods": {
         Login () {
@@ -133,10 +133,10 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
@@ -148,40 +148,41 @@ export default {
                     this.$store.commit("setUserName", response.data.data.username);
                     this.$store.commit("setUserID", response.data.data.userid);
                     this.$store.commit("setUserHeadImage", response.data.data.image);
+                    console.log(response.data.data.image);
                     this.$store.commit("setUserAssociated", response.data.data.is_associated);
                     this.$router.push({ "path": "/home", "query": { "user_id": response.data.data.userid } });
                     // this.$router.push({ path: "/home" });
-                
+
                 } else if (response.data.code === "0") {
 
                     alert(response.data.message);
                     this.clear();
-                
+
                 }
-            
+
             });
-        
+
         },
         validate () {
 
             this.$refs.form.validate();
-        
+
         },
         clear () {
 
             this.id = "";
             this.password = "";
-        
+
         },
         affirmPass (val) {
 
             if (val !== this.password) {
 
                 return "两次密码不一致";
-            
+
             }
             return true;
-        
+
         },
     },
 };

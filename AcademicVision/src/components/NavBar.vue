@@ -40,7 +40,7 @@
                 <div class="column items-center">
                   <q-avatar size="72px">
                     <template v-if="this.$store.state.person.headImage!==''">
-                      <img :src="'/'+this.$store.state.person.headImage">
+                      <img :src="'http://114.116.235.94/'+this.$store.state.person.headImage">
                     </template>
                     <template v-else>
                       <img src="https://cdn.quasar.dev/img/avatar4.jpg">
