@@ -15,7 +15,7 @@
 
     <div
       class="q-pa-md"
-      style="max-width: 1000px;float: right;margin-right: 100px;margin-top: 20px"
+      style="max-width: 1000px;float: right;margin-right: 100px;margin-top: 60px"
     >
       <form
         class="q-gutter-md"

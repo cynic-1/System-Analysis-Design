@@ -214,7 +214,7 @@
       >
         <q-chat-message
           :name="comment.comment_user_name"
-          avatar="https://img1.baidu.com/it/u=2176556412,2854184110&fm=26&fmt=auto"
+          :avatar="'http://114.116.235.94/' + comment.user_img"
           :text="[comment.comment_content]"
           :stamp="comment.com_time"
           style="font-size: 23px;width: 1100px"
@@ -306,7 +306,7 @@
       <q-pagination
         v-model="current"
         color="blue-6"
-        :max="length"
+        :max="commnet_length"
         :max-pages="6"
         :boundary-numbers="false"
         @click="left = (current - 1) * 5;right = 5 + (current - 1) * 5"
@@ -350,6 +350,7 @@ export default {
     data () {
 
         return {
+          "commnet_length": 0,
             "isStar": false,
             "hasComment": false,
             "title": "帖子标题",
@@ -563,10 +564,10 @@ export default {
                 for (const it in data) {
 
                     ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                
+
                 }
                 return ret;
-            
+
             }],
         }).then(response => {
 
@@ -579,12 +580,19 @@ export default {
             this.comments = response.data.all_info.comment;
             this.isStar = response.data.all_info.is_col;
             this.markdownToHtml();
+            if (this.comments.length !== 0) {
+              if (this.comments.length % 5 === 0) {
+                this.commnet_length = this.comments.length / 5
+              } else {
+                this.commnet_length = this.comments.length / 5 + 1
+              }
+            }
             if (this.comments.length === 0) {
 
                 this.hasComment = true;
-            
+
             }
-        
+
         });
 
         // http://114.116.235.94/get_report_post/
@@ -622,17 +630,17 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("取消收藏帖子", response);
-            
+
             });
-        
+
         },
         star () {
 
@@ -651,17 +659,17 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("收藏帖子", response);
-            
+
             });
-        
+
         },
         postGood () {
 
@@ -679,17 +687,17 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("点赞帖子", response);
-            
+
             });
-        
+
         },
         postNotGood () {
 
@@ -707,18 +715,18 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("取消点赞帖子", response);
                 this.isgood = false;
-            
+
             });
-        
+
         },
         markdownToHtml () {
 
@@ -753,16 +761,16 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("举报帖子", response);
                 this.reason = "";
-            
+
             });
             alert("举报成功");
 
@@ -783,15 +791,15 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("评论点赞", response);
-            
+
             });
             let index = 0;
             for (index = 0; index < this.comments.length; index += 1) {
@@ -823,15 +831,15 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("取消评论点赞", response);
-            
+
             });
             let index = 0;
             for (index = 0; index < this.comments.length; index += 1) {
@@ -893,10 +901,10 @@ export default {
                         for (const it in data) {
 
                             ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                        
+
                         }
                         return ret;
-                    
+
                     }],
                 }).then(response => {
 
@@ -904,10 +912,10 @@ export default {
                     if (response.data.code === 200) {
 
                         this.alert = true;
-                    
+
                     }
                     this.hasComment = false;
-                
+
                 });
                 const d = new Date();
                 let str = "";
@@ -930,20 +938,20 @@ export default {
                         for (const it in data) {
 
                             ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                        
+
                         }
                         return ret;
-                    
+
                     }],
                 }).then(response => {
 
                     console.log("查看帖子", response);
                     this.comments = response.data.all_info.comment;
-                
+
                 });
-            
+
             }
-        
+
         },
 
         onReset () {
@@ -970,19 +978,19 @@ export default {
                     for (const it in data) {
 
                         ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
+
                     }
                     return ret;
-                
+
                 }],
             }).then(response => {
 
                 console.log("举报评论", response);
                 this.prompt = true;
                 this.reason = "";
-            
+
             });
-        
+
         }
     },
 
