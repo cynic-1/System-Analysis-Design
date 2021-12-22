@@ -387,7 +387,7 @@
                 <template #body-cell-operation="props">
                   <q-td :props="props">
                     <q-btn flat color="primary" @click="gotoCheckUser(props.row.user_id)">查看</q-btn>
-                    <q-btn flat color="red" @click="deleteuser(props.rows.id)">删除</q-btn>
+                    <q-btn flat color="red" @click="deleteuser(props.row.user_id)">封禁账号</q-btn>
                   </q-td>
                 </template>
               </q-table>
@@ -808,6 +808,10 @@ export default {
           this.loadUserTable();
           alert("创建成功");
           this.alert=false;
+          this.id="" ;
+          this.password="";
+          this.rePassword="";
+          this.Email="";
         }
         else if (response.data.code === "0") {
           alert(response.data.message);
@@ -816,16 +820,33 @@ export default {
       })
     },
     validate () {
-
+      this.$refs.form.validate();
+    },
+    deleteuser (id){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/ban_user/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        deleteuser (id){
-
+        data:{
+          user_id:id,
         },
-        validate () {
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadUserTable();
+        alert("处理成功");
+      })
+      this.loadUserTable();
+    },
 
-            this.$refs.form.validate();
-
-        },
     }
 };
 </script>

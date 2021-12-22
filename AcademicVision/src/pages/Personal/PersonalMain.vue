@@ -11,8 +11,8 @@
               round
               @click="alert = true"
             >
-              <q-avatar size="120px">
-                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="用户头像">
+              <q-avatar size="120px" >
+                <img :src="this.imgUrl" alt="用户头像">
               </q-avatar>
             </q-btn>
 
@@ -25,7 +25,7 @@
                 <span class="text-weight-bold text-h4">{{ nickname }}</span>
               </div>
               <div class="q-py-sm">
-                <span class="text-grey text-h5">{{ institution }}--{{ hobby }}</span>
+                <span class="text-grey text-h5">{{ institution }}--{{ department }}</span>
               </div>
             </q-card-actions>
           </q-card-section>
@@ -91,11 +91,13 @@
           </div>
         </q-card-section>
         <q-uploader
+          auto-upload
           style="max-width: 300px"
-          url="http://localhost:4444/upload"
           label="仅限于jpg,png文件"
           accept=".jpg,.png, image/*"
-          @rejected="onRejected"
+          @uploaded="attachmentUploaded"
+          url="http://114.116.235.94/save_img/"
+          field-name="picture"
         />
       </q-card>
     </q-dialog>
@@ -123,6 +125,7 @@ export default {
 
         return {
             "alert": ref(false),
+            "filesImages": ref(null),
         };
 
     },
@@ -135,7 +138,9 @@ export default {
             "institution": "",
             "department" :"",
             "is_associated":0,
-            "hobby":""
+            "hobby":"",
+            "imgUrl":"",
+            "user_id":this.$store.state.person.userID,
         };
 
     },
@@ -170,6 +175,8 @@ export default {
             console.log(res.data.info )
             let info = res.data.info ;
             this.nickname = info.user_name;
+            this.imgUrl = "http://114.116.235.94/" +  info.image;
+            console.log(this.imgUrl)
             if (info.org!==null){
               this.institution = info.org;
             }
@@ -179,6 +186,10 @@ export default {
             if (info.hobby!==null) {
               this.hobby = info.hobby;
             }
+            if (info.department!==null) {
+              this.department = info.department;
+            }
+
             // if(info.signature !== null)
             //   this.Form.signature = info.signature;
             // if(info.briefintroduction !== null)
@@ -188,7 +199,32 @@ export default {
         changeTab (tab) {
 
             this.tab = tab;
-        }
+        },
+      attachmentUploaded:function (file){
+        // console.log(file.name)
+        console.log(file["files"][0])
+        this.$axios({
+          method:"post",
+          url:"http://114.116.235.94/change_img/",
+          header:{
+            'Content-Type': 'multipart/from-data'
+          },
+          data:{
+            user_id:this.$store.state.person.userID,
+            picture:file["files"][0].name,
+          },
+          transformRequest:[function(data){
+            let ret = ''
+            for(let it in data){
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then((res)=>{
+          console.log("更新成功")
+          this.loadpersonalInfo()
+        })
+       }
     },
 
 
@@ -202,7 +238,7 @@ export default {
 .personal-menu-card
   width: 100%
 .my-card
-  padding-left: 370px
+  padding-left: 500px
   width: 100%
   max-width: 1200px
 </style>

@@ -233,6 +233,7 @@ export default {
         "introduction":"",
         "Language":"",
         "text": "",
+        "OtherimgUrl":"",
         "follownum": 1,
         "Researchitemnum":0,
         "Projectnum":0,
@@ -267,6 +268,7 @@ export default {
         console.log(res.data.info )
         let info = res.data.info ;
         this.Form.nickname = info.user_name;
+        this.Form.OtherimgUrl = 'http://114.116.235.94/' +  info.image;
         if (info.org!==null){
           this.Form.institution = info.org;
         }
@@ -296,6 +298,9 @@ export default {
         }
         if (info.position!==null) {
           this.Form.position = info.position;
+        }
+        if (info.org_bio!==null) {
+          this.Form.text = info.org_bio;
         }
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;

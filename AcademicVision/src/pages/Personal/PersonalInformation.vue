@@ -46,16 +46,16 @@
                   </div>
                   <p>{{ Form.institution }}</p>
                   <div class="text-caption text-grey">
-                    Skills and expertise
+                    Department
                   </div>
-                  <p>{{ Form.skill }}</p>
+                  <p>{{ Form.department }}</p>
                 </q-card-section>
 
                 <q-card-section style="padding-left: 300px">
                   <q-avatar size="100px">
-                    <q-img
+                    <img
                       class="rounded-borders"
-                      src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="用户头像"
+                      :src="this.Form.imgUrl" alt="用户头像"
                     />
                   </q-avatar>
                 </q-card-section>
@@ -159,7 +159,7 @@
                 特长
               </div>
               <q-input
-                v-model="Form.skill"
+                v-model="Form.department"
                 outlined
                 bottom-slots
                 dense
@@ -618,6 +618,7 @@ export default {
                 "introduction": "",
                 "Language": "",
                 "text": "",
+                "imgUrl":"",
                 "is_associated":1,
                 "follownum": 1,
                 "Researchitemnum": 0,
@@ -653,6 +654,7 @@ export default {
             console.log(res.data.info )
             let info = res.data.info ;
             this.Form.nickname = info.user_name;
+            this.Form.imgUrl = 'http://114.116.235.94/' + info.image;
             if (info.org!==null){
               this.Form.institution = info.org;
             }
@@ -683,6 +685,9 @@ export default {
             if (info.position!==null) {
               this.Form.position = info.position;
             }
+            if (info.org_bio!==null) {
+              this.Form.text = info.org_bio;
+            }
             // if(info.briefintroduction !== null)
             //   this.Form.briefintroduction = info.briefintroduction;
           })
@@ -707,7 +712,7 @@ export default {
                 user_id: this.$store.state.person.userID,
                 name: this.Form.nickname,
                 org: this.Form.institution,
-                hobby:this.Form.skill,
+                department:this.Form.department,
               },
               transformRequest: [function (data) {
                 let ret = ''
@@ -730,7 +735,7 @@ export default {
 
           this.Form.nickname = null;
           this.Form.institution = null;
-          this.Form.skill = null;
+          this.Form.department = null;
         },
         Cancel () {
           this.disabled = true;
@@ -788,6 +793,7 @@ export default {
               position: this.Form.position ,
               direction:this.Form.direction ,
               achievement:this.Form.achievement ,
+              org_bio:this.Form.text,
             },
             transformRequest: [function (data) {
               let ret = ''

@@ -7,9 +7,12 @@
             horizontal
             style="padding-top: 30px"
           >
-            <q-btn round>
-              <q-avatar size="180px">
-                <img src="../../../public/彼岸双生.png">
+            <q-btn
+              round
+              @click="alert = true"
+            >
+              <q-avatar size="120px">
+                <img :src="this.OtherimgUrl" alt="用户头像">
               </q-avatar>
             </q-btn>
 
@@ -18,14 +21,11 @@
               class="justify-around"
               style="padding-left: 100px"
             >
-              <div style="padding-top: 10px;font-size :150%">
-                昵称：{{ nickname }}
+              <div class="q-py-sm">
+                <span class="text-weight-bold text-h4">{{ nickname }}</span>
               </div>
-              <div style="font-size :125%">
-                所属单位：{{ institution }}
-              </div>
-              <div style="font-size :125%">
-                特长：{{ hobby }}
+              <div class="q-py-sm">
+                <span class="text-grey text-h5">{{ institution }}--{{ department }}</span>
               </div>
             </q-card-actions>
             <q-card-actions
@@ -113,7 +113,8 @@ export default {
       "department" :"",
       "isFollowed":false,
       "is_associated":0,
-      "hobby":""
+      "hobby":"",
+      "OtherimgUrl":"",
     };
 
   },
@@ -143,6 +144,7 @@ export default {
         console.log(res.data.info )
         let info = res.data.info ;
         this.nickname = info.user_name;
+        this.OtherimgUrl = 'http://114.116.235.94/' +  info.image;
         if (info.org!==null){
           this.institution = info.org;
         }
@@ -151,6 +153,9 @@ export default {
         }
         if (info.hobby!==null) {
           this.hobby = info.hobby;
+        }
+        if (info.department!==null) {
+          this.department = info.department;
         }
         // if(info.signature !== null)
         //   this.Form.signature = info.signature;
@@ -163,7 +168,7 @@ export default {
     },
     changeFollow (){
       if (this.isFollowed){
-        this.isFollowed = false;           
+        this.isFollowed = false;
       } else {
         this.isFollowed = true;
           }
@@ -181,7 +186,7 @@ export default {
 .other-personal-menu-card
   width: 100%
 .other-card
-  padding-left: 370px
+  padding-left: 500px
   width: 100%
   max-width: 1200px
 </style>

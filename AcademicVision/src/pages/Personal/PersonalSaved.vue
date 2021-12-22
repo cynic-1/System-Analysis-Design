@@ -59,7 +59,7 @@
         title="文献列表"
         :rows="rows1"
         :columns="columns1"
-        row-key="index"
+        row-key="paper_id"
         virtual-scroll
         :rows-per-page-options="[0]"
         :filter="filter1"
@@ -134,7 +134,7 @@
                   style="margin-left: 30px"
                   color="red"
                   label="取消关注"
-                  @click="DeleteDocument(props.row.name)"
+                  @click="DeleteDocument(props.row.paper_id)"
                 />
               </div>
             </q-td>
@@ -229,112 +229,21 @@ const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer")
 
 const columns1 = [
     {
-        "name": "index",
-        "label": "#",
-        "field": "index"
-    },
-    {
-        "name": "name",
+        "name": "title",
         "required": true,
         "label": "文献名称",
         "align": "left",
-        "field": row => row.name,
+        "field": row => row.title,
         "format": val => `${val}`,
         "sortable": true
     },
-    { "name": "writer", "label": "作者", "field": "writer" },
-    { "name": "view", "align": "center", "label": "浏览次数", "field": "view", "sortable": true },
-    { "name": "cited", "align": "center", "label": "被引次数", "field": "cited", "sortable": true },
-    { "name": "date", "label": "发布日期", "field": "date" },
+    { "name": "author_name","align": "center", "label": "作者", "field": "author_name" },
+    { "name": "org", "align": "center", "label": "出版单位", "field": "org",},
+    { "name": "quote", "align": "center", "label": "被引次数", "field": "quote", "sortable": true },
+    { "name": "publish_time","align": "center", "label": "发布日期", "field": "publish_time" },
 ];
 
-const seed = [
-    {
-        "name": "Frozen Yogurt",
-        "writer": "老王",
-        "view": 159,
-        "cited": 24,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "Ice cream sandwich",
-        "writer": "hufkah",
-        "view": 14514,
-        "cited": 345,
-        "date": "2015-10-13",
-    },
-    {
-        "name": "Eclair",
-        "writer": "dddd",
-        "view": 495,
-        "cited": 34,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "Cupcake",
-        "writer": "老王",
-        "view": 159,
-        "cited": 24,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "Gingerbread",
-        "writer": "老王",
-        "view": 159,
-        "cited": 24,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "Jelly bean",
-        "writer": "hkc",
-        "view": 2221,
-        "cited": 444,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "Lollipop",
-        "writer": "刘子",
-        "view": 4241,
-        "cited": 22,
-        "date": "2002-9-15",
-    },
-    {
-        "name": "Honeycomb",
-        "writer": "ss",
-        "view": 2334,
-        "cited": 55,
-        "date": "2020-1-13",
-    },
-    {
-        "name": "数据库",
-        "writer": "黄坚",
-        "view": 2321,
-        "cited": 425,
-        "date": "2019-1-13",
-    },
-    {
-        "name": "算法导论",
-        "writer": "宋友",
-        "view": 6615,
-        "cited": 84,
-        "date": "2012-4-13",
-    },
-    {
-        "name": "KitKat",
-        "writer": "张三",
-        "view": 6126,
-        "cited": 223,
-        "date": "2017-2-13",
-    }
-];
 
-let rows1 = [];
-rows1 = rows1.concat(seed.slice(0).map(r => ({ ...r })));
-rows1.forEach((row, index) => {
-
-    row.index = index + 1;
-
-});
 const columns2 = [
     {
         "name": "title",
@@ -351,78 +260,6 @@ const columns2 = [
     { "name": "time", "align": "center","label": "发布日期", "field": "time" },
 ];
 
-const seed2 = [
-    {
-        "name2": "爱情来的太快就像龙卷风",
-        "writer2": "周杰伦",
-        "view2": 159,
-        "like": 24,
-        "date2": "2009-1-13",
-    },
-    {
-        "name2": "Ice cream sandwich",
-        "writer2": "hufkah",
-        "view2": 14514,
-        "like": 345,
-        "date2": "2015-10-13",
-    },
-    {
-        "name2": "Eclair",
-        "writer2": "dddd",
-        "view2": 495,
-        "like": 34,
-        "date2": "2019-1-13",
-    },
-    {
-        "name2": "Cupcake",
-        "writer2": "老王",
-        "view2": 159,
-        "like": 24,
-        "date2": "2019-1-13",
-    },
-    {
-        "name2": "Jelly bean",
-        "writer2": "hkc",
-        "view2": 2221,
-        "like": 444,
-        "date2": "2019-1-13",
-    },
-    {
-        "name2": "Lollipop",
-        "writer2": "刘子",
-        "view2": 4241,
-        "like": 22,
-        "date2": "2002-9-15",
-    },
-    {
-        "name2": "Honeycomb",
-        "writer2": "ss",
-        "view2": 2334,
-        "like": 55,
-        "date2": "2020-1-13",
-    },
-    {
-        "name2": "数据库",
-        "writer2": "黄坚",
-        "view2": 2321,
-        "like": 425,
-        "date2": "2019-1-13",
-    },
-    {
-        "name2": "算法导论",
-        "writer2": "宋友",
-        "view2": 6615,
-        "like": 84,
-        "date2": "2012-4-13",
-    },
-    {
-        "name2": "KitKat",
-        "writer2": "张三",
-        "view2": 6126,
-        "like": 223,
-        "date2": "2017-2-13",
-    }
-];
 
 export default {
     "name": "PersonalSaved",
@@ -442,7 +279,7 @@ export default {
     data () {
 
         return {
-          rows1,
+          rows1:[],
           columns1,
           rows2:[],
           columns2,
@@ -462,9 +299,35 @@ export default {
 
     },
    "mounted": function () {
-    this.loadPostTable()
+      this.loadPaperTable()
+      this.loadPostTable()
     },
     "methods": {
+        loadPaperTable(){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/my_col_paper_list/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.info )
+            let info = res.data.info ;
+            this.rows1=info;
+            // if(info.briefintroduction !== null)
+            //   this.Form.briefintroduction = info.briefintroduction;
+          })
+        },
         loadPostTable(){
           this.$axios({
             method:"post",
@@ -496,8 +359,29 @@ export default {
         CheckWriter (name){
 
         },
-        DeleteDocument (name){
-
+        DeleteDocument (paperid){
+          console.log(paperid)
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/un_col_paper/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id: this.$store.state.person.userID,
+              paper_id: paperid,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          })
+          this.loadPaperTable()
+          alert('取消关注成功')
+          this.loadPaperTable()
         },
         CheckPost (postid,userid){
           console.log(userid)
@@ -517,7 +401,7 @@ export default {
             "path": "/otherpersonal",
           })
         },
-        async DeletePost (postid,userid){
+        DeletePost (postid,userid){
          this.$axios({
             method:"post",
             url:"http://114.116.235.94/un_col_post/",
@@ -525,7 +409,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id: userid,
+              user_id: this.$store.state.person.userID,
               post_id: postid
             },
             transformRequest:[function(data){
