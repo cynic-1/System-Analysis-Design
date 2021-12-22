@@ -585,8 +585,8 @@ export default {
             this.$router.push({
                 "path": "/posts/view",
                 "query": {
-                    "user_id": this.$route.query.user_id,
-                    post_id,
+                    "user_id": this.$store.state.person.userID,
+                    "post_id": post_id,
                 }
             });
 
@@ -617,7 +617,7 @@ export default {
                 "method": "POST",
                 "url": "http://114.116.235.94/publish_post/",
                 "data": {
-                    "user_id": this.$route.query.user_id,
+                    "user_id": this.$store.state.person.userID,
                     "content": this.context,
                     "label": this.type,
                     "title": this.title

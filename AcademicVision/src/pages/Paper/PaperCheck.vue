@@ -3,8 +3,6 @@
     <q-card style="width: 90%;margin: 20px auto auto auto;padding: 15px 10% 20px 10%">
       <div style="font-size: small;color: #7f7f7f">{{ instruction }}</div>
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Maximized" color="primary" @click="dialog = true"/>
-
         <q-dialog
           v-model="dialog"
           persistent
@@ -43,7 +41,7 @@
       <div style="text-align: right">
         <q-btn icon="download" size="15px" round color="blue" style="margin-right: 5px;size: 100px"
                @click="this.dialog = true"></q-btn>
-       <q-btn icon="star" size="xs" round color="blue" style="margin-right: 5px" @click="colpaper"></q-btn>
+       <q-btn icon="star" size="15px" round color="blue" style="margin-right: 5px" @click="colpaper"></q-btn>
         <q-btn icon="share" size="15px" round color="blue" style="margin-right: 5px" @click="creatQrCode"></q-btn>
       </div>
       <div class="qrcode" ref="qrCodeUrl" style="float: right;margin-top: 20px"></div>
