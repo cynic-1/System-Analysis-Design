@@ -67,7 +67,7 @@
       />
       <q-tab-panels v-model="tab">
         <q-tab-panel name="1">
-          <PersonalInformation />
+          <PersonalInformation :imageurl="this.imgUrl" />
         </q-tab-panel>
         <q-tab-panel name="2">
           <personal-research
@@ -223,6 +223,7 @@ export default {
         }).then((res)=>{
           console.log("更新成功")
           this.loadpersonalInfo()
+          this.$store.commit("setUserHeadImage",this.imgUrl)
         })
        }
     },
