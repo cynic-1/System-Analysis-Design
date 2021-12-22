@@ -1,4 +1,5 @@
 <template>
+<!--  <NavBar></NavBar>-->
   <div
     class="row bg-white"
     style="min-height: 400px; width: 92%; padding: 24px;margin-left: 8%"
@@ -6,51 +7,52 @@
     <div
       id="parent"
       class="fit row wrap justify-start items-start content-start"
-      style="overflow: hidden;margin-top: 100px"
+      style="overflow: hidden;margin-top: 60px"
     >
       <q-card
         class="q-pa-md row"
         style="width: 66%; margin-left: 10px"
       >
-        <q-slide-transition>
-          <div v-show="expanded">
-            <q-card-section class=" text-black">
-              <div style="font-size: large">
-                文献分类
-              </div>
-              <div style="margin-top: 5px;margin-bottom: 5px">
-                <span style="text-align: right;color:#b2b2b2;font-size: small;cursor: pointer;">全选 </span>
-                <span
-                  style="text-align: right;color:#b2b2b2;font-size: small;cursor: pointer;"
-                  @click="subject = []"
-                > 清除</span>
-              </div>
-              <div style="width: 70px;font-size: 1px;">
-                <q-option-group
-                  v-model="subject"
-                  :options="subjectList"
-                  type="checkbox"
-                  dense
-                  size="xs"
-                />
-              </div>
-            </q-card-section>
-            <q-separator vertical />
-          </div>
-        </q-slide-transition>
+<!--        <q-slide-transition>-->
+<!--          <div v-show="expanded">-->
+<!--            <q-card-section class=" text-black">-->
+<!--              <div style="font-size: large">-->
+<!--                文献分类-->
+<!--              </div>-->
+<!--              <div style="margin-top: 5px;margin-bottom: 5px">-->
+<!--                <span style="text-align: right;color:#b2b2b2;font-size: small;cursor: pointer;">全选 </span>-->
+<!--                <span-->
+<!--                  style="text-align: right;color:#b2b2b2;font-size: small;cursor: pointer;"-->
+<!--                  @click="subject = []"-->
+<!--                > 清除</span>-->
+<!--              </div>-->
+<!--              <div style="width: 70px;font-size: 1px;">-->
+<!--                <q-option-group-->
+<!--                  v-model="subject"-->
+<!--                  :options="subjectList"-->
+<!--                  type="checkbox"-->
+<!--                  dense-->
+<!--                  size="xs"-->
+<!--                />-->
+<!--              </div>-->
+<!--            </q-card-section>-->
+<!--            <q-separator vertical />-->
+<!--          </div>-->
+<!--        </q-slide-transition>-->
 
-        <q-btn
-          flat
-          :icon="expanded ? 'keyboard_arrow_left' : 'keyboard_arrow_right'"
-          size="xs"
-          style="height: 30px"
-          @click="expanded = !expanded"
-        />
+<!--        <q-btn-->
+<!--          flat-->
+<!--          :icon="expanded ? 'keyboard_arrow_left' : 'keyboard_arrow_right'"-->
+<!--          size="xs"-->
+<!--          style="height: 30px"-->
+<!--          @click="expanded = !expanded"-->
+<!--        />-->
 
         <q-form
           class="q-gutter-md rounded-borders"
           @submit="onSubmit"
           @reset="onReset"
+          style="margin-left: 40px;width: 85%"
         >
           <q-toolbar
             v-for="(item,index) in condition"
@@ -85,7 +87,7 @@
             <q-separator
               vertical
               inset
-              style="margin-left: 10px"
+              style="margin-left: 10px;margin-right: 10px"
             />
 
             <q-btn-dropdown
@@ -132,28 +134,28 @@
               style="margin-left: 10px"
             />
 
-            <q-btn-dropdown
-              :label="item.whichOne"
-              color="white"
-              style="width: 15%"
-              text-color="black"
-              stretch
-              flat
-            >
-              <q-list>
-                <q-item
-                  v-for="opt in which"
-                  :key="opt"
-                  v-close-popup
-                  clickable
-                  @click="onItemClick(index, 'which', opt)"
-                >
-                  <q-item-section>
-                    <q-item-label>{{ opt }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-btn-dropdown>
+<!--            <q-btn-dropdown-->
+<!--              :label="item.whichOne"-->
+<!--              color="white"-->
+<!--              style="width: 15%"-->
+<!--              text-color="black"-->
+<!--              stretch-->
+<!--              flat-->
+<!--            >-->
+<!--              <q-list>-->
+<!--                <q-item-->
+<!--                  v-for="opt in which"-->
+<!--                  :key="opt"-->
+<!--                  v-close-popup-->
+<!--                  clickable-->
+<!--                  @click="onItemClick(index, 'which', opt)"-->
+<!--                >-->
+<!--                  <q-item-section>-->
+<!--                    <q-item-label>{{ opt }}</q-item-label>-->
+<!--                  </q-item-section>-->
+<!--                </q-item>-->
+<!--              </q-list>-->
+<!--            </q-btn-dropdown>-->
 
             <q-btn
               flat
@@ -168,20 +170,20 @@
             />
           </q-toolbar>
 
-          <div
-            class="q-gutter-sm"
-            style="margin-left: 5%"
-          >
-            <span style="font-size: large">数据源:</span>
-            <q-radio
-              v-for="item in from"
-              :key="item"
-              v-model="fromWhere"
-              name="where"
-              :val="item"
-              :label="item"
-            />
-          </div>
+<!--          <div-->
+<!--            class="q-gutter-sm"-->
+<!--            style="margin-left: 5%"-->
+<!--          >-->
+<!--            <span style="font-size: large">数据源:</span>-->
+<!--            <q-radio-->
+<!--              v-for="item in from"-->
+<!--              :key="item"-->
+<!--              v-model="fromWhere"-->
+<!--              name="where"-->
+<!--              :val="item"-->
+<!--              :label="item"-->
+<!--            />-->
+<!--          </div>-->
 
           <div
             class="q-gutter-sm row"
@@ -204,21 +206,21 @@
               style="width: 20%;margin-left: 30px"
               label="结束时间"
             />
-            <q-select
-              v-model="updateDate"
-              outlined
-              dense
-              :options="updateDateOption"
-              style="width: 20%;margin-left: 30px"
-              label="更新时间"
-            />
+<!--            <q-select-->
+<!--              v-model="updateDate"-->
+<!--              outlined-->
+<!--              dense-->
+<!--              :options="updateDateOption"-->
+<!--              style="width: 20%;margin-left: 30px"-->
+<!--              label="更新时间"-->
+<!--            />-->
           </div>
 
           <div
             class="q-gutter-sm row"
             style="margin-left: 5%"
           >
-            <span style="font-size: large;margin-right: 10px">来源类别:</span>
+            <span style="font-size: large;margin-right: 10px">文献种类:</span>
             <q-checkbox
               v-for="item in sourceKind"
               :key="item"
@@ -272,30 +274,31 @@
 </template>
 
 <script>
+import NavBar from "components/NavBar";
 export default {
     "name": "AdvancedSearch",
-
-    data () {
+  components: {NavBar},
+  data () {
 
         return {
-            "list": ["主题", "篇关摘", "关键词", "篇名", "第一作者"],
+            "list": ["篇名", "摘要", "关键词", "作者", "机构"],
             "which": ["精确", "模糊"],
-            "with": ["AND", "OR", "NOT"],
+            "with": ["AND", "NOT"],
             "from": ["总库", "中文", "外文"],
             "fromWhere": "总库",
             "condition": [
-                { "searchBy": "主题", "whichOne": "精确", "isAccurate": true, "wayWith": "AND", "key": "", },
-                { "searchBy": "作者", "whichOne": "精确", "isAccurate": true, "wayWith": "AND", "key": "", },
-                { "searchBy": "文献来源", "whichOne": "精确", "isAccurate": true, "wayWith": "AND", "key": "", }
+                { "searchBy": "篇名", "wayWith": "AND", "key": "", },
+                { "searchBy": "关键词", "wayWith": "AND", "key": "", },
+                { "searchBy": "作者", "wayWith": "AND", "key": "", },
             ],
             "dateOption": [1915],
             "updateDateOption": ["今年迄今", "上一年度", "最近一年", "最近半年", "最近一月", "最近半月", "不限"],
             "updateDate": "不限",
             "beginDate": "",
             "endDate": "",
-            "sourceKind": ["全部期刊", "SCI来源期刊", "EI来源期刊", "北大核心", "CSSCI", "CSCD"],
-            "source": ["全部期刊"],
-            "subjectList": [
+            "sourceKind": ["全部", "图书书籍", "学位论文", "学术期刊"],
+            "source": ["全部"],
+            /*"subjectList": [
                 { "label": "基础科学", "value": "基础科学" },
                 { "label": "工程科技I辑", "value": "工程科技I辑" },
                 { "label": "工程科学II辑", "value": "工程科学II辑" },
@@ -308,7 +311,7 @@ export default {
                 { "label": "经济与管理科学", "value": "经济与管理科学" }
             ],
             "subject": [],
-            "expanded": false,
+            "expanded": false,*/
             "name": null,
             "age": null,
             "accept": false,
@@ -352,11 +355,12 @@ export default {
         },
         addDomain (){
 
-            this.condition.push({ "searchBy": "主题", "whichOne": "精确", "isAccurate": true, "wayWith": "AND", "key": "", });
+            this.condition.push({ "searchBy": "篇名", "wayWith": "AND", "key": "", });
 
         },
         delDomain (index){
-
+            if(index === 0)
+              return alert("至少需要一个条件!")
             this.condition.splice(index, 1);
 
         },
@@ -370,34 +374,79 @@ export default {
 
         },
         onSubmit () {
-
-            if (this.accept !== true) {
-
-                this.$q.notify({
-                    "color": "red-5",
-                    "textColor": "white",
-                    "icon": "warning",
-                    "message": "You need to accept the license and terms first"
-                });
-
-            } else {
-
-                this.$q.notify({
-                    "color": "green-4",
-                    "textColor": "white",
-                    "icon": "cloud_done",
-                    "message": "Submitted"
-                });
-
+          let s = ["","","","",""]
+          let flag = [0,0,0,0,0]
+          let index = 0
+          let line = ""
+          let key = ""
+          for(let item of this.condition){
+            if(item.searchBy === "摘要")
+              index = 0
+            else if(item.searchBy === "关键词")
+              index = 1
+            else if(item.searchBy === "篇名")
+              index = 2
+            else if(item.searchBy === "作者")
+              index = 3
+            else
+              index = 4
+            if(item.wayWith === "AND"){
+              if(flag[index] !== -1){
+                flag[index]  = 1;
+                s[index] = s[index]==="" ? item.key : (s[index] + " " + item.key)
+                if(index !== 4)
+                  key = key === ""? item.key : (key + " " + item.key)
+              }
+              else
+                return alert("同一个搜索字段在不同条件中不能既AND又NOT！")
             }
-
+            else{
+              if(flag[index] !== 1){
+                flag[index]  = -1;
+                s[index] = s[index]==="" ? item.key : (s[index] + " " + item.key)
+              }
+              else
+                return alert("同一个搜索字段在不同条件中不能既AND又NOT！")
+            }
+          }
+          index = 0
+          for(let item in s){
+            let symbol = flag[index] === -1?"-":"$"
+            line += symbol + s[index] + "_"
+            index++
+          }
+          let from = ""
+          if(this.source.length === 0)
+            from = "123"
+          let source  = JSON.parse(JSON.stringify(this.source))
+          //console.log(source)
+          index = 0
+          while(index < source.length){
+            //console.log(source[index])
+            if(source[index] === "全部"){
+              from = "123"
+              break
+            }
+            if(source[index] === "图书书籍")
+              from += "1"
+            else if (source[index] === "学位论文")
+              from += "2"
+            else if (source[index] === "学术期刊")
+              from += "3"
+            index++
+          }
+          line += "$" + from +"_"
+          if(this.beginDate !== "" && this.endDate === "")
+            this.endDate = "2021"
+          if(this.beginDate === "" && this.endDate !== "")
+            this.beginDate = "1915"
+          line += "$" + this.beginDate + this.endDate
+          console.log(line)
+          console.log(key)
+          this.$router.push({ "path": "/search", "query": { "line": line, "key": key, "method" : "2"} });
         },
 
         onReset () {
-
-            this.name = null;
-            this.age = null;
-            this.accept = false;
 
         }
     }

@@ -1,4 +1,5 @@
 <template>
+  <NavBar></NavBar>
   <div
     class="q-pa-md"
     style="margin-left: 20%"
@@ -57,7 +58,7 @@
             <q-icon
               name="search"
               class="cursor-pointer"
-              @click="simpleSearch"
+              @click="search"
             />
           </template>
         </q-input>
@@ -97,48 +98,48 @@
     </div>
   </div>
 
-  <div class="q-pa-md">
-    <div
-      class="q-gutter-y-md"
-      style="width: 100%"
-    >
-      <q-tabs
-        v-model="tab"
-        inline-label
-        class="bg-blue-8 text-white shadow-2"
-      >
-        <span
-          v-for="item in categories"
-          :key="item"
-        >
-          <q-tab
-            v-if="item.selection.length ===0"
-            :name="item.name"
-            :label="item.name + '( ' + item.num + ' )'"
-          />
+<!--  <div class="q-pa-md">-->
+<!--    <div-->
+<!--      class="q-gutter-y-md"-->
+<!--      style="width: 100%"-->
+<!--    >-->
+<!--      <q-tabs-->
+<!--        v-model="tab"-->
+<!--        inline-label-->
+<!--        class="bg-blue-8 text-white shadow-2"-->
+<!--      >-->
+<!--        <span-->
+<!--          v-for="item in categories"-->
+<!--          :key="item"-->
+<!--        >-->
+<!--          <q-tab-->
+<!--            v-if="item.selection.length ===0"-->
+<!--            :name="item.name"-->
+<!--            :label="item.name + '( ' + item.num + ' )'"-->
+<!--          />-->
 
-          <q-btn-dropdown
-            v-else
-            auto-close
-            stretch
-            flat
-            :label="item.name"
-          >
-            <q-list>
-              <q-item
-                v-for="opt in item.selection"
-                :key="opt"
-                clickable
-                @click="tab = ''"
-              >
-                <q-item-section>{{ opt.name }}({{ opt.num }})</q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-        </span>
-      </q-tabs>
-    </div>
-  </div>
+<!--          <q-btn-dropdown-->
+<!--            v-else-->
+<!--            auto-close-->
+<!--            stretch-->
+<!--            flat-->
+<!--            :label="item.name"-->
+<!--          >-->
+<!--            <q-list>-->
+<!--              <q-item-->
+<!--                v-for="opt in item.selection"-->
+<!--                :key="opt"-->
+<!--                clickable-->
+<!--                @click="tab = ''"-->
+<!--              >-->
+<!--                <q-item-section>{{ opt.name }}({{ opt.num }})</q-item-section>-->
+<!--              </q-item>-->
+<!--            </q-list>-->
+<!--          </q-btn-dropdown>-->
+<!--        </span>-->
+<!--      </q-tabs>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div
     class="row bg-white"
@@ -169,8 +170,16 @@
                 style="margin-left: 15px"
               >
                 <div class="text-center">
-                  <span style="font-weight: bold">总库</span><br><span>20.09万</span>
+                  <span style="font-weight: bold">全部</span><br><span>20.09万</span>
                 </div>
+              </q-btn>
+              <q-btn
+                color="grey-3"
+                text-color="blue"
+                size="14px"
+                @click="test"
+              >
+                学术期刊
               </q-btn>
             </q-card-actions>
 
@@ -181,34 +190,36 @@
 
             <q-card-actions
               vertical
-              style="margin-left: 15px"
+              style="margin-left: 0px"
             >
-              <q-btn flat>
-                中文
+
+              <q-btn
+                color="grey-3"
+                text-color="blue"
+                size="14px"
+                style="margin-bottom: 20px;margin-top: 10px"
+              >
+                学位论文
               </q-btn>
-              <q-btn flat>
-                外文
+              <q-btn
+                color="grey-3"
+                text-color="blue"
+                size="14px"
+              >
+                图书书籍
               </q-btn>
+
             </q-card-actions>
           </q-card-section>
 
           <q-separator />
 
           <q-card-actions align="around">
-            <q-btn
-              color="grey-3"
-              text-color="blue"
-              size="18px"
-              @click="test"
-            >
-              科技
+            <q-btn flat>
+              中文
             </q-btn>
-            <q-btn
-              color="grey-3"
-              text-color="blue"
-              size="18px"
-            >
-              社科
+            <q-btn flat>
+              外文
             </q-btn>
           </q-card-actions>
         </q-card>
@@ -362,9 +373,13 @@
 <script>
 import { computed, ref } from "vue";
 import qs from "qs";
+import NavBar from "components/NavBar";
 
 export default {
     "name": "SearchResult",
+    "components": {
+      NavBar
+    },
     data () {
         const pagination = ref({
           "sortBy": "desc",
@@ -414,20 +429,34 @@ export default {
             ],
             "rows" : [],
             "pagesNumber": computed(() => Math.ceil(this.rows.length / pagination.value.rowsPerPage)),
-            oldrows: []
+            "method" : 1,
+            "line" : "",
+            "oldrows" : []
         };
 
     },
 
     created() {
+      this.method = this.$route.query.method
       this.key = this.$route.query.key;
-      this.searchBy = this.$route.query.searchBy;
-      this.simpleSearch();
+      if(this.method === "1") {
+        this.searchBy = this.$route.query.searchBy;
+        this.simpleSearch();
+      }
+      else if(this.method === "2"){
+        console.log(1)
+        this.line = this.$route.query.line;
+        this.advancedSearch();
+      }
     },
 
     "methods": {
         onItemClick (item) {
           this.searchBy = item;
+        },
+        search (){
+          this.$router.push({ "path": "/search", "query": { "searchBy": this.searchBy, "key": this.key , "method" : "1"} });
+          this.simpleSearch()
         },
         simpleSearch () {
           if(this.key === '') {
@@ -474,9 +503,38 @@ export default {
             }
           })
         },
+
+        advancedSearch (){
+          this.$axios.get("http://114.116.235.94/search/",{
+            params:{
+              q : this.key,
+              method : 2,
+              line : this.line,
+            },
+          }).then(res => {
+            console.log(res.data.code)
+            this.key = "";
+            this.rows = res.data.data.goods;
+            this.oldrows = res.data.data.goods;
+            //console.log((this.rows[11].author_name).match(/(?<=\').*?(?=\')/g))
+            for(let item of this.rows){
+              item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
+              item.keyword = item.keyword.match(/(?<=\')[^,].*?(?=\')/g);
+              if(item.publish_time === "N/A")
+                item.publish_time = "";
+              if(item.quote === "N/A")
+                item.quote = 0;
+              if(item.org === "N/A")
+                item.org = "";
+            }
+          })
+        },
+
         searchOnResult(){
           this.key = this.result + " " + this.key;
-          this.simpleSearch ();
+          console.log(this.key)
+          this.$router.push({ "path": "/search", "query": { "searchBy": this.searchBy, "key": this.key, "method" : "1" } });
+          this.simpleSearch ()
         },
         advanced () {
           this.$router.push("/search/advanced");

@@ -310,7 +310,7 @@ export default {
         search () {
 
             console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-            this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text } });
+            this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
 
         }
     }

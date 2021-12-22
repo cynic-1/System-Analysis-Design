@@ -160,7 +160,7 @@ export default {
         this.title = info.title
         this.publish_time = info.publish_time
         this.school = info.org
-        this.abstract = info.abstract
+        //this.abstract = info.abstract
         this.author = info.author_name.match(/(?<=\')[^,].*?(?=\')/g)
         this.keywords = info.keyword.match(/(?<=\')[^,].*?(?=\')/g)
         this.quote = info.quote === "N/A"?0:info.quote
@@ -169,6 +169,23 @@ export default {
         this.collection = info.collection
         this.is_col = info.is_col
       })
+
+        this.$axios({
+          method: 'POST',
+          url: 'http://114.116.235.94/get_abstract/',
+          data: {
+            paper_id : this.paper_id
+          },
+          transformRequest: [function (data) {
+            let ret = ''
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then(response => {
+          this.abstract = response.data.abstract
+        })
     }
   }
 }

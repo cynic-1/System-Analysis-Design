@@ -35,6 +35,7 @@ const routes = [
                 "path": "/home",
                 "component": () => import("pages/OurHome")
             },
+
         ]
     },
     // 注册主页页面路由
