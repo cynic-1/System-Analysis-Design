@@ -3,69 +3,7 @@
     <q-header elevated>
       <NavBar />
     </q-header>
-    <q-page-container>
-      <div class="q-pa-md q-gutter-sm">
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="帖子功能测试入口"
-          no-caps
-          @click="ChangetoPosts"
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="搜索结果测试入口"
-          no-caps
-          @click="ChangetoSearch"
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="登录注册测试入口"
-          to="/register"
-          no-caps
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="主页测试入口"
-          to="/home"
-          no-caps
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="个人中心测试入口"
-          to="/personal"
-          no-caps
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="他人中心测试入口"
-          to="/otherpersonal"
-          no-caps
-        />
-        <q-btn
-          :ripple="{ center: true }"
-          rounded
-          color="blue-6"
-          label="管理员界面测试入口"
-          to="/administrator"
-          no-caps
-        />
-      </div>
-      <div class="q-pa-md q-gutter-sm" />
-    </q-page-container>
-
-
+    <br>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -109,11 +47,11 @@ export default defineComponent({
 
                 alert("您还没有登录，即将为您跳转到登录界面");
                 this.$router.push({ "path": "/login" });
-            
+
             } else {
 
                 this.$router.push({ "path": "/posts", "query": { "user_id": this.$store.state.person.userID } });
-            
+
             }
 
 
