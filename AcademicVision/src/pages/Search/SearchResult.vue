@@ -165,21 +165,23 @@
               align="center"
             >
               <q-btn
+                color="grey-3"
+                text-color="blue"
                 flat
-                size="20px"
+                size="24px"
                 style="margin-left: 15px"
               >
                 <div class="text-center">
-                  <span style="font-weight: bold">全部</span><br><span>20.09万</span>
+                  <span style="font-weight: bold">全部</span>
                 </div>
               </q-btn>
               <q-btn
                 color="grey-3"
                 text-color="blue"
                 size="14px"
-                @click="test"
+                style="margin-top: 10px;margin-left: 20px"
               >
-                学术期刊
+                <span style="font-weight: bold">学术期刊</span>
               </q-btn>
             </q-card-actions>
 
@@ -199,51 +201,43 @@
                 size="14px"
                 style="margin-bottom: 20px;margin-top: 10px"
               >
-                学位论文
+                <span style="font-weight: bold">学位论文</span>
               </q-btn>
               <q-btn
                 color="grey-3"
                 text-color="blue"
                 size="14px"
               >
-                图书书籍
+                <span style="font-weight: bold">图书书籍</span>
               </q-btn>
 
             </q-card-actions>
           </q-card-section>
 
-          <q-separator />
+<!--          <q-separator />-->
 
-          <q-card-actions align="around">
-            <q-btn flat>
-              中文
-            </q-btn>
-            <q-btn flat>
-              外文
-            </q-btn>
-          </q-card-actions>
+<!--          <q-card-actions align="around">-->
+<!--            <q-btn flat>-->
+<!--              中文-->
+<!--            </q-btn>-->
+<!--            <q-btn flat>-->
+<!--              外文-->
+<!--            </q-btn>-->
+<!--          </q-card-actions>-->
         </q-card>
 
 
-        <q-expansion-item
-          v-for="item in topic"
-          :key="item"
-          expand-separator
-          :label="item"
-          class="shadow-2"
-          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
-        >
-          <q-expansion-item
-            :header-inset-level="1"
-            expand-separator
-            label="技术研究"
-          />
-          <q-expansion-item
-            :header-inset-level="1"
-            expand-separator
-            label="应用研究"
-          />
-        </q-expansion-item>
+<!--        <q-expansion-item-->
+<!--          v-model = "this.top.author_name"-->
+<!--          expand-separator-->
+<!--          label="123"-->
+<!--          class="shadow-2"-->
+<!--          style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"-->
+<!--        >-->
+<!--          <q-btn v-for="opt in item" :key="opt">-->
+<!--            {{opt}}-->
+<!--          </q-btn>-->
+<!--        </q-expansion-item>-->
 
         <q-card
           class="my-card"
@@ -339,12 +333,12 @@
             </q-td>
           </template>
 
-          <template v-slot:body-cell-operation="props">
-            <q-td :props="props">
-              <q-btn icon="star" round flat size="sm"/>
-              <q-btn icon="share" round flat size="sm"/>
-            </q-td>
-          </template>
+<!--          <template v-slot:body-cell-operation="props">-->
+<!--            <q-td :props="props">-->
+<!--              <q-btn icon="star" round flat size="sm"/>-->
+<!--              <q-btn icon="share" round flat size="sm"/>-->
+<!--            </q-td>-->
+<!--          </template>-->
         </q-table>
 
         <div class="row justify-center q-mt-md">
@@ -425,13 +419,14 @@ export default {
               { "name": "time", "align": "center", "label": "发表时间", "field": "publish_time",sortable: true },
               { "name": "keyword", "align": "center", "label": "关键词", "field": "keyword" },
               { "name": "quote", "align": "center", "label": "被引", "field": "quote", sortable: true },
-              { "name": "operation", "align": "center", "label": "操作", "field": "protein" }
+             // { "name": "operation", "align": "center", "label": "操作", "field": "protein" }
             ],
             "rows" : [],
             "pagesNumber": computed(() => Math.ceil(this.rows.length / pagination.value.rowsPerPage)),
             "method" : 1,
             "line" : "",
-            "oldrows" : []
+            "oldrows" : [],
+            "top": ""
         };
 
     },
@@ -479,7 +474,7 @@ export default {
             want = "00001";
           else
             console.log("searchBy error!");
-
+          let row = []
           this.$axios.get("http://114.116.235.94/search/",{
             params:{
               q : this.key,
@@ -490,6 +485,7 @@ export default {
             this.key = "";
             this.rows = res.data.data.goods;
             this.oldrows = res.data.data.goods;
+            row = res.data.data.goods;
             //console.log((this.rows[11].author_name).match(/(?<=\').*?(?=\')/g))
             for(let item of this.rows){
               item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
@@ -501,6 +497,24 @@ export default {
               if(item.org === "N/A")
                 item.org = "";
             }
+            this.$axios({
+              method:"post",
+              url: "http://114.116.235.94/count_search/",
+              header:{
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: {all_info : row},
+              traditional: true,
+              paramsSerializer: data => {
+                return qs.stringify(data, { indices: false })
+              }
+            }).then((res)=>{
+              this.top = res.data
+              //this.top = JSON.parse(JSON.stringify(this.top))
+              console.log(this.top.author)
+              for(let item of this.top.author)
+                console.log(item)
+            })
           })
         },
 
@@ -542,22 +556,10 @@ export default {
         check (id){
           this.$router.push({ "path": "/paper/check", "query": { "id": id } });
         },
-        test () {
-          this.$axios({
-            method:"post",
-            url: "http://114.116.235.94/count_search/",
-            header:{
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: {all_info : this.oldrows},
-            traditional: true,
-            paramsSerializer: data => {
-              return qs.stringify(data, { indices: false })
-            }
-          }).then((res)=>{
-            console.log(res.data)
-          })
-        }
+        //test () {
+          //let param = new FormData();
+          //let Obj = JSON.stringify(this.oldrows);
+
     }
 };
 </script>
@@ -577,6 +579,7 @@ export default {
 .my-table-details2 {
   font-size: 1.0em;
   max-width: 200px;
+  min-width: 100px;
   white-space: normal;
   text-align: center;
 }
