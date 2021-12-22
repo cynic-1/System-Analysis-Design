@@ -176,6 +176,7 @@ export default {
             let info = res.data.info ;
             this.nickname = info.user_name;
             this.imgUrl = "http://114.116.235.94/" +  info.image;
+            this.$store.commit("setUserHeadImage",info.image)
             console.log(this.imgUrl)
             if (info.org!==null){
               this.institution = info.org;
@@ -223,7 +224,6 @@ export default {
         }).then((res)=>{
           console.log("更新成功")
           this.loadpersonalInfo()
-          this.$store.commit("setUserHeadImage",this.imgUrl)
         })
        }
     },
