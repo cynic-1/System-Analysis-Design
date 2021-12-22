@@ -15,7 +15,7 @@
 
     <div
       class="q-pa-md"
-      style="max-width: 1000px;float: right;margin-right: 100px"
+      style="max-width: 1000px;float: right;margin-right: 100px;margin-top: 20px"
     >
       <form
         class="q-gutter-md"
@@ -380,7 +380,7 @@ export default {
 
             // 举报axios请求
             alert("举报成功");
-        
+
         },
         good (cid) {
 
@@ -392,11 +392,11 @@ export default {
                     this.comments[index].goodnumber += 1;
                     this.comments[index].isgood = true;
                     break;
-                
+
                 }
-            
+
             }
-        
+
         },
         bad (cid) {
 
@@ -408,11 +408,11 @@ export default {
                     this.comments[index].goodnumber -= 1;
                     this.comments[index].isgood = false;
                     break;
-                
+
                 }
-            
+
             }
-        
+
         },
         simulateProgress (number) {
 
@@ -423,9 +423,9 @@ export default {
 
                 // we're done, we reset loading state
                 this[`loading${number}`] = false;
-            
+
             }, 1000);
-        
+
         },
         onSubmit () {
 
@@ -433,7 +433,7 @@ export default {
             if (this.$refs.text.hasError) {
 
                 this.formHasError = true;
-            
+
             } else {
 
                 this.alert = true;
@@ -449,7 +449,7 @@ export default {
                     "cid": -1,
                 });
                 this.text = "";
-            
+
             }
 
         },
@@ -457,7 +457,7 @@ export default {
 
             this.text = null;
             this.$refs.text.resetValidation();
-        
+
         }
     },
 
