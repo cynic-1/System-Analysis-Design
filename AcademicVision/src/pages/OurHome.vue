@@ -45,7 +45,7 @@
                   <q-tab
                     name="user_search"
                     icon="alarm"
-                    label="用户检索"
+                    label="门户检索"
                   />
                 </q-tabs>
               </template>
@@ -157,13 +157,47 @@
         <h4 style="margin: 20px">
           热 门 论 文 <span class="material-icons">trending_up</span>
         </h4>
-        <EachRanking
-          v-for="each in hot_paper_list"
-          :key="each"
-          :rank="each.rank"
-          :context="each.context"
-          :author="each.author"
-        />
+        <div v-for="(each,index) in hot_paper_list"
+             :key="each">
+          <div
+            class="q-pa-md q-gutter-sm"
+            style="padding: 0;margin: 0"
+          >
+            <q-banner
+              class="bg-grey-3"
+              @click="viewPaper(each.paper_id)"
+            >
+              <template #avatar>
+                <q-icon
+                  v-if="index+1===1"
+                  name="leaderboard"
+                  color="red"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===2"
+                  name="leaderboard"
+                  color="yellow-10"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===3"
+                  name="leaderboard"
+                  color="indigo-12"
+                  size="27px"
+                />
+                <q-icon
+                  v-else
+                  name="leaderboard"
+                  color="blue-3"
+                  size="27px"
+                />
+              </template>
+              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              {{ each.paper_name }}
+            </q-banner>
+          </div>
+        </div>
       </div>
       <div
         class="col-3 q-mx-lg"
@@ -172,13 +206,49 @@
         <h4 style="margin: 20px">
           热 门 学 者 <span class="material-icons">trending_up</span>
         </h4>
-        <EachRanking
-          v-for="each in hot_scholar_list"
-          :key="each"
-          :rank="each.rank"
-          :context="each.context"
-          :author="each.author"
-        />
+        <div v-for="(each,index) in hot_scholar_list"
+             :key="each">
+          <div
+            class="q-pa-md q-gutter-sm"
+            style="padding: 0;margin: 0"
+          >
+            <q-banner
+              class="bg-grey-3"
+              @click="viewAuthor(each.author_id)"
+            >
+              <template #avatar>
+                <q-icon
+                  v-if="index+1===1"
+                  name="leaderboard"
+                  color="red"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===2"
+                  name="leaderboard"
+                  color="yellow-10"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===3"
+                  name="leaderboard"
+                  color="indigo-12"
+                  size="27px"
+                />
+                <q-icon
+                  v-else
+                  name="leaderboard"
+                  color="blue-3"
+                  size="27px"
+                />
+              </template>
+              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              <strong>{{ each.name }}&nbsp;&nbsp;&nbsp;</strong>
+              <row style="float:right;padding-right: 40px">被引量{{ each.quote }}</row>
+
+            </q-banner>
+          </div>
+        </div>
       </div>
       <div
         class="col-3 q-mx-lg"
@@ -187,13 +257,47 @@
         <h4 style="margin: 20px">
           热 门 关 键 词 <span class="material-icons">trending_up</span>
         </h4>
-        <EachRanking
-          v-for="each in hot_keyword_list"
-          :key="each"
-          :rank="each.rank"
-          :context="each.context"
-          :author="each.author"
-        />
+        <div v-for="(each,index) in hot_keyword_list"
+             :key="each">
+          <div
+            class="q-pa-md q-gutter-sm"
+            style="padding: 0;margin: 0"
+          >
+            <q-banner
+              class="bg-grey-3"
+              @click="viewKeyword(each)"
+            >
+              <template #avatar>
+                <q-icon
+                  v-if="index+1===1"
+                  name="leaderboard"
+                  color="red"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===2"
+                  name="leaderboard"
+                  color="yellow-10"
+                  size="27px"
+                />
+                <q-icon
+                  v-else-if="index+1===3"
+                  name="leaderboard"
+                  color="indigo-12"
+                  size="27px"
+                />
+                <q-icon
+                  v-else
+                  name="leaderboard"
+                  color="blue-3"
+                  size="27px"
+                />
+              </template>
+              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              {{ each }}
+            </q-banner>
+          </div>
+        </div>
       </div>
     </div>
     <!--评论测试>-->
@@ -208,7 +312,7 @@ import PaperComment from "components/PaperComment";
 
 export default {
     "name": "Home",
-
+    "props": ["rank", "context", "author", "pid"],
     "components": {
         NavBar,
         EachRanking,
@@ -276,44 +380,120 @@ export default {
             "slide": "first",
             "autoplay": true,
             "hot_paper_list": [
-                { "rank": 1, "context": "拓扑排序", "author": "" },
-                { "rank": 2, "context": "狄杰斯特拉算法", "author": "" },
-                { "rank": 3, "context": "Prime算法", "author": "" },
-                { "rank": 4, "context": "什么时候能做完软工啊", "author": "" },
-                { "rank": 5, "context": "55555555", "author": "555" },
-                { "rank": 6, "context": "66666666", "author": "666" },
-                { "rank": 7, "context": "77777777", "author": "777" },
+                { "paper_id": 1, "paper_name": "拓扑排序"},
+                { "paper_id": 2, "paper_name": "插入排序"},
+                { "paper_id": 3, "paper_name": "分治"},
             ],
             "hot_scholar_list": [
-                { "rank": 1, "context": "晓海", "author": "" },
-                { "rank": 2, "context": "永欣", "author": "" },
-                { "rank": 3, "context": "卢", "author": "黄俊郎" },
-                { "rank": 4, "context": "郭", "author": "444" },
-                { "rank": 5, "context": "龙", "author": "555" },
-                { "rank": 6, "context": "66666666", "author": "666" },
-                { "rank": 7, "context": "77777777", "author": "777" },
+                { "author_id":1,"name": "宋", "quote": "1231"},
+                { "author_id":2,"name": "徐", "quote": "1221"},
             ],
             "hot_keyword_list": [
-                { "rank": 1, "context": "软件工程", "author": "" },
-                { "rank": 2, "context": "操作系统", "author": "" },
-                { "rank": 3, "context": "编译原理", "author": "" },
-                { "rank": 4, "context": "智能计算", "author": "" },
-                { "rank": 5, "context": "算法", "author": "" },
-                { "rank": 6, "context": "66666666", "author": "" },
-                { "rank": 7, "context": "77777777", "author": "" },
+              "软件工程",
+              "操作系统",
+              "数据挖掘",
+              "算法设计",
             ]
         };
 
     },
 
-    "methods": {
-        search () {
+    methods: {
+      viewPaper (paper_id) {
 
-            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+        console.log("点击了查看论文方法", paper_id);
+        this.$router.push({
+          "path": "/paper/check",
+          "query": {
+            "id": paper_id
+          }
+        });
+
+      },
+      viewAuthor (author_id) {
+
+        console.log("点击了查看学者方法", author_id);
+        this.$router.push({
+          "path": "",
+          "query": {
+
+          }
+        });
+
+      },
+      viewKeyword (keyword) {
+
+        console.log("点击了查看关键词方法", keyword);
+        this.$router.push({ "path": "/search", "query": { "searchBy": "不限", "key": keyword , "method" : "1"} });
+
+      },
+        search () {
+            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
             this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
 
         }
-    }
+    },
+    mounted() {
+      this.$axios({
+        "method": "POST",
+        "url": "http://114.116.235.94/top_author/",
+        "data": {
+        },
+        "transformRequest": [function (data) {
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+        console.log("作者热度排行榜", response);
+        this.hot_scholar_list = response.data.info;
+      });
+      this.$axios({
+        "method": "POST",
+        "url": "http://114.116.235.94/top_keywords/",
+        "data": {
+        },
+        "transformRequest": [function (data) {
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+        console.log("关键词热度排行榜", response);
+        this.hot_keyword_list = response.data.all_key;
+      });
+      this.$axios({
+        "method": "POST",
+        "url": "http://114.116.235.94/top_paper/",
+        "data": {
+        },
+        "transformRequest": [function (data) {
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+        console.log("论文热度排行榜", response);
+        this.hot_paper_list = response.data.top_paper;
+      });
+    },
+
+
 };
 </script>
 
