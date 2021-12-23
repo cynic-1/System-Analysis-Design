@@ -251,11 +251,12 @@ export default {
       }).then(response => {
         this.abstract = response.data.abstract
       })
-      //console.log(this.paper)
-      if(this.paper === null || this.paper === undefined || this.paper.length < 10)
+
+      if(this.paper === null || this.paper === undefined || this.paper.length < 11)
         this.paper = this.defaultPaper
+      console.log(this.paper)
       for(let idx in [1,2,3,4,5,6,7,8,9,10]){
-        let i = Math.round(Math.random()*this.paper.length)
+        let i = Math.round(Math.random()*(this.paper.length-1))
         //console.log(this.rows[i])
         this.reference.push({title : this.paper[i].title, id: this.paper[i].id, author:this.paper[i].author_name, publish_time: this.paper[i].publish_time})
       }
