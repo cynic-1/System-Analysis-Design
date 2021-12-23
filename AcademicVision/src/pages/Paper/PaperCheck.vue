@@ -42,7 +42,7 @@
         <q-btn icon="download" size="15px" round color="blue" style="margin-right: 5px;size: 100px"
                @click="this.dialog = true"></q-btn>
        <q-btn icon="star" size="15px" round color="blue" style="margin-right: 5px" @click="colpaper"></q-btn>
-        <q-btn icon="share" size="15px" round color="blue" style="margin-right: 5px" @click="creatQrCode"></q-btn>
+        <q-btn icon="share" size="15px" round color="blue" style="margin-right: 5px" @click="creatQrCode" :disable="isClick"></q-btn>
       </div>
       <div class="qrcode" ref="qrCodeUrl" style="float: right;margin-top: 20px"></div>
       <div style="margin-top: 30px;text-align: center;font-size: 24px;font-weight: bold">{{ title }}</div>
@@ -123,8 +123,61 @@
       </q-tab-panels>
 
     </q-card>
+    <q-dialog v-model="toolbar">
+      <q-card style="height: 150px;width: 350px">
+        <q-toolbar>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
+          </q-avatar>
 
-    <PostView></PostView>
+          <q-toolbar-title><span class="text-weight-bold" style="font-size: 25px">收藏</span><span style="font-size: 25px">错误提示</span></q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+
+        <q-card-section>
+          <span style="font-size: 20px">请您先登录</span>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="toolbar1">
+      <q-card style="height: 150px;width: 350px">
+        <q-toolbar>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
+          </q-avatar>
+
+          <q-toolbar-title><span class="text-weight-bold" style="font-size: 25px">收藏</span><span style="font-size: 25px">提示</span></q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+
+        <q-card-section>
+          <span style="font-size: 20px">收藏成功</span>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="toolbar2">
+      <q-card style="height: 150px;width: 350px">
+        <q-toolbar>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
+          </q-avatar>
+
+          <q-toolbar-title><span class="text-weight-bold" style="font-size: 25px">收藏</span><span style="font-size: 25px">提示</span></q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+
+        <q-card-section>
+          <span style="font-size: 20px">您已经收藏过了当前文献</span>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <PostView :paper_id="this.$route.query.id"></PostView>
   </div>
 </template>
 
@@ -140,7 +193,10 @@ export default {
   },
   data() {
     return {
+      isClick: false,
       toolbar: false,
+      toolbar1: false,
+      toolbar2: false,
       qrcodeValue: {
         userId: ''
       },
@@ -199,6 +255,7 @@ export default {
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       })
+      this.isClick = true;
     },
     loadPaper() {
       //console.log(this.paper)
@@ -262,35 +319,6 @@ export default {
       }
       //console.log(this.reference)
     },
-    getPdf(title) {
-      html2Canvas(document.querySelector('#pdfDom'), {
-        allowTaint: true
-      }).then(function (canvas) {
-          let contentWidth = canvas.width
-          let contentHeight = canvas.height
-          let pageHeight = contentWidth / 592.28 * 841.89
-          let leftHeight = contentHeight
-          let position = 0
-          let imgWidth = 595.28
-          let imgHeight = 592.28 / contentWidth * contentHeight
-          let pageData = canvas.toDataURL('image/jpeg', 1.0)
-          let PDF = new JsPDF('', 'pt', 'a4')
-          if (leftHeight < pageHeight) {
-            PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
-          } else {
-            while (leftHeight > 0) {
-              PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-              leftHeight -= pageHeight
-              position -= 841.89
-              if (leftHeight > 0) {
-                PDF.addPage()
-              }
-            }
-            }
-          PDF.save(title + '.pdf')
-        }
-      )
-    },
     colpaper(){
       if(this.is_col===false && this.user_id !== "1") {
         this.$axios({
@@ -309,15 +337,16 @@ export default {
           }],
         }).then(response => {
           console.log(response.data.code)
-          alert("收藏成功")
+          this.toolbar1 = true;
           this.is_col=true
         })
       }
-      else if(this.user_id === "1"){
-        alert("请先登录！")
+      else if(this.$store.state.login === false){
+        // alert("请先登录！")
+        this.toolbar = true;
       }
       else {
-        alert("文献已收藏")
+        this.toolbar2 = true;
       }
     },
     checkAuthor(name){

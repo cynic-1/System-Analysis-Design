@@ -29,7 +29,7 @@
           type="textarea"
           clearable
           hint="评论字数上限200字"
-          label="写一条友善的评论吧~"
+          label="请理智友善发言~"
           lazy-rules
           style="float: right;width: 1200px;font-size: 20px"
           :rules="[ val => val && val.length > 0 || '请您输入评论内容',
@@ -77,106 +77,70 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+      <q-dialog v-model="isLoginAlert">
+        <q-card style="width: 500px">
+          <q-card-section class="q-pt-none" style="font-size: 19px;margin-left: 70px;margin-top: 40px">
+            您尚未登录，请前往
+            <q-btn
+              flat
+              v-close-popup
+              color="primary"
+              label="登录"
+              push
+              dense
+              size="lg"
+              to="/login"
+            />
+          </q-card-section>
+
+          <q-card-actions align="right">
+
+            <q-btn
+              v-close-popup
+              flat
+              label="OK"
+              color="primary"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
 
     <div
       class="q-pa-md row justify-center"
       style="width: 1300px;margin-left: 80px"
     >
+      <h5
+        style="color: lightgray"
+        v-show="hasComment"
+      >
+        暂时还没有评论，快去发一条评论吧！
+      </h5>
       <div
         v-for="comment in comments.slice(left,right)"
         :key="comment"
         style="width: 100%; max-width: 1200px"
       >
         <q-chat-message
-          :name="comment.name"
-          :avatar="comment.avatar"
-          :text="[comment.text]"
-          :stamp="comment.stamp"
+          :name="comment.comment_user_name"
+          :avatar="'http://114.116.235.94/' + comment.user_img"
+          :text="[comment.comment_content]"
+          :stamp="comment.com_time"
           style="font-size: 23px;width: 1100px"
           bg-color="blue-2"
         />
-        <br>
-        <div style="float: right;margin-right: 100px">
-          &nbsp;
-          <q-btn
-            v-show="!comment.isgood"
-            icon="thumb_up_off_alt"
-            round
-            size="10px"
-            style="color: deepskyblue"
-            @click="good(comment.cid)"
-          />
-          <q-btn
-            v-show="comment.isgood"
-            icon="thumb_up_alt"
-            round
-            color="blue"
-            size="10px"
-            @click="bad(comment.cid)"
-          />
-          &nbsp;
-          <span>({{ comment.goodnumber }})</span>
-          &nbsp;
-          <q-btn
-            icon="error_outline"
-            round
-            size="10px"
-            style="color: red"
-            @click="prompt = true"
-          />
-        </div>
         <br><br>
         <q-separator
           inset
           style="width: 1200px"
         />
         <br>
-        <q-dialog
-          v-model="prompt"
-          persistent
-        >
-          <q-card style="min-width: 350px">
-            <q-card-section>
-              <div class="text-h6">
-                举报理由
-              </div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              <q-input
-                v-model="reason"
-                dense
-                autofocus
-                @keyup.enter="prompt = false"
-              />
-            </q-card-section>
-
-            <q-card-actions
-              align="right"
-              class="text-primary"
-            >
-              <q-btn
-                v-close-popup
-                flat
-                label="取消"
-              />
-              <q-btn
-                v-close-popup
-                flat
-                label="举报"
-                @click="jubao(comment.cid)"
-              />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
       </div>
     </div>
-
-
     <div
       class="q-pa-lg flex flex-center"
       style="width: 1000px;margin: 0 auto"
+      v-show="!hasComment"
     >
       <q-pagination
         v-model="current"
@@ -191,11 +155,14 @@
 </template>
 
 <script>
+import "highlight.js/styles/arta.css";
 export default {
-    "name": "PostView",
+    name: "PaperComment",
+    props:['paper_id'],
     data () {
 
         return {
+            "hasComment": false,//
             "prompt": false, //
             "reason": "", //
             "length": 0, //
@@ -204,6 +171,7 @@ export default {
             "left": 0, //
             "right": 5, //
             "alert": false, //
+            "isLoginAlert": false, //
             "loading1": false, //
             "text": "", //
             "comments": [{
@@ -373,47 +341,43 @@ export default {
     },
     "computed": {},
     mounted () {
+      this.$axios({
+        "method": "POST",
+        "url": "http://114.116.235.94/get_paper_comment/",
+        "data": {
+          "paper_id": this.paper_id,
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+        console.log("查看学术成果评论", response);
+        this.comments = response.data.comment;
+        if (this.comments.length !== 0) {
+          if (this.comments.length % 5 === 0) {
+            this.commnet_length = this.comments.length / 5
+          } else {
+            this.commnet_length = this.comments.length / 5 + 1
+          }
+        }
+        if (this.comments.length === 0) {
+
+          this.hasComment = true;
+
+        }
+
+      });
     },
 
     "methods": {
-        jubao (cid) {
-
-            // 举报axios请求
-            alert("举报成功");
-
-        },
-        good (cid) {
-
-            let index = 0;
-            for (index = 0; index < this.comments.length; index += 1) {
-
-                if (this.comments[index].cid === cid) {
-
-                    this.comments[index].goodnumber += 1;
-                    this.comments[index].isgood = true;
-                    break;
-
-                }
-
-            }
-
-        },
-        bad (cid) {
-
-            let index = 0;
-            for (index = 0; index < this.comments.length; index += 1) {
-
-                if (this.comments[index].cid === cid) {
-
-                    this.comments[index].goodnumber -= 1;
-                    this.comments[index].isgood = false;
-                    break;
-
-                }
-
-            }
-
-        },
         simulateProgress (number) {
 
             // we set loading state
@@ -428,30 +392,85 @@ export default {
 
         },
         onSubmit () {
-
+          if(this.$store.state.login) {
+            console.log("点击了发布按钮");
             this.$refs.text.validate();
             if (this.$refs.text.hasError) {
 
-                this.formHasError = true;
+              this.formHasError = true;
 
             } else {
 
-                this.alert = true;
-                this.$refs.text.resetValidation();
-                // 调用评论axios请求
-                this.comments.splice(0, 0, {
-                    "name": this.$route.params.id,
-                    "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171208%2Ff1d2aa196b2248abb59d50bff5c7376a.jpeg&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640140175&t=fbcd874f84cac90de991d827a58808ae",
-                    "text": this.text,
-                    "stamp": "2021/6/10",
-                    "goodnumber": 0,
-                    "isgood": false,
-                    "cid": -1,
-                });
-                this.text = "";
+              this.$refs.text.resetValidation();
+              // 调用评论axios请求
+              // http://114.116.235.94/comment_post/
+              this.$axios({
+                "method": "POST",
+                "url": "http://114.116.235.94/comment_paper/",
+                "data": {
+                  "user_id": this.$store.state.person.userID !== "" ? this.$store.state.person.userID : "1",
+                  "paper_id": this.paper_id,
+                  "content": this.text,
+                },
+                "transformRequest": [function (data) {
+
+                  let ret = "";
+                  for (const it in data) {
+
+                    ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+                  }
+                  return ret;
+
+                }],
+              }).then(response => {
+
+                console.log("发表学术成果评论", response);
+                if (response.data.code === 200) {
+
+                  this.alert = true;
+
+                }
+                this.hasComment = false;
+
+              });
+              const d = new Date();
+              let str = "";
+              str += `${d.getFullYear()}/`; // 获取当前年份
+              str += `${d.getMonth() + 1}/`; // 获取当前月份（0——11）
+              str += `${d.getDate()}/ `;
+              str += `${d.getHours()}:`;
+              str += `${d.getMinutes()}:`;
+              str += d.getSeconds();
+              this.$axios({
+                "method": "POST",
+                "url": "http://114.116.235.94/get_paper_comment/",
+                "data": {
+                  "paper_id": this.paper_id
+                },
+                "transformRequest": [function (data) {
+
+                  let ret = "";
+                  for (const it in data) {
+
+                    ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+                  }
+                  return ret;
+
+                }],
+              }).then(response => {
+
+                console.log("查看学术成果评论", response);
+                this.comments = response.data.comment;
+
+              });
 
             }
-
+          }
+          else {
+            this.isLoginAlert = true;
+          }
         },
         onReset () {
 

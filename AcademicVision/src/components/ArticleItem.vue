@@ -110,7 +110,7 @@ export default {
     "title": String,
     "publishTime": String,
     "journalName": String, // 期刊、会议、出版社名
-    "authorList": [String], // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
+    "authorList": Array , // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
     "reference": Number
   },
   data () {

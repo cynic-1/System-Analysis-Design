@@ -66,7 +66,7 @@
               统计数据
             </div>
             <q-separator inset />
-            <pie-chart />
+            <pie-chart v-if="this.dataReady" :n="this.articleCount" :s="this.articleSum" />
           </q-card>
           <q-card class="q-my-xl">
             <div class="text-h5 q-pa-md">
@@ -109,7 +109,13 @@
             </div>
             <q-separator inset />
             <q-list>
-              <article-item v-for="item in confirmListExample" :key="item" v-bind="item"/>
+              <article-item
+                v-for="item in confirmListExample"
+                :key="item.paperId"
+                v-bind="item"
+                @denyAuthor="denyAuthor(item)"
+                @claimAuthor="claimAuthor(item)"
+              />
             </q-list>
           </q-card>
         </q-tab-panel>
@@ -135,10 +141,14 @@ export default {
         lineChart,
         articleItem,
     },
+    props: {
+      username: String,
+    },
     data () {
 
         return {
             "tab": "scholar page",
+            "dataReady": false,
             "tabsList": [
                 { "name": "scholar page", "icon": "description", "label": "学者主页" },
                 { "name": "confirm authorship", "icon": "school", "label": "研究认领" },
@@ -149,6 +159,7 @@ export default {
                 {
                     "canEdit": 0,
                     "authorName": "宋永欣",
+                    "paperId": 19231061,
                     "researchType": 0, // 0: 期刊 1: 会议 2：专著 3: 其他
                     "title": "GAT综述：模型、算法和应用",
                     "publishTime": "2021/09/10",
@@ -161,6 +172,7 @@ export default {
                 {
                     "canEdit": 1,
                     "authorName": "宋永欣",
+                    "paperId": 19231061,
                     "researchType": 0, // 0: 期刊 1: 会议 2：专著 3: 其他
                     "title": "GAT综述：模型、算法和应用",
                     "publishTime": "2021/09/10",
@@ -169,10 +181,93 @@ export default {
                     "reference": 23
                 }
             ],
+          articleCount: [],
+          articleSum: 7
         };
 
     },
+    "methods": {
+      denyAuthor(it) {
+        const index = this.confirmListExample.findIndex(item => item.paperId === it.paperId)
+        this.confirmListExample.splice(index, 1)
+      },
+      claimAuthor(it) {
+        const index = this.confirmListExample.findIndex(item => item.paperId === it.paperId)
+        this.confirmAuthor(it.paperId)
+        this.confirmListExample.splice(index, 1)
+      },
+      confirmAuthor(paperId) {
+        this.$axios({
+          "method": "post",
+          "url": "cliam_paper/",
+          "header": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "data": {
+              "user_id": this.$store.state.person.userID,
+              "paper_id": paperId
+          },
+          "transformRequest": [function (data) {
+
+            let ret = "";
+            for (const it in data) {
+
+              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+            }
+            return ret;
+
+          }],
+        }).then((res) => {
+
+          console.log(res.data);
+          if (res.data.code !== "400") return alert(res.data.message);
+          alert("文章认领成功");
+        });
+      },
+      getConfirmedList() {
+        this.$axios({
+          "method": "post",
+          "url": "my_paper/",
+          "header": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "data": {
+            "user_id": this.$store.state.person.userID,
+          },
+          "transformRequest": [function (data) {
+
+            let ret = "";
+            for (const it in data) {
+
+              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+            }
+            return ret;
+
+          }],
+        }).then((res) => {
+
+          console.log(res.data);
+          if (res.data.code !== 200) return alert(res.data.message);
+          this.confirmedListExample = res.data.data.paper_list;
+          this.articleCount = res.data.type;
+          this.articleSum = res.data.sum;
+          console.log(this.articleCount[0]);
+          console.log(this.articleSum);
+          this.$store.commit("setPapers", this.confirmedListExample);
+          this.$store.commit("setPaperCounts", this.articleCount);
+
+          this.dataReady = true;
+          // alert("文章认领成功");
+        });
+      }
+
+    },
     "computed": {
+    },
+    created () {
+        this.getConfirmedList();
     }
 
 };

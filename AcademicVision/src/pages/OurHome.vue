@@ -10,8 +10,9 @@
       <q-carousel
         v-model="slide"
         arrows
+        control-text-color="primary"
         animated
-        height="500px"
+        height="450px"
         :autoplay="autoplay"
         transition-prev="slide-right"
         transition-next="slide-left"
@@ -19,11 +20,11 @@
         @mouseleave="autoplay = true"
       >
         <q-carousel-slide
-          height="400px"
+          height="100px"
           name="first"
           img-src="../assets/bg2.jpeg"
         >
-          <div class="q-mx-xl L_search q-my-xl">
+          <div class="q-mx-xl L_search q-my-xl" style="font-size: 20px">
             <q-splitter
               v-model="splitterModel"
               style="height: 200px"
@@ -39,11 +40,12 @@
                   indicator-color="white"
                 >
                   <q-tab
+                    ripple="false"
                     name="search"
                     icon="mail"
                     label="文献检索"
                   />
-                  <br><br><br>
+                  <br>
                   <q-tab
                     name="user_search"
                     icon="alarm"
@@ -67,6 +69,7 @@
                       v-model="search_text"
                       outlined
                       label="请输入检索词"
+                      @keyup.enter="search"
                     >
                       <template #prepend>
                         <q-select
@@ -97,7 +100,6 @@
                       color="primary"
                       inline
                     />
-                    <br>
                     <q-btn
                       outline
                       color="black"
@@ -113,6 +115,7 @@
                       outlined
                       label="请输入学者名称"
                       style="margin-top: 50px"
+                      @keyup.enter="searchAuthor"
                     >
                       <template #append>
                         <q-avatar>
