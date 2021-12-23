@@ -540,6 +540,9 @@ export default {
       "pagination2": ref({
         "rowsPerPage": 0
       }),
+      "pagination3": ref({
+        "rowsPerPage": 0
+      }),
       "pagination4": ref({
         "rowsPerPage": 0
       }),
