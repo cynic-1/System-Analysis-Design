@@ -497,6 +497,7 @@ export default {
           this.topDate = []
           this.topAuthor = []
           this.relatedPaper = []
+          this.showLoading()
           this.$axios.get("http://114.116.235.94/search/",{
             params:{
               q : this.key,
@@ -577,6 +578,7 @@ export default {
           this.topAuthor = []
           let row = []
           this.relatedPaper = []
+          this.showLoading()
           this.$axios.get("http://114.116.235.94/search/",{
             params:{
               q : this.key,
@@ -677,7 +679,23 @@ export default {
           this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key , "method" : "2"} });
           this.advancedSearch()
         },
+        showLoading () {
+          this.$q.loading.show()
 
+          // hiding in 2s
+          this.timer = setTimeout(() => {
+            this.$q.loading.hide()
+            this.timer = void 0
+          }, 3000)
+        },
+
+
+    },
+    beforeDestroy () {
+      if (this.timer !== void 0) {
+        clearTimeout(this.timer)
+        this.$q.loading.hide()
+      }
     }
 };
 </script>

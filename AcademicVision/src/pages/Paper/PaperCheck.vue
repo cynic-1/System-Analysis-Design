@@ -186,6 +186,7 @@ export default {
     loadPaper() {
       //console.log(this.paper)
       this.reference = []
+      this.showLoading()
       this.$axios({
         method: 'POST',
         url: 'http://114.116.235.94/view_paper/',
@@ -239,7 +240,7 @@ export default {
         //console.log(this.rows[i])
         this.reference.push({title : this.paper[i].title, id: this.paper[i].id, author:this.paper[i].author_name, publish_time: this.paper[i].publish_time})
       }
-      console.log(this.reference)
+      //console.log(this.reference)
     },
     getPdf(title) {
       html2Canvas(document.querySelector('#pdfDom'), {
@@ -310,6 +311,21 @@ export default {
     },
     goBaiDu () {
       window.open(this.url, '_blank');
+    },
+    showLoading () {
+      this.$q.loading.show()
+
+      // hiding in 2s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 1000)
+    },
+  },
+  beforeDestroy () {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer)
+      this.$q.loading.hide()
     }
   }
 }
