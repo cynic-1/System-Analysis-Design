@@ -687,7 +687,9 @@ export default {
             this.$q.loading.hide()
             this.timer = void 0
           }, 3000)
-        }
+        },
+
+
     },
     beforeDestroy () {
       if (this.timer !== void 0) {
