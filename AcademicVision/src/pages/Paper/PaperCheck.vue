@@ -102,6 +102,7 @@
         indicator-color="primary"
         align="justify"
         narrow-indicator
+        style="margin-top: 60px"
       >
         <q-tab name="相似文献" label="相似文献"/>
       </q-tabs>
