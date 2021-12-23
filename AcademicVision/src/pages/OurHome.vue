@@ -1,7 +1,6 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
-    <br>
 <!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
@@ -102,7 +101,6 @@
                       color="black"
                       size="18px"
                       label="高级检索"
-                      @click="advanced"
                     />
                   </q-tab-panel>
 
@@ -110,8 +108,7 @@
                     <q-input
                       v-model="user_search_text"
                       outlined
-                      label="请输入学者名称"
-                      style="margin-top: 50px"
+                      label="请输入用户名"
                     >
                       <template #append>
                         <q-avatar>
@@ -119,11 +116,20 @@
                             icon="search"
                             round
                             size="14px"
-                            @click="searchAuthor"
+                            @click="search"
                           />
                         </q-avatar>
                       </template>
                     </q-input>
+                    <br>
+                    <q-option-group
+                      v-model="type_accepted_user"
+                      name="type_acc_user"
+                      :options="type_options_user"
+                      type="checkbox"
+                      color="primary"
+                      inline
+                    />
                   </q-tab-panel>
                 </q-tab-panels>
               </template>
@@ -149,7 +155,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热门论文 <span class="material-icons" style="color: rgba(8,179,255,0.93)">verified</span>
+          热 门 论 文 <span class="material-icons">trending_up</span>
         </h4>
         <div v-for="(each,index) in hot_paper_list"
              :key="each">
@@ -198,7 +204,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热门学者 <span class="material-icons" style="color: rgba(8,179,255,0.93)">supervised_user_circle</span>
+          热 门 学 者 <span class="material-icons">trending_up</span>
         </h4>
         <div v-for="(each,index) in hot_scholar_list"
              :key="each">
@@ -249,7 +255,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热搜关键词 <span class="material-icons" style="color: rgba(8,179,255,0.93)">local_fire_department</span>
+          热 门 关 键 词 <span class="material-icons">trending_up</span>
         </h4>
         <div v-for="(each,index) in hot_keyword_list"
              :key="each">
@@ -333,11 +339,31 @@ export default {
                     "value": "qikan"
                 },
                 {
-                    "label": "学位论文",
+                    "label": "学术论文",
                     "value": "lunwen"
                 },
                 {
-                    "label": "图书书籍",
+                    "label": "会议",
+                    "value": "conference"
+                },
+                {
+                    "label": "报纸",
+                    "value": "newpaper"
+                },
+                {
+                    "label": "年鉴",
+                    "value": "nianjian"
+                },
+                {
+                    "label": "专利",
+                    "value": "zhuanli"
+                },
+                {
+                    "label": "成果",
+                    "value": "chengguo"
+                },
+                {
+                    "label": "图书",
                     "value": "pop"
                 },
             ],
@@ -405,13 +431,7 @@ export default {
         console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
         this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
 
-      },
-      searchAuthor(){
-        this.$router.push({ "path": "/search/user", "query": { "key": this.user_search_text} });
-      },
-      advanced(){
-        this.$router.push("/search/advanced")
-      }
+        }
     },
     mounted() {
       this.$axios({

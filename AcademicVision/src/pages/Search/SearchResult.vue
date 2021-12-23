@@ -663,7 +663,6 @@ export default {
           this.$router.push("/search/advanced");
         },
         check (id){
-          window.sessionStorage.setItem("data", JSON.stringify(this.rows))
           this.$router.push({ "path": "/paper/check", "query": { "id": id } });
         },
         pick (cond){
@@ -679,23 +678,7 @@ export default {
           this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key , "method" : "2"} });
           this.advancedSearch()
         },
-        showLoading () {
-          this.$q.loading.show()
 
-          // hiding in 2s
-          this.timer = setTimeout(() => {
-            this.$q.loading.hide()
-            this.timer = void 0
-          }, 3000)
-        },
-
-
-    },
-    beforeDestroy () {
-      if (this.timer !== void 0) {
-        clearTimeout(this.timer)
-        this.$q.loading.hide()
-      }
     }
 };
 </script>

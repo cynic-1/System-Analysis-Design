@@ -117,37 +117,37 @@
         </q-card>
       </div>
     </div>
-<!--    <div-->
-<!--      class="col-4"-->
-<!--      style=""-->
-<!--    >-->
-<!--      <div class="q-pa-md row items-start q-gutter-md">-->
-<!--        <q-card-->
-<!--          class="my-card"-->
-<!--          style="width: 100%;max-width: 250px;height: 230px"-->
-<!--        >-->
-<!--          <q-img src="https://upload-bbs.mihoyo.com/upload/2021/10/29/73565430/88fda7330415d47c945ac5610f7f965b_6502096957213310465.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg">-->
-<!--            <div class="absolute-bottom">-->
-<!--              <div class="text-h6">-->
-<!--                {{ title5 }}-->
-<!--              </div>-->
-<!--              <div class="text-subtitle2">-->
-<!--                {{ name5 }}-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </q-img>-->
+    <!--    <div-->
+    <!--      class="col-4"-->
+    <!--      style=""-->
+    <!--    >-->
+    <!--      <div class="q-pa-md row items-start q-gutter-md">-->
+    <!--        <q-card-->
+    <!--          class="my-card"-->
+    <!--          style="width: 100%;max-width: 250px;height: 230px"-->
+    <!--        >-->
+    <!--          <q-img src="https://upload-bbs.mihoyo.com/upload/2021/10/29/73565430/88fda7330415d47c945ac5610f7f965b_6502096957213310465.jpg?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg">-->
+    <!--            <div class="absolute-bottom">-->
+    <!--              <div class="text-h6">-->
+    <!--                {{ title5 }}-->
+    <!--              </div>-->
+    <!--              <div class="text-subtitle2">-->
+    <!--                {{ name5 }}-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--          </q-img>-->
 
-<!--          <q-card-actions>-->
-<!--            <q-btn-->
-<!--              flat-->
-<!--              @click="viewPost(pid5)"-->
-<!--            >-->
-<!--              <span style="font-size: 18px">查看帖子</span>-->
-<!--            </q-btn>-->
-<!--          </q-card-actions>-->
-<!--        </q-card>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--          <q-card-actions>-->
+    <!--            <q-btn-->
+    <!--              flat-->
+    <!--              @click="viewPost(pid5)"-->
+    <!--            >-->
+    <!--              <span style="font-size: 18px">查看帖子</span>-->
+    <!--            </q-btn>-->
+    <!--          </q-card-actions>-->
+    <!--        </q-card>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
 

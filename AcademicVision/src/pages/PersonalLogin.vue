@@ -158,8 +158,10 @@ export default {
                     alert(response.data.message);
                     this.clear();
 
-                }else if(response.data.code ==="800"){
-                  this.$router.push({ "path": "/administrator"});
+                } else if (response.data.code === "800"){
+
+                    this.$router.push({ "path": "/administrator" });
+
                 }
 
             });

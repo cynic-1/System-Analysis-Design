@@ -17,16 +17,16 @@
           {{ this.researchTypeStrMap[researchType] }}
         </q-chip>
         <span class="text-h6 text-grey q-px-md">{{ publishTime }} {{ journalName }}
-            被引量: {{ reference }}</span>
+          被引量: {{ reference }}</span>
       </q-item-label>
       <q-item-label
         lines="1"
         class="q-mt-xs"
       >
-          <span
-            v-for="it in authorList"
-            class="q-px-xs text-uppercase text-h6"
-          >{{ it }}</span>
+        <span
+          v-for="it in authorList"
+          class="q-px-xs text-uppercase text-h6"
+        >{{ it }}</span>
       </q-item-label>
     </q-item-section>
 
@@ -102,24 +102,24 @@
 
 <script>
 export default {
-  name: "ArticleItem",
-  props: {
-    "canEdit": Number,
-    "authorName": String,
-    "researchType": Number, // 0: 期刊 1: 会议 2：专著 3: 其他
-    "title": String,
-    "publishTime": String,
-    "journalName": String, // 期刊、会议、出版社名
-    "authorList": [String], // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
-    "reference": Number
-  },
-  data () {
+    "name": "ArticleItem",
+    "props": {
+        "canEdit": Number,
+        "authorName": String,
+        "researchType": Number, // 0: 期刊 1: 会议 2：专著 3: 其他
+        "title": String,
+        "publishTime": String,
+        "journalName": String, // 期刊、会议、出版社名
+        "authorList": [String], // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
+        "reference": Number
+    },
+    data () {
 
-    return {
-      "researchTypeStrMap": ["期刊", "会议", "专著", "其他"]
-    };
+        return {
+            "researchTypeStrMap": ["期刊", "会议", "专著", "其他"]
+        };
 
-  },
+    },
 };
 </script>
 

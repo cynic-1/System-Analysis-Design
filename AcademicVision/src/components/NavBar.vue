@@ -136,33 +136,41 @@ export default {
 
     "methods": {
         logout (){
-          this.$store.commit("setLogout");
-          sessionStorage.clear();
-          this.$router.push({ "path": "/" });
+
+            this.$store.commit("setLogout");
+            sessionStorage.clear();
+            this.$router.push({ "path": "/" });
+
         },
-        personalInformation(){
-          this.$router.push({
-            "path": "/personal",
-            "query": {
-              "tab": "1",
-            }
-          })
+        personalInformation (){
+
+            this.$router.push({
+                "path": "/personal",
+                "query": {
+                    "tab": "1",
+                }
+            });
+
         },
-        personalSaved(){
-          this.$router.push({
-            "path": "/personal",
-            "query": {
-              "tab": "4",
-            }
-          })
+        personalSaved (){
+
+            this.$router.push({
+                "path": "/personal",
+                "query": {
+                    "tab": "4",
+                }
+            });
+
         },
-        personalMessage(){
-          this.$router.push({
-            "path": "/personal",
-            "query": {
-              "tab": "3",
-            }
-          })
+        personalMessage (){
+
+            this.$router.push({
+                "path": "/personal",
+                "query": {
+                    "tab": "3",
+                }
+            });
+
         },
     },
 };

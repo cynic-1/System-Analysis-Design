@@ -350,7 +350,7 @@ export default {
     data () {
 
         return {
-          "commnet_length": 0,
+            "commnet_length": 0,
             "isStar": false,
             "hasComment": false,
             "title": "帖子标题",
@@ -581,11 +581,17 @@ export default {
             this.isStar = response.data.all_info.is_col;
             this.markdownToHtml();
             if (this.comments.length !== 0) {
-              if (this.comments.length % 5 === 0) {
-                this.commnet_length = this.comments.length / 5
-              } else {
-                this.commnet_length = this.comments.length / 5 + 1
-              }
+
+                if (this.comments.length % 5 === 0) {
+
+                    this.commnet_length = this.comments.length / 5;
+
+                } else {
+
+                    this.commnet_length = this.comments.length / 5 + 1;
+
+                }
+
             }
             if (this.comments.length === 0) {
 

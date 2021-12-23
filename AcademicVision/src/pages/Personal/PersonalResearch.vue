@@ -109,7 +109,11 @@
             </div>
             <q-separator inset />
             <q-list>
-              <article-item v-for="item in confirmListExample" :key="item" v-bind="item"/>
+              <article-item
+                v-for="item in confirmListExample"
+                :key="item"
+                v-bind="item"
+              />
             </q-list>
           </q-card>
         </q-tab-panel>
@@ -134,6 +138,9 @@ export default {
         pieChart,
         lineChart,
         articleItem,
+    },
+    props: {
+      username: String,
     },
     data () {
 
@@ -172,7 +179,13 @@ export default {
         };
 
     },
+    "methods": {
+
+    },
     "computed": {
+    },
+    mounted () {
+
     }
 
 };

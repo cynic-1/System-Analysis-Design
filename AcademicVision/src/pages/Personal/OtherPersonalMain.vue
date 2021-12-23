@@ -12,7 +12,10 @@
               @click="alert = true"
             >
               <q-avatar size="120px">
-                <img :src="this.OtherimgUrl" alt="用户头像">
+                <img
+                  :src="this.OtherimgUrl"
+                  alt="用户头像"
+                >
               </q-avatar>
             </q-btn>
 
@@ -92,90 +95,120 @@ const OtherPersonalInformation = defineAsyncComponent(() => import("./OtherPerso
 const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
 
 export default {
-  "name": "OtherPersonalMain",
+    "name": "OtherPersonalMain",
 
-  "components": {
-    PersonalResearch,
-    OtherPersonalInformation,
-  },
-  setup () {
-    return {
-      alert: ref(false),
-    }
-  },
-  data () {
-
-    return {
-      "tab": "1",
-      "nickname": "",
-      "name": "",
-      "institution": "",
-      "department" :"",
-      "isFollowed":false,
-      "is_associated":0,
-      "hobby":"",
-      "OtherimgUrl":"",
-    };
-
-  },
-  "mounted": function () {
-    this.loadOtherpersonalInfo()
-  },
-
-  "methods": {
-    loadOtherpersonalInfo(){
-      this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/check_my_info/",
-        header:{
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data:{
-          user_id:window.sessionStorage.getItem('otherpersonid'),
-        },
-        transformRequest:[function(data){
-          let ret = ''
-          for(let it in data){
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          }
-          return ret
-        }],
-      }).then((res)=>{
-        if(this.$route.query.tab) {
-          this.tab = this.$route.query.tab;
-        }
-        console.log(res.data.info )
-        let info = res.data.info ;
-        this.nickname = info.user_name;
-        this.OtherimgUrl = 'http://114.116.235.94/' +  info.image;
-        if (info.org!==null){
-          this.institution = info.org;
-        }
-        if (info.is_associated!==null) {
-          this.is_associated = info.is_associated;
-        }
-        if (info.hobby!==null) {
-          this.hobby = info.hobby;
-        }
-        if (info.department!==null) {
-          this.department = info.department;
-        }
-        // if(info.signature !== null)
-        //   this.Form.signature = info.signature;
-        // if(info.briefintroduction !== null)
-        //   this.Form.briefintroduction = info.briefintroduction;
-      })
+    "components": {
+        PersonalResearch,
+        OtherPersonalInformation,
     },
-    checkotherinfor (){
-      this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
+    setup () {
+
+        return {
+            "alert": ref(false),
+        };
+
     },
-    changeFollow (){
-      if (this.isFollowed){
-        this.isFollowed = false;
-      } else {
-        this.isFollowed = true;
-          }
-      }
+    data () {
+
+        return {
+            "tab": "1",
+            "nickname": "",
+            "name": "",
+            "institution": "",
+            "department": "",
+            "isFollowed": false,
+            "is_associated": 0,
+            "hobby": "",
+            "OtherimgUrl": "",
+        };
+
+    },
+    "mounted" () {
+
+        this.loadOtherpersonalInfo();
+
+    },
+
+    "methods": {
+        loadOtherpersonalInfo (){
+
+            this.$axios({
+                "method": "post",
+                "url": "http://114.116.235.94/check_my_info/",
+                "header": {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                "data": {
+                    "user_id": window.sessionStorage.getItem("otherpersonid"),
+                },
+                "transformRequest": [function (data){
+
+                    let ret = "";
+                    for (const it in data){
+
+                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+                    }
+                    return ret;
+
+                }],
+            }).then((res) => {
+
+                if (this.$route.query.tab) {
+
+                    this.tab = this.$route.query.tab;
+
+                }
+                console.log(res.data.info);
+                const { info } = res.data ;
+                this.nickname = info.user_name;
+                this.OtherimgUrl = `http://114.116.235.94/${info.image}`;
+                if (info.org !== null){
+
+                    this.institution = info.org;
+
+                }
+                if (info.is_associated !== null) {
+
+                    this.is_associated = info.is_associated;
+
+                }
+                if (info.hobby !== null) {
+
+                    this.hobby = info.hobby;
+
+                }
+                if (info.department !== null) {
+
+                    this.department = info.department;
+
+                }
+                // if(info.signature !== null)
+                //   this.Form.signature = info.signature;
+                // if(info.briefintroduction !== null)
+                //   this.Form.briefintroduction = info.briefintroduction;
+
+            });
+
+        },
+        checkotherinfor (){
+
+            this.$router.push({ "path": "/otherpersonalinformation", "query": { "id": 123456 } });
+
+        },
+        changeFollow (){
+
+            if (this.isFollowed){
+
+                this.isFollowed = false;
+
+            } else {
+
+                this.isFollowed = true;
+
+            }
+
+        }
     },
 
 

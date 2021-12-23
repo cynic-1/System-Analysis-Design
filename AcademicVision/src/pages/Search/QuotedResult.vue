@@ -53,13 +53,15 @@
 
 <script>
 export default {
-  name: "QuotedResult",
-  data(){
-    return {
-      "key" : "",
+    "name": "QuotedResult",
+    data (){
+
+        return {
+            "key": "",
+        };
+
     }
-  }
-}
+};
 </script>
 
 <style scoped>
