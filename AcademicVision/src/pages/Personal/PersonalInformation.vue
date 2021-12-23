@@ -55,9 +55,8 @@
                   <q-avatar size="100px">
                     <img
                       class="rounded-borders"
-                      :src="this.imageurl"
-                      alt="用户头像"
-                    >
+                      :src="this.imageurl" alt="用户头像"
+                    />
                   </q-avatar>
                 </q-card-section>
               </q-card-section>
@@ -84,7 +83,7 @@
             <br>
             <q-form
               class="q-gutter-md"
-              @submit="onSubmit1"
+              @submit="onSubmit"
               @reset="onReset"
             >
               <div
@@ -157,7 +156,7 @@
                 style="padding: 0px 60px 0px 30px"
                 class="text-weight-bold"
               >
-                部门
+                特长
               </div>
               <q-input
                 v-model="Form.department"
@@ -267,57 +266,23 @@
             </q-btn>
           </div>
           <br>
-          <div class="text-h6 q-mt-sm q-mb-xs">
-            Disciplines
-          </div>
+          <div class="text-h6 q-mt-sm q-mb-xs">Disciplines</div>
           <div v-if="Form.disciplines.length!==0">
-            <q-btn
-              outline
-              no-caps
-              rounded
-              color="grey"
-            >
-              {{ Form.disciplines }}
-            </q-btn>
+            <q-btn outline no-caps rounded color="grey">{{Form.disciplines}} </q-btn>
           </div>
           <div v-if="Form.disciplines.length===0">
-            <q-btn
-              outline
-              no-caps
-              color="black"
-              class="full-width"
-              @click="chgcard1()"
-            >
-              <div class="text-h6 q-mt-sm q-mb-xs">
-                Which discipline do you learn
-              </div>
+            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
+              <div class="text-h6 q-mt-sm q-mb-xs">Which discipline do you learn</div>
             </q-btn>
           </div>
           <br>
-          <div class="text-h6 q-mt-sm q-mb-xs">
-            Skills and expertise
-          </div>
+          <div class="text-h6 q-mt-sm q-mb-xs">Skills and expertise</div>
           <div v-if="Form.skill.length!==0">
-            <q-btn
-              outline
-              no-caps
-              rounded
-              color="grey"
-            >
-              {{ Form.skill }}
-            </q-btn>
+            <q-btn outline no-caps rounded color="grey">{{Form.skill}} </q-btn>
           </div>
           <div v-if="Form.skill.length===0">
-            <q-btn
-              outline
-              no-caps
-              color="black"
-              class="full-width"
-              @click="chgcard1()"
-            >
-              <div class="text-h6 q-mt-sm q-mb-xs">
-                Please introduce your skills
-              </div>
+            <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
+              <div class="text-h6 q-mt-sm q-mb-xs">Please introduce your skills</div>
             </q-btn>
           </div>
         </div>
@@ -455,7 +420,7 @@
           </q-card>
         </div>
       </q-card>
-    </template>
+  </template>
     <template #rightDrawer>
       <q-card
         class="information-card-4"
@@ -653,8 +618,8 @@ export default {
                 "introduction": "",
                 "Language": "",
                 "text": "",
-                "imgUrl": "",
-                "is_associated": 1,
+                "imgUrl":"",
+                "is_associated":1,
                 "follownum": 1,
                 "Researchitemnum": 0,
                 "Projectnum": 0,
@@ -664,274 +629,201 @@ export default {
         };
 
     },
-    "mounted" () {
-
-        this.loadInfo();
-
+    "mounted": function () {
+      this.loadInfo()
     },
     "methods": {
-        loadInfo (){
-
-            this.$axios({
-                "method": "post",
-                "url": "http://114.116.235.94/check_my_info/",
-                "header": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                "data": {
-                    "user_id": this.$store.state.person.userID,
-                },
-                "transformRequest": [function (data){
-
-                    let ret = "";
-                    for (const it in data){
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-                    }
-                    return ret;
-
-                }],
-            }).then((res) => {
-
-                console.log(res.data.info);
-                const { info } = res.data ;
-                this.Form.nickname = info.user_name;
-                this.Form.imgUrl = `http://114.116.235.94/${info.image}`;
-                if (info.org !== null){
-
-                    this.Form.institution = info.org;
-
-                }
-                if (info.is_associated !== null) {
-
-                    this.Form.is_associated = info.is_associated;
-
-                }
-                if (info.hobby !== null) {
-
-                    this.Form.skill = info.hobby;
-
-                }
-                if (info.bio !== null) {
-
-                    this.Form.introduction = info.bio;
-
-                }
-                if (info.subject !== null) {
-
-                    this.Form.disciplines = info.subject;
-
-                }
-                if (info.language !== null) {
-
-                    this.Form.Language = info.language;
-
-                }
-                if (info.department !== null) {
-
-                    this.Form.department = info.department;
-
-                }
-                if (info.direction !== null) {
-
-                    this.Form.direction = info.direction;
-
-                }
-                if (info.achievement !== null) {
-
-                    this.Form.achievement = info.achievement;
-
-                }
-                if (info.position !== null) {
-
-                    this.Form.position = info.position;
-
-                }
-                if (info.org_bio !== null) {
-
-                    this.Form.text = info.org_bio;
-
-                }
-                // if(info.briefintroduction !== null)
-                //   this.Form.briefintroduction = info.briefintroduction;
-
-            });
-
+        loadInfo(){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/check_my_info/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.info )
+            let info = res.data.info ;
+            this.Form.nickname = info.user_name;
+            this.Form.imgUrl = 'http://114.116.235.94/' + info.image;
+            if (info.org!==null){
+              this.Form.institution = info.org;
+            }
+            if (info.is_associated!==null) {
+              this.Form.is_associated = info.is_associated;
+            }
+            if (info.hobby!==null) {
+              this.Form.skill = info.hobby;
+            }
+            if (info.bio!==null) {
+              this.Form.introduction = info.bio;
+            }
+            if (info.subject!==null) {
+              this.Form.disciplines = info.subject;
+            }
+            if (info.language!==null) {
+              this.Form.Language = info.language;
+            }
+            if (info.department!==null) {
+              this.Form.department = info.department;
+            }
+            if (info.direction!==null) {
+              this.Form.direction = info.direction;
+            }
+            if (info.achievement!==null) {
+              this.Form.achievement = info.achievement;
+            }
+            if (info.position!==null) {
+              this.Form.position = info.position;
+            }
+            if (info.org_bio!==null) {
+              this.Form.text = info.org_bio;
+            }
+            // if(info.briefintroduction !== null)
+            //   this.Form.briefintroduction = info.briefintroduction;
+          })
         },
         chgcard () {
-
-            this.disabled = false;
-
+          this.disabled = false;
         },
         chgcard1 () {
-
             this.disabled1 = false;
-
         },
         chgcard3 () {
-
             this.disabled3 = false;
-
         },
         onSubmit1 () {
-
             this.$axios({
-                "method": "post",
-                "url": "change_base_info/",
-                "header": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                "data": {
-                    "user_id": this.$store.state.person.userID,
-                    "name": this.Form.nickname,
-                    "org": this.Form.institution,
-                    "department": this.Form.department,
-                },
-                "transformRequest": [function (data) {
-
-                    let ret = "";
-                    for (const it in data) {
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-                    }
-                    return ret;
-
-                }],
+              method: "post",
+              url: "http://114.116.235.94/change_base_info/",
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: {
+                user_id: this.$store.state.person.userID,
+                name: this.Form.nickname,
+                org: this.Form.institution,
+                department:this.Form.department,
+              },
+              transformRequest: [function (data) {
+                let ret = ''
+                for (let it in data) {
+                  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                }
+                return ret
+              }],
             }).then((res) => {
-
-                console.log(res.data);
-                if (res.data.code !== "400") return alert(res.data.message);
-                alert("修改个人信息成功");
-                this.disabled = true;
-                // PersonalMain.methods.loadpersonalInfo();
-
+              console.log(res.data)
+              if (res.data.code !== '400') return alert(res.data.message);
+              alert('修改个人信息成功');
+              this.disabled = true;
+              // PersonalMain.methods.loadpersonalInfo();
             });
-            this.disabled = true;
-            // PersonalMain.methods.loadpersonalInfo();
-
+          this.disabled = true;
+          // PersonalMain.methods.loadpersonalInfo();
         },
         onReset () {
 
-            this.Form.nickname = null;
-            this.Form.institution = null;
-            this.Form.department = null;
-
+          this.Form.nickname = null;
+          this.Form.institution = null;
+          this.Form.department = null;
         },
         Cancel () {
-
-            this.disabled = true;
-            this.loadInfo();
-
+          this.disabled = true;
+          this.loadInfo();
         },
         onSubmit2 () {
-
-            this.$axios({
-                "method": "post",
-                "url": "http://114.116.235.94/change_base_info/",
-                "header": {
-                    "Content-Type": "application/x-www-form-urlencoded"
+              this.$axios({
+                method: "post",
+                url: "http://114.116.235.94/change_base_info/",
+                header: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                "data": {
-                    "user_id": this.$store.state.person.userID,
-                    "bio": this.Form.introduction,
-                    "hobby": this.Form.skill,
-                    "language": this.Form.Language,
-                    "subject": this.Form.disciplines,
+                data: {
+                  user_id: this.$store.state.person.userID,
+                  bio: this.Form.introduction,
+                  hobby: this.Form.skill,
+                  language: this.Form.Language,
+                  subject: this.Form.disciplines,
                 },
-                "transformRequest": [function (data) {
-
-                    let ret = "";
-                    for (const it in data) {
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-                    }
-                    return ret;
-
+                transformRequest: [function (data) {
+                  let ret = ''
+                  for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                  }
+                  return ret
                 }],
-            }).then((res) => {
-
-                console.log(res.data);
-                if (res.data.code !== "400") return alert(res.data.message);
-                alert("修改个人信息成功");
+              }).then((res) => {
+                console.log(res.data)
+                if (res.data.code !== '400') return alert(res.data.message);
+                alert('修改个人信息成功');
                 this.disabled1 = true;
-
-            });
-            this.disabled1 = true;
-
+              });
+          this.disabled1 = true;
         },
         onReset1 () {
-
-            this.Form.introduction = "";
+            this.Form.introduction = '';
             this.Form.Language = "";
             this.Form.disciplines = "";
-            this.Form.skill = "";
-
+            this.Form.skill ="";
         },
         Cancel1 () {
-
-            this.disabled1 = true;
-            this.loadInfo();
-
+          this.disabled1 = true;
+          this.loadInfo();
         },
         onSubmit3 () {
-
-            this.$axios({
-                "method": "post",
-                "url": "http://114.116.235.94/change_base_info/",
-                "header": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                "data": {
-                    "user_id": this.$store.state.person.userID,
-                    "department": this.Form.department,
-                    "position": this.Form.position,
-                    "direction": this.Form.direction,
-                    "achievement": this.Form.achievement,
-                    "org_bio": this.Form.text,
-                },
-                "transformRequest": [function (data) {
-
-                    let ret = "";
-                    for (const it in data) {
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-                    }
-                    return ret;
-
-                }],
-            }).then((res) => {
-
-                console.log(res.data);
-                if (res.data.code !== "400") return alert(res.data.message);
-                alert("修改个人信息成功");
-                this.disabled3 = true;
-
-            });
+          this.$axios({
+            method: "post",
+            url: "http://114.116.235.94/change_base_info/",
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+              user_id: this.$store.state.person.userID,
+              department: this.Form.department,
+              position: this.Form.position ,
+              direction:this.Form.direction ,
+              achievement:this.Form.achievement ,
+              org_bio:this.Form.text,
+            },
+            transformRequest: [function (data) {
+              let ret = ''
+              for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res) => {
+            console.log(res.data)
+            if (res.data.code !== '400') return alert(res.data.message);
+            alert('修改个人信息成功');
             this.disabled3 = true;
-
+          });
+          this.disabled3 = true;
         },
         onReset3 () {
-
             this.Form.institution = "";
             this.Form.position = "";
             this.Form.direction = "";
             this.Form.achievement = "";
-            this.Form.text = "";
-
+            this.Form.text="";
         },
         Cancel3 () {
-
-            this.disabled3 = true;
-            this.loadInfo();
-
+          this.disabled3 = true;
+          this.loadInfo();
         },
     },
-    "props": ["imageurl"]
-};
+  props:['imageurl']
+}
 
 </script>
 

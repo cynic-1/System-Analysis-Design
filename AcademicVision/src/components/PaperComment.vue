@@ -10,12 +10,12 @@
         name="textsms"
         color="blue-6"
       />
-      学术成果评论区&nbsp;
+      学术成果评论区
     </h4>
 
     <div
       class="q-pa-md"
-      style="max-width: 1000px;float: right;margin-right: 100px"
+      style="max-width: 1000px;float: right;margin-right: 100px;margin-top: 60px"
     >
       <form
         class="q-gutter-md"
@@ -31,8 +31,7 @@
           hint="评论字数上限200字"
           label="写一条友善的评论吧~"
           lazy-rules
-          style="float: right;width: 1000px;font-size: 20px"
-
+          style="float: right;width: 1200px;font-size: 20px"
           :rules="[ val => val && val.length > 0 || '请您输入评论内容',
                     val => val && val.length <= 200 || '评论过长']"
         />
@@ -40,7 +39,7 @@
           ref="name"
           :loading="loading1"
           color="blue-6"
-          style="float: left;margin-left: 0;margin-bottom: 0"
+          style="float: left;margin-left:800px;margin-bottom: 0"
           size="18px"
           type="submit"
           @click="simulateProgress(1)"
@@ -65,7 +64,7 @@
           </q-card-section>
 
           <q-card-section class="q-pt-none">
-            提交成功
+            评论成功
           </q-card-section>
 
           <q-card-actions align="right">
@@ -82,24 +81,18 @@
 
     <div
       class="q-pa-md row justify-center"
-      style="width: 1300px;margin-left: 150px"
+      style="width: 1300px;margin-left: 80px"
     >
-      <h5
-        style="color: lightgray"
-        v-show="hasComment"
-      >
-        暂时还没有评论
-      </h5>
       <div
         v-for="comment in comments.slice(left,right)"
         :key="comment"
         style="width: 100%; max-width: 1200px"
       >
         <q-chat-message
-          :name="comment.comment_user_name"
-          :avatar="'http://114.116.235.94/' + comment.user_img"
-          :text="[comment.comment_content]"
-          :stamp="comment.com_time"
+          :name="comment.name"
+          :avatar="comment.avatar"
+          :text="[comment.text]"
+          :stamp="comment.stamp"
           style="font-size: 23px;width: 1100px"
           bg-color="blue-2"
         />
@@ -107,30 +100,30 @@
         <div style="float: right;margin-right: 100px">
           &nbsp;
           <q-btn
-            v-show="!comment.is_like"
+            v-show="!comment.isgood"
             icon="thumb_up_off_alt"
             round
             size="10px"
             style="color: deepskyblue"
-            @click="good(comment.com_id)"
+            @click="good(comment.cid)"
           />
           <q-btn
-            v-show="comment.is_like"
+            v-show="comment.isgood"
             icon="thumb_up_alt"
             round
             color="blue"
             size="10px"
-            @click="bad(comment.com_id)"
+            @click="bad(comment.cid)"
           />
           &nbsp;
-          <span>({{ comment.like_num }})</span>
+          <span>({{ comment.goodnumber }})</span>
           &nbsp;
           <q-btn
             icon="error_outline"
             round
             size="10px"
             style="color: red"
-            @click="this.prompt = true"
+            @click="prompt = true"
           />
         </div>
         <br><br>
@@ -172,7 +165,7 @@
                 v-close-popup
                 flat
                 label="举报"
-                @click="commentJubao(comment.comment_user_id,comment.com_id)"
+                @click="jubao(comment.cid)"
               />
             </q-card-actions>
           </q-card>
@@ -184,12 +177,11 @@
     <div
       class="q-pa-lg flex flex-center"
       style="width: 1000px;margin: 0 auto"
-      v-show="!hasComment"
     >
       <q-pagination
         v-model="current"
         color="blue-6"
-        :max="commnet_length"
+        :max="length"
         :max-pages="6"
         :boundary-numbers="false"
         @click="left = (current - 1) * 5;right = 5 + (current - 1) * 5"
@@ -199,15 +191,11 @@
 </template>
 
 <script>
-import {marked} from "marked";
-
 export default {
     "name": "PostView",
     data () {
 
         return {
-          "commnet_length": 0,
-            "hasComment": false,//
             "prompt": false, //
             "reason": "", //
             "length": 0, //
@@ -384,450 +372,94 @@ export default {
 
     },
     "computed": {},
-  mounted () {
+    mounted () {
+    },
 
-    this.$axios({
-      "method": "POST",
-      "url": "http://114.116.235.94/get_paper_comment/",
-      "data": {
-        "user_id": this.$route.query.user_id,
-        "post_id": this.$route.query.post_id
-      },
-      "transformRequest": [function (data) {
+    "methods": {
+        jubao (cid) {
 
-        let ret = "";
-        for (const it in data) {
+            // 举报axios请求
+            alert("举报成功");
 
-          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-        }
-        return ret;
-
-      }],
-    }).then(response => {
-
-      console.log("查看帖子", response);
-      this.title = response.data.all_info.title;
-      this.author = response.data.all_info.user;
-      this.time = response.data.all_info.datetime;
-      this.context = response.data.all_info.content;
-      this.isgood = response.data.all_info.is_like;
-      this.comments = response.data.all_info.comment;
-      this.isStar = response.data.all_info.is_col;
-      this.markdownToHtml();
-      if (this.comments.length !== 0) {
-        if (this.comments.length % 5 === 0) {
-          this.commnet_length = this.comments.length / 5
-        } else {
-          this.commnet_length = this.comments.length / 5 + 1
-        }
-      }
-      if (this.comments.length === 0) {
-
-        this.hasComment = true;
-
-      }
-
-    });
-
-    // http://114.116.235.94/get_report_post/
-
-    // this.context = this.context.replace(/\n/g, '<br>');
-    this.context = marked(this.context);
-    if (this.comments / 5 !== 0) {
-
-      this.length = this.comments.length / 5 + 1;
-
-    } else {
-
-      this.length = this.comments.length / 5;
-
-    }
-
-  },
-
-  "methods": {
-    unstar () {
-
-      this.isStar = false;
-      // http://114.116.235.94/del_my_col_post/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/un_col_post/",
-        "data": {
-          "post_id": this.$route.query.post_id,
-          // 这里有问题
-          "user_id": this.$route.query.user_id,
         },
-        "transformRequest": [function (data) {
+        good (cid) {
 
-          let ret = "";
-          for (const it in data) {
+            let index = 0;
+            for (index = 0; index < this.comments.length; index += 1) {
 
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                if (this.comments[index].cid === cid) {
 
-          }
-          return ret;
+                    this.comments[index].goodnumber += 1;
+                    this.comments[index].isgood = true;
+                    break;
 
-        }],
-      }).then(response => {
-
-        console.log("取消收藏帖子", response);
-
-      });
-
-    },
-    star () {
-
-      // http://114.116.235.94/col_post/
-      this.isStar = true;
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/col_post/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "post_id": this.$route.query.post_id,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("收藏帖子", response);
-
-      });
-
-    },
-    postGood () {
-
-      this.isgood = true;
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/like_post/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "post_id": this.$route.query.post_id,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("点赞帖子", response);
-
-      });
-
-    },
-    postNotGood () {
-
-      // http://114.116.235.94/dislike_post/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/dislike_post/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "post_id": this.$route.query.post_id,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("取消点赞帖子", response);
-        this.isgood = false;
-
-      });
-
-    },
-    markdownToHtml () {
-
-      this.context = marked(this.context);
-
-    },
-    textJubao () {
-
-      this.textJ = true;
-
-    },
-    back () {
-
-      this.$router.back();
-
-    },
-    jubao (user_id, cid) {
-
-      // 举报axios请求
-      // http://114.116.235.94/report_post/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/report_post/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "post_id": this.$route.query.post_id,
-          "reason": this.reason
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("举报帖子", response);
-        this.reason = "";
-
-      });
-      alert("举报成功");
-
-    },
-    good (cid) {
-
-      // http://114.116.235.94/like_comment/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/like_comment/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "com_id": cid,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("评论点赞", response);
-
-      });
-      let index = 0;
-      for (index = 0; index < this.comments.length; index += 1) {
-
-        if (this.comments[index].com_id === cid) {
-
-          this.comments[index].like_num += 1;
-          this.comments[index].is_like = true;
-          break;
-
-        }
-
-      }
-
-    },
-    bad (cid) {
-
-      // http://114.116.235.94/dislike_post/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/dislike_com/",
-        "data": {
-          "user_id": this.$route.query.user_id,
-          "com_id": cid,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-
-        console.log("取消评论点赞", response);
-
-      });
-      let index = 0;
-      for (index = 0; index < this.comments.length; index += 1) {
-
-        if (this.comments[index].com_id === cid) {
-
-          this.comments[index].like_num -= 1;
-          this.comments[index].is_like = false;
-          break;
-
-        }
-
-      }
-
-    },
-    change () {
-
-      this.context = this.context.replace(/\n/g, "<br>");
-
-    },
-    simulateProgress (number) {
-
-      // we set loading state
-      this[`loading${number}`] = true;
-      // simulate a delay
-      setTimeout(() => {
-
-        // we're done, we reset loading state
-        this[`loading${number}`] = false;
-
-      }, 1000);
-
-    },
-    onSubmit () {
-
-      console.log("点击了发布按钮");
-      this.$refs.text.validate();
-
-      if (this.$refs.text.hasError) {
-
-        this.formHasError = true;
-
-      } else {
-
-        this.$refs.text.resetValidation();
-        // 调用评论axios请求
-        // http://114.116.235.94/comment_post/
-        this.$axios({
-          "method": "POST",
-          "url": "http://114.116.235.94/comment_paper/",
-          "data": {
-            "user_id": this.$route.query.user_id,
-            "post_id": this.$route.query.post_id,
-            "content": this.text,
-          },
-          "transformRequest": [function (data) {
-
-            let ret = "";
-            for (const it in data) {
-
-              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                }
 
             }
-            return ret;
 
-          }],
-        }).then(response => {
+        },
+        bad (cid) {
 
-          console.log("发表评论", response);
-          if (response.data.code === 200) {
+            let index = 0;
+            for (index = 0; index < this.comments.length; index += 1) {
 
-            this.alert = true;
+                if (this.comments[index].cid === cid) {
 
-          }
-          this.hasComment = false;
+                    this.comments[index].goodnumber -= 1;
+                    this.comments[index].isgood = false;
+                    break;
 
-        });
-        const d = new Date();
-        let str = "";
-        str += `${d.getFullYear()}/`; // 获取当前年份
-        str += `${d.getMonth() + 1}/`; // 获取当前月份（0——11）
-        str += `${d.getDate()}/ `;
-        str += `${d.getHours()}:`;
-        str += `${d.getMinutes()}:`;
-        str += d.getSeconds();
-        this.$axios({
-          "method": "POST",
-          "url": "http://114.116.235.94/view_post/",
-          "data": {
-            "user_id": this.$route.query.user_id,
-            "post_id": this.$route.query.post_id
-          },
-          "transformRequest": [function (data) {
-
-            let ret = "";
-            for (const it in data) {
-
-              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                }
 
             }
-            return ret;
 
-          }],
-        }).then(response => {
-
-          console.log("查看帖子", response);
-          this.comments = response.data.all_info.comment;
-
-        });
-
-      }
-
-    },
-
-    onReset () {
-
-      this.text = null;
-      this.$refs.text.resetValidation();
-
-    },
-
-    commentJubao (user_id, com_id) {
-
-      // http://114.116.235.94/report_comment/
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/report_comment/",
-        "data": {
-          user_id,
-          "comment_id": com_id,
-          "reason": this.reason
         },
-        "transformRequest": [function (data) {
+        simulateProgress (number) {
 
-          let ret = "";
-          for (const it in data) {
+            // we set loading state
+            this[`loading${number}`] = true;
+            // simulate a delay
+            setTimeout(() => {
 
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                // we're done, we reset loading state
+                this[`loading${number}`] = false;
 
-          }
-          return ret;
+            }, 1000);
 
-        }],
-      }).then(response => {
+        },
+        onSubmit () {
 
-        console.log("举报评论", response);
-        this.prompt = true;
-        this.reason = "";
+            this.$refs.text.validate();
+            if (this.$refs.text.hasError) {
 
-      });
+                this.formHasError = true;
 
-    }
-  },
+            } else {
+
+                this.alert = true;
+                this.$refs.text.resetValidation();
+                // 调用评论axios请求
+                this.comments.splice(0, 0, {
+                    "name": this.$route.params.id,
+                    "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171208%2Ff1d2aa196b2248abb59d50bff5c7376a.jpeg&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640140175&t=fbcd874f84cac90de991d827a58808ae",
+                    "text": this.text,
+                    "stamp": "2021/6/10",
+                    "goodnumber": 0,
+                    "isgood": false,
+                    "cid": -1,
+                });
+                this.text = "";
+
+            }
+
+        },
+        onReset () {
+
+            this.text = null;
+            this.$refs.text.resetValidation();
+
+        }
+    },
 
 };
 </script>

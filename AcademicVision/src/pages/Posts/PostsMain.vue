@@ -1,33 +1,15 @@
 <template>
   <div>
     <q-layout view="hHr lpR fFf">
-      <q-dialog
-        v-model="confirm"
-        persistent
-      >
+      <q-dialog v-model="confirm" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <q-avatar
-              icon="logout"
-              color="primary"
-              text-color="white"
-              size="36px"
-            />
-            <span
-              class="q-ml-sm"
-              style="font-size: 20px"
-            >您还没有登录，即将为您跳转到登录界面</span>
+            <q-avatar icon="logout" color="primary" text-color="white" size="36px"/>
+            <span class="q-ml-sm" style="font-size: 20px">您还没有登录，即将为您跳转到登录界面</span>
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn
-              flat
-              label="确定"
-              color="primary"
-              v-close-popup
-              @click="method1"
-              size="20px"
-            />
+            <q-btn flat label="确定" color="primary" v-close-popup @click="method1" size="20px"/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -95,13 +77,13 @@
       />
 
       <q-page-container v-if="tab==='1'">
-        <PostFirstPage style="padding-top: 10px;padding-right: 10px" />
+        <PostFirstPage style="padding-top: 10px;padding-right: 10px"/>
       </q-page-container>
       <q-page-container v-else-if="tab==='2'">
-        <PostRanking />
+        <PostRanking/>
       </q-page-container>
       <q-page-container v-else-if="tab==='3'">
-        <PostPartition style="padding-top: 10px;padding-right: 10px;margin-left: 60px" />
+        <PostPartition style="padding-top: 10px;padding-right: 10px;margin-left: 60px"/>
       </q-page-container>
       <q-page-container v-else-if="tab==='4'">
         <PostPeople
@@ -114,78 +96,72 @@
 </template>
 
 <script>
-import { tiArrowTopRight } from "@quasar/extras/themify";
-import { matAllInbox } from "@quasar/extras/material-icons";
+import {tiArrowTopRight} from "@quasar/extras/themify";
+import {matAllInbox} from "@quasar/extras/material-icons";
 import PostFirstPage from "pages/Posts/PostFirstPage";
 import PostRanking from "pages/Posts/PostRanking";
 import PostDrawer from "components/Posts/PostDrawer";
 import PostPartition from "pages/Posts/PostPartition";
 import PostPeople from "pages/Posts/PostPeople";
-import { ref } from "vue";
+import {ref} from "vue";
 
 export default {
-    "name": "PostsMain",
+  "name": "PostsMain",
 
-    "components": {
-        PostFirstPage,
-        PostRanking,
-        PostDrawer,
-        PostPartition,
-        PostPeople
+  "components": {
+    PostFirstPage,
+    PostRanking,
+    PostDrawer,
+    PostPartition,
+    PostPeople
+  },
+
+  setup() {
+
+    const leftDrawerOpen = ref(false);
+
+    return {
+      leftDrawerOpen,
+      toggleLeftDrawer() {
+
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+
+      }
+    };
+
+  },
+
+  data() {
+
+    return {
+      "tab": "1",
+      "ratio": 50,
+      "left": false,
+      "widthD": 200,
+      "confirm": false,
+    };
+
+  },
+
+  "methods": {
+    ChangeMode() {
+
+      console.log(`转换菜单${this.tab}`);
+
     },
 
-    setup () {
-
-        const leftDrawerOpen = ref(false);
-
-        return {
-            leftDrawerOpen,
-            toggleLeftDrawer () {
-
-                leftDrawerOpen.value = !leftDrawerOpen.value;
-
-            }
-        };
-
-    },
-
-    data () {
-
-        return {
-            "tab": "1",
-            "ratio": 50,
-            "left": false,
-            "widthD": 200,
-            "confirm": false,
-        };
-
-    },
-
-    "methods": {
-        ChangeMode () {
-
-            console.log(`转换菜单${this.tab}`);
-
-        },
-
-        method1 () {
-
-            this.$router.push({ "path": "/login" });
-
-        }
-    },
-
-    mounted () {
-
-        if (!this.$store.state.login) {
-
-            // alert("您还没有登录，即将为您跳转到登录界面");
-            this.confirm = true;
-            // this.$router.push({path: "/login"});
-
-        }
-
+    method1() {
+      this.$router.push({path: "/login"});
     }
+  },
+
+  mounted() {
+    if (!this.$store.state.login) {
+      // alert("您还没有登录，即将为您跳转到登录界面");
+      this.confirm = true;
+      // this.$router.push({path: "/login"});
+    }
+  }
 
 };
 

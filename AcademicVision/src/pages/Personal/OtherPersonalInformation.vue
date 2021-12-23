@@ -218,127 +218,95 @@ export default {
 
     data () {
 
-        return {
-            "accept": false,
-            "Form": {
-                "nickname": "",
-                "name": "",
-                "institution": "",
-                "disciplines": "",
-                "skill": "",
-                "position": "",
-                "department": "",
-                "direction": "",
-                "achievement": "",
-                "introduction": "",
-                "Language": "",
-                "text": "",
-                "OtherimgUrl": "",
-                "follownum": 1,
-                "Researchitemnum": 0,
-                "Projectnum": 0,
-                "Questionnum": 0,
-                "Answernum": 0,
-            }
-        };
+    return {
+      "accept": false,
+      "Form": {
+        "nickname": "",
+        "name": "",
+        "institution": "",
+        "disciplines": "",
+        "skill": "",
+        "position": "",
+        "department": "",
+        "direction": "",
+        "achievement": "",
+        "introduction":"",
+        "Language":"",
+        "text": "",
+        "OtherimgUrl":"",
+        "follownum": 1,
+        "Researchitemnum":0,
+        "Projectnum":0,
+        "Questionnum":0,
+        "Answernum":0,
+      }
+    };
 
-    },
-    "mounted" () {
-
-        this.loadOtherInfo();
-
-    },
-    "methods": {
-        loadOtherInfo (){
-
-            this.$axios({
-                "method": "post",
-                "url": "http://114.116.235.94/check_my_info/",
-                "header": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                "data": {
-                    "user_id": window.sessionStorage.getItem("otherpersonid"),
-                },
-                "transformRequest": [function (data){
-
-                    let ret = "";
-                    for (const it in data){
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-                    }
-                    return ret;
-
-                }],
-            }).then((res) => {
-
-                console.log(res.data.info);
-                const { info } = res.data ;
-                this.Form.nickname = info.user_name;
-                this.Form.OtherimgUrl = `http://114.116.235.94/${info.image}`;
-                if (info.org !== null){
-
-                    this.Form.institution = info.org;
-
-                }
-                if (info.is_associated !== null) {
-
-                    this.Form.is_associated = info.is_associated;
-
-                }
-                if (info.hobby !== null) {
-
-                    this.Form.skill = info.hobby;
-
-                }
-                if (info.bio !== null) {
-
-                    this.Form.introduction = info.bio;
-
-                }
-                if (info.subject !== null) {
-
-                    this.Form.disciplines = info.subject;
-
-                }
-                if (info.language !== null) {
-
-                    this.Form.Language = info.language;
-
-                }
-                if (info.department !== null) {
-
-                    this.Form.department = info.department;
-
-                }
-                if (info.direction !== null) {
-
-                    this.Form.direction = info.direction;
-
-                }
-                if (info.achievement !== null) {
-
-                    this.Form.achievement = info.achievement;
-
-                }
-                if (info.position !== null) {
-
-                    this.Form.position = info.position;
-
-                }
-                if (info.org_bio !== null) {
-
-                    this.Form.text = info.org_bio;
-
-                }
-                // if(info.briefintroduction !== null)
-                //   this.Form.briefintroduction = info.briefintroduction;
-
-            });
-
+  },
+  "mounted": function () {
+    this.loadOtherInfo()
+  },
+  "methods": {
+    loadOtherInfo(){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/check_my_info/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          user_id:window.sessionStorage.getItem('otherpersonid'),
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.info )
+        let info = res.data.info ;
+        this.Form.nickname = info.user_name;
+        this.Form.OtherimgUrl = 'http://114.116.235.94/' +  info.image;
+        if (info.org!==null){
+          this.Form.institution = info.org;
         }
-    },
+        if (info.is_associated!==null) {
+          this.Form.is_associated = info.is_associated;
+        }
+        if (info.hobby!==null) {
+          this.Form.skill = info.hobby;
+        }
+        if (info.bio!==null) {
+          this.Form.introduction = info.bio;
+        }
+        if (info.subject!==null) {
+          this.Form.disciplines = info.subject;
+        }
+        if (info.language!==null) {
+          this.Form.Language = info.language;
+        }
+        if (info.department!==null) {
+          this.Form.department = info.department;
+        }
+        if (info.direction!==null) {
+          this.Form.direction = info.direction;
+        }
+        if (info.achievement!==null) {
+          this.Form.achievement = info.achievement;
+        }
+        if (info.position!==null) {
+          this.Form.position = info.position;
+        }
+        if (info.org_bio!==null) {
+          this.Form.text = info.org_bio;
+        }
+        // if(info.briefintroduction !== null)
+        //   this.Form.briefintroduction = info.briefintroduction;
+      })
+    }
+  },
 };
 
 </script>
