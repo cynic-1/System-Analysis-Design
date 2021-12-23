@@ -31,54 +31,64 @@ export default store((/* { ssrContext } */) => {
                 "email": "",
                 "headImage": "",
                 "is_associated": "",
+                "papers": [],
+                "paperCounts": []
             }
         },
         "mutations": {
             setLogin (state) {
 
                 state.login = true;
-            
+
             },
             setAdmin (state) {
 
                 state.isAdmin = true;
-            
+
             },
             setUserID (state, UserID) {
 
                 state.person.userID = UserID;
-            
+
             },
             setUserName (state, username) {
 
                 state.person.username = username;
-            
+
             },
             setUserEmail (state, email) {
 
                 state.person.email = email;
-            
+
             },
             setUserAssociated (state, is_associated) {
 
                 state.person.is_associated = is_associated;
-            
+
             },
             setUserHeadImage (state, headImage) {
 
                 state.person.headImage = headImage;
-            
+
             },
             setLogout (state) {
 
                 state.login = false;
-            
+
             },
             setUser (state, Person){
 
                 state.person = Person;
-            
+
             },
+
+            setPapers (state, list) {
+              state.person.papers = list;
+            },
+
+            setPaperCounts (state, nums){
+              state.person.paperCounts = nums;
+            }
 
         },
     });

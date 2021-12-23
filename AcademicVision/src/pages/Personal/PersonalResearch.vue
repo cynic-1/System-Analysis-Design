@@ -66,7 +66,7 @@
               统计数据
             </div>
             <q-separator inset />
-            <pie-chart :nums="this.articleCount" :sum="this.articleSum"/>
+            <pie-chart v-if="this.dataReady" :n="this.articleCount" :s="this.articleSum" />
           </q-card>
           <q-card class="q-my-xl">
             <div class="text-h5 q-pa-md">
@@ -148,6 +148,7 @@ export default {
 
         return {
             "tab": "scholar page",
+            "dataReady": false,
             "tabsList": [
                 { "name": "scholar page", "icon": "description", "label": "学者主页" },
                 { "name": "confirm authorship", "icon": "school", "label": "研究认领" },
@@ -249,11 +250,15 @@ export default {
 
           console.log(res.data);
           if (res.data.code !== 200) return alert(res.data.message);
-          this.confirmedListExample = res.data.data.paper_list
-          this.articleCount = res.data.type
-          this.articleSum = res.data.sum
-          console.log(this.articleCount)
-          console.log(this.articleSum)
+          this.confirmedListExample = res.data.data.paper_list;
+          this.articleCount = res.data.type;
+          this.articleSum = res.data.sum;
+          console.log(this.articleCount[0]);
+          console.log(this.articleSum);
+          this.$store.commit("setPapers", this.confirmedListExample);
+          this.$store.commit("setPaperCounts", this.articleCount);
+
+          this.dataReady = true;
           // alert("文章认领成功");
         });
       }

@@ -76,16 +76,20 @@ echarts.use([
 
 // import * as echarts from "echarts";
 
+import { useStore } from 'vuex'
+
 export default {
     "name": "PieChart",
     setup () {
 
+        const store = useStore()
+
         const researchItems = {
-            "items": [{ "value": 35, "name": "期刊" },
-                { "value": 16, "name": "会议" },
-                { "value": 9, "name": "专著" },
-                { "value": 3, "name": "其他" }],
-            "sum": 73
+            "items": [{ "value": store.state.person.paperCounts[0], "name": "期刊/会议" },
+                { "value": store.state.person.paperCounts[1], "name": "学位论文" },
+                { "value": store.state.person.paperCounts[2], "name": "专著" },
+                { "value": store.state.person.paperCounts[3], "name": "其他" }],
+            "sum": store.state.person.paperCounts.reduce((prev, cur) => {return prev+cur}, 0)
         };
 
         const option = {
@@ -116,12 +120,7 @@ export default {
                     "labelLine": {
                         "show": true
                     },
-                    "data": [
-                        { "value": 35, "name": "期刊" },
-                        { "value": 16, "name": "会议" },
-                        { "value": 9, "name": "专著" },
-                        { "value": 6, "name": "其他" }
-                    ]
+                    "data": researchItems.items
                 }
             ]
         };
