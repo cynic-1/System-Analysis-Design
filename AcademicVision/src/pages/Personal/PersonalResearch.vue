@@ -66,7 +66,7 @@
               统计数据
             </div>
             <q-separator inset />
-            <pie-chart :type="articleCount" :sum="articleSum"/>
+            <pie-chart :type="this.articleCount" :sum="this.articleSum"/>
           </q-card>
           <q-card class="q-my-xl">
             <div class="text-h5 q-pa-md">
@@ -251,6 +251,7 @@ export default {
           if (res.data.code !== 200) return alert(res.data.message);
           this.confirmedListExample = res.data.data.paper_list
           this.articleCount = res.data.data.type
+          this.articleSum = res.data.data.sum
           // alert("文章认领成功");
         });
       }
@@ -258,7 +259,7 @@ export default {
     },
     "computed": {
     },
-    mounted () {
+    created () {
         this.getConfirmedList();
     }
 
