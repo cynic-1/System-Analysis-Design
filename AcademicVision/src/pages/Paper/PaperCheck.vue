@@ -185,8 +185,6 @@ export default {
   },
   created() {
     this.paper = JSON.parse(window.sessionStorage.getItem("data"))
-    if(this.paper === null || this.paper === undefined)
-      this.paper = this.defaultPaper
     this.paper_id = this.$route.query.id
     this.user_id = this.$store.state.person.userID !== ""? this.$store.state.person.userID: "1"
     this.loadPaper()
@@ -254,6 +252,8 @@ export default {
         this.abstract = response.data.abstract
       })
       //console.log(this.paper)
+      if(this.paper === null || this.paper === undefined || this.paper.length < 10)
+        this.paper = this.defaultPaper
       for(let idx in [1,2,3,4,5,6,7,8,9,10]){
         let i = Math.round(Math.random()*this.paper.length)
         //console.log(this.rows[i])
