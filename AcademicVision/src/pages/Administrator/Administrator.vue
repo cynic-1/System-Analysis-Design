@@ -5,7 +5,7 @@
         <div class="q-pa-md text-h5 text-center">
           管 理 列 表
         </div>
-        <q-separator />
+        <q-separator/>
         <q-expansion-item
           expand-separator
           :header-inset-level="1"
@@ -104,7 +104,7 @@
             <div class="text-h5 q-pb-md">
               {{ item.label }}
             </div>
-            <q-separator />
+            <q-separator/>
             <br>
             <div v-if="item.name==='1'">
               <q-table
@@ -127,14 +127,14 @@
                     placeholder="Search"
                   >
                     <template #append>
-                      <q-icon name="search" />
+                      <q-icon name="search"/>
                     </template>
                   </q-input>
                 </template>
 
                 <template #header="props">
                   <q-tr :props="props">
-                    <q-th auto-width />
+                    <q-th auto-width/>
                     <q-th
                       v-for="col in props.cols"
                       :key="col.name"
@@ -164,7 +164,8 @@
                     >
                       <span v-if="col.name !== 'operation'">{{ col.value }}</span>
                       <span v-else>
-                        <q-btn flat color="primary" @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
+                        <q-btn flat color="primary"
+                               @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
                         <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
                           <q-list>
                             <q-item clickable v-close-popup @click="deletePost(props.row.report_id)">
@@ -197,37 +198,37 @@
             </div>
             <div v-if="item.name==='2'">
               <q-table
-                  v-model:pagination="pagination2"
-                  style="height:450px;width: 100%"
-                  title="举报列表"
-                  :rows="rows2"
-                  :columns="columns2"
-                  virtual-scroll
-                  row-key="report_id"
-                  :rows-per-page-options="[0]"
-                  :filter="filter2"
+                v-model:pagination="pagination2"
+                style="height:450px;width: 100%"
+                title="举报列表"
+                :rows="rows2"
+                :columns="columns2"
+                virtual-scroll
+                row-key="report_id"
+                :rows-per-page-options="[0]"
+                :filter="filter2"
               >
                 <template #top-right>
                   <q-input
-                      v-model="filter2"
-                      borderless
-                      dense
-                      debounce="300"
-                      placeholder="Search"
+                    v-model="filter2"
+                    borderless
+                    dense
+                    debounce="300"
+                    placeholder="Search"
                   >
                     <template #append>
-                      <q-icon name="search" />
+                      <q-icon name="search"/>
                     </template>
                   </q-input>
                 </template>
 
                 <template v-slot:header="props">
                   <q-tr :props="props">
-                    <q-th auto-width />
+                    <q-th auto-width/>
                     <q-th
-                        v-for="col in props.cols"
-                        :key="col.name"
-                        :props="props"
+                      v-for="col in props.cols"
+                      :key="col.name"
+                      :props="props"
                     >
                       {{ col.label }}
                     </q-th>
@@ -237,16 +238,18 @@
                 <template v-slot:body="props">
                   <q-tr :props="props">
                     <q-td auto-width>
-                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand"
+                             :icon="props.expand ? 'remove' : 'add'"/>
                     </q-td>
                     <q-td
-                        v-for="col in props.cols"
-                        :key="col.name"
-                        :props="props"
+                      v-for="col in props.cols"
+                      :key="col.name"
+                      :props="props"
                     >
                       <span v-if="col.name !== 'operation'">{{ col.value }}</span>
                       <span v-else>
-                        <q-btn flat color="primary" @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
+                        <q-btn flat color="primary"
+                               @click="gotoCheckPost(props.row.post_id,props.row.user_id_r)">前往查看</q-btn>
                         <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
                           <q-list>
                             <q-item clickable v-close-popup @click="deleteComment(props.row.report_id)">
@@ -276,37 +279,37 @@
 
             <div v-if="item.name==='3'">
               <q-table
-                  v-model:pagination="pagination3"
-                  style="height:450px;width: 100%"
-                  title="举报列表"
-                  :rows="rows3"
-                  :columns="columns3"
-                  virtual-scroll
-                  row-key="report_id"
-                  :rows-per-page-options="[0]"
-                  :filter="filter3"
+                v-model:pagination="pagination3"
+                style="height:450px;width: 100%"
+                title="举报列表"
+                :rows="rows3"
+                :columns="columns3"
+                virtual-scroll
+                row-key="report_id"
+                :rows-per-page-options="[0]"
+                :filter="filter3"
               >
                 <template #top-right>
                   <q-input
-                      v-model="filter3"
-                      borderless
-                      dense
-                      debounce="300"
-                      placeholder="Search"
+                    v-model="filter3"
+                    borderless
+                    dense
+                    debounce="300"
+                    placeholder="Search"
                   >
                     <template #append>
-                      <q-icon name="search" />
+                      <q-icon name="search"/>
                     </template>
                   </q-input>
                 </template>
 
                 <template v-slot:header="props">
                   <q-tr :props="props">
-                    <q-th auto-width />
+                    <q-th auto-width/>
                     <q-th
-                        v-for="col in props.cols"
-                        :key="col.name"
-                        :props="props"
+                      v-for="col in props.cols"
+                      :key="col.name"
+                      :props="props"
                     >
                       {{ col.label }}
                     </q-th>
@@ -316,12 +319,13 @@
                 <template v-slot:body="props">
                   <q-tr :props="props">
                     <q-td auto-width>
-                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+                      <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand"
+                             :icon="props.expand ? 'remove' : 'add'"/>
                     </q-td>
                     <q-td
-                        v-for="col in props.cols"
-                        :key="col.name"
-                        :props="props"
+                      v-for="col in props.cols"
+                      :key="col.name"
+                      :props="props"
                     >
                       <span v-if="col.name !== 'operation'">{{ col.value }}</span>
                       <span v-else>
@@ -373,7 +377,7 @@
                     placeholder="Search"
                   >
                     <template #append>
-                      <q-icon name="search" />
+                      <q-icon name="search"/>
                     </template>
                   </q-input>
                   <q-btn
@@ -392,7 +396,7 @@
                 </template>
               </q-table>
             </div>
-            <div v-if="item.name==='3'" />
+            <div v-if="item.name==='3'"/>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -409,7 +413,8 @@
           size="70px"
           name="person_add"
           style="left: 200px"
-        /><br>
+        />
+        <br>
         <div>
           <q-input
             v-model="id"
@@ -455,10 +460,47 @@
       </q-form>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="toolbar">
+    <q-card style="height: 150px;width: 350px">
+      <q-toolbar>
+        <q-avatar>
+          <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
+        </q-avatar>
+
+        <q-toolbar-title><span class="text-weight-bold" style="font-size: 25px">管理员</span><span style="font-size: 25px">信息提示</span>
+        </q-toolbar-title>
+
+        <q-btn flat round dense icon="close" v-close-popup/>
+      </q-toolbar>
+
+      <q-card-section>
+        <span style="font-size: 20px">举报处理成功</span>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="toolbar1">
+    <q-card style="height: 150px;width: 350px">
+      <q-toolbar>
+        <q-avatar>
+          <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
+        </q-avatar>
+
+        <q-toolbar-title><span class="text-weight-bold" style="font-size: 25px">管理员</span><span style="font-size: 25px">信息提示</span>
+        </q-toolbar-title>
+
+        <q-btn flat round dense icon="close" v-close-popup/>
+      </q-toolbar>
+
+      <q-card-section>
+        <span style="font-size: 20px">创建成功</span>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
-import { defineAsyncComponent, ref } from "vue";
+import {defineAsyncComponent, ref} from "vue";
 
 const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer"));
 
@@ -469,10 +511,10 @@ const columns1 = [
     "field": "report_id"
   },
 
-  { "name": "user_name_r","align": "center", "label": "被举报用户", "field": "user_name_r" },
-  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
-  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
-  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
+  {"name": "user_name_r", "align": "center", "label": "被举报用户", "field": "user_name_r"},
+  {"name": "user_name", "align": "center", "label": "举报用户", "field": "user_name"},
+  {"name": "time", "align": "center", "label": "举报日期", "field": "time"},
+  {"name": "operation", "align": "center", "label": "操作", "field": "operation"},
 ];
 const columns2 = [
   {
@@ -481,10 +523,10 @@ const columns2 = [
     "field": "report_id"
   },
 
-  { "name": "user_name_r","align": "center", "label": "被举报用户", "field": "user_name_r" },
-  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
-  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
-  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
+  {"name": "user_name_r", "align": "center", "label": "被举报用户", "field": "user_name_r"},
+  {"name": "user_name", "align": "center", "label": "举报用户", "field": "user_name"},
+  {"name": "time", "align": "center", "label": "举报日期", "field": "time"},
+  {"name": "operation", "align": "center", "label": "操作", "field": "operation"},
 ];
 const columns3 = [
   {
@@ -493,10 +535,10 @@ const columns3 = [
     "field": "report_id"
   },
 
-  { "name": "author_name","align": "center", "label": "被举报门户", "field": "author_name" },
-  { "name": "user_name","align": "center", "label": "举报用户", "field": "user_name" },
-  { "name": "time", "align": "center","label": "举报日期", "field": "time" },
-  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
+  {"name": "author_name", "align": "center", "label": "被举报门户", "field": "author_name"},
+  {"name": "user_name", "align": "center", "label": "举报用户", "field": "user_name"},
+  {"name": "time", "align": "center", "label": "举报日期", "field": "time"},
+  {"name": "operation", "align": "center", "label": "操作", "field": "operation"},
 ];
 const columns4 = [
   {
@@ -504,16 +546,16 @@ const columns4 = [
     "label": "编号",
     "field": "user_id"
   },
-  { "name": "user_name","align": "center", "label": "昵称", "field": "user_name" },
-  {"name": "email","align": "center", "label": "邮箱", "field": "email"},
-  { "name": "operation","align": "center", "label": "操作", "field": "operation" },
+  {"name": "user_name", "align": "center", "label": "昵称", "field": "user_name"},
+  {"name": "email", "align": "center", "label": "邮箱", "field": "email"},
+  {"name": "operation", "align": "center", "label": "操作", "field": "operation"},
 ];
 export default {
-    "name": "Administrator",
-    "components": {
-        leftDrawer
-    },
-    setup (){
+  "name": "Administrator",
+  "components": {
+    leftDrawer
+  },
+  setup() {
     return {
       "filter1": ref(""),
       "filter2": ref(""),
@@ -522,16 +564,18 @@ export default {
       alert: ref(false),
     };
   },
-  data () {
+  data() {
 
     return {
-      rows1:[],
+      toolbar: false,
+      toolbar1: false,
+      rows1: [],
       columns1,
-      rows2:[],
+      rows2: [],
       columns2,
-      rows3:[],
+      rows3: [],
       columns3,
-      rows4:[],
+      rows4: [],
       columns4,
       "tab": "4",
       "pagination": ref({
@@ -547,12 +591,12 @@ export default {
         "rowsPerPage": 0
       }),
       "tabsList": [
-        { "name": "1", "icon": "help_center", "label": "帖子举报" },
-        { "name": "2", "icon": "help_center", "label": "评论举报" },
-        { "name": "3", "icon": "help_center", "label": "科研认证举报" },
-        { "name": "4", "icon": "person", "label": "账号管理" },
+        {"name": "1", "icon": "help_center", "label": "帖子举报"},
+        {"name": "2", "icon": "help_center", "label": "评论举报"},
+        {"name": "3", "icon": "help_center", "label": "科研认证举报"},
+        {"name": "4", "icon": "person", "label": "账号管理"},
       ],
-      "reportList":[],
+      "reportList": [],
       "valid": true,
       "id": "",
       "idRules": [(v) => !!v || "ID is required"],
@@ -575,151 +619,152 @@ export default {
     this.loadPostTable();
     this.loadCommentTable();
     this.loadAuthorTable();
-    },
-  methods :{
-    loadPostTable(){
+  },
+  methods: {
+    loadPostTable() {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/get_report_post/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/get_report_post/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{},
-        transformRequest:[function(data){
+        data: {},
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.data.post_reported_list)
-        let info = res.data.data.post_reported_list ;
-        this.rows1=info;
+        let info = res.data.data.post_reported_list;
+        this.rows1 = info;
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;
       })
     },
-    loadCommentTable(){
+    loadCommentTable() {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/get_report_comment/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/get_report_comment/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{},
-        transformRequest:[function(data){
+        data: {},
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.data.comment_reported_list)
-        let info = res.data.data.comment_reported_list ;
-        this.rows2=info;
+        let info = res.data.data.comment_reported_list;
+        this.rows2 = info;
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;
       })
     },
-    loadUserTable(){
+    loadUserTable() {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/alluser/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/alluser/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{},
-        transformRequest:[function(data){
+        data: {},
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.list_user)
-        let info = res.data.list_user ;
-        this.rows4=info;
+        let info = res.data.list_user;
+        this.rows4 = info;
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;
       })
     },
-    loadAuthorTable(){
+    loadAuthorTable() {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/get_report_author/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/get_report_author/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{},
-        transformRequest:[function(data){
+        data: {},
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.data)
-        let info = res.data.data.author_reported_list ;
-        this.rows3=info;
+        let info = res.data.data.author_reported_list;
+        this.rows3 = info;
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;
       })
     },
-    deleteAuthor(reportid){
+    deleteAuthor(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_author/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_author/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:1,
+        data: {
+          report_id: reportid,
+          type: 1,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadAuthorTable();
-        alert("处理成功");
+        this.toolbar = true;
       })
       this.loadAuthorTable();
     },
-    deleteAuthorReport(reportid){
+    deleteAuthorReport(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_author/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_author/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:2,
+        data: {
+          report_id: reportid,
+          type: 2,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadAuthorTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadAuthorTable();
     },
-    gotoCheckPost(postid,userid){
+    gotoCheckPost(postid, userid) {
       console.log(userid)
       console.log(postid)
       this.$router.push({
@@ -730,114 +775,118 @@ export default {
         }
       })
     },
-    gotoCheckUser(userid){
+    gotoCheckUser(userid) {
       console.log(userid)
-      window.sessionStorage.setItem('otherpersonid',userid);
+      window.sessionStorage.setItem('otherpersonid', userid);
       this.$router.push({
         "path": "/otherpersonal",
       })
     },
-    deletePost(reportid){
+    deletePost(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_post/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_post/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:1,
+        data: {
+          report_id: reportid,
+          type: 1,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadPostTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadPostTable();
     },
-    deletePostReport(reportid){
+    deletePostReport(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_post/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_post/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:2,
+        data: {
+          report_id: reportid,
+          type: 2,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadPostTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadPostTable();
     },
-    deleteComment(reportid){
+    deleteComment(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_comment/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_comment/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:1,
+        data: {
+          report_id: reportid,
+          type: 1,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadCommentTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadCommentTable();
     },
-    deleteCommentReport(reportid){
+    deleteCommentReport(reportid) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/handle_report_comment/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/handle_report_comment/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          report_id:reportid,
-          type:2,
+        data: {
+          report_id: reportid,
+          type: 2,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadCommentTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadCommentTable();
     },
-    Register () {
+    Register() {
       this.validate();
       this.$axios({
         method: 'POST',
@@ -859,48 +908,49 @@ export default {
         console.log("注册", response)
         if (response.data.code === "200") {
           this.loadUserTable();
-          alert("创建成功");
-          this.alert=false;
-          this.id="" ;
-          this.password="";
-          this.rePassword="";
-          this.Email="";
-        }
-        else if (response.data.code === "0") {
+          // alert("创建成功");
+          this.toolbar1 = true;
+          this.alert = false;
+          this.id = "";
+          this.password = "";
+          this.rePassword = "";
+          this.Email = "";
+        } else if (response.data.code === "0") {
           alert(response.data.message);
           this.clear();
         }
       })
     },
-    validate () {
+    validate() {
       this.$refs.form.validate();
     },
-    deleteuser (id){
+    deleteuser(id) {
       this.$axios({
-        method:"post",
-        url:"http://114.116.235.94/ban_user/",
-        header:{
+        method: "post",
+        url: "http://114.116.235.94/ban_user/",
+        header: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data:{
-          user_id:id,
+        data: {
+          user_id: id,
         },
-        transformRequest:[function(data){
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data){
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
         }],
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res.data.code);
         this.loadUserTable();
-        alert("处理成功");
+        this.toolbar = true;
+
       })
       this.loadUserTable();
     },
 
-    }
+  }
 };
 </script>
 
@@ -909,6 +959,7 @@ export default {
   width: 100%
   width: 215px
   height: 170px
+
 .login_
   font-size: 20px
   margin-top: 15px
