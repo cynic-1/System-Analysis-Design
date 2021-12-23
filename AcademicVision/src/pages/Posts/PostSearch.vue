@@ -14,6 +14,7 @@
         standout
         :dense="dense"
         style="max-width: 900px;margin:0 auto;background-color: white;opacity: 0.85"
+        @keyup.enter="search"
       >
         <template #append>
           <q-avatar>

@@ -27,6 +27,7 @@
             standout
             :dense="dense"
             style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85"
+            @keyup.enter="search"
           >
             <template #append>
               <q-avatar>
@@ -58,6 +59,7 @@
             standout
             :dense="dense"
             style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85"
+            @keyup.enter="search"
           >
             <template #append>
               <q-avatar>
@@ -66,6 +68,7 @@
                   round
                   color="blue-6"
                   size="12px"
+                  @click="search"
                 />
               </q-avatar>
             </template>
@@ -88,6 +91,7 @@
             standout
             :dense="dense"
             style="max-width: 900px;background-color: white;margin: 20px auto 0;opacity: 0.85"
+            @keyup.enter="search"
           >
             <template #append>
               <q-avatar>
