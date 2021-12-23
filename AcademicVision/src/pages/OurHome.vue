@@ -2,7 +2,7 @@
 <template>
   <div>
     <br>
-<!--    <NavBar /><br>-->
+    <!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
       style="margin-top: 0;padding-top: 0"
@@ -42,7 +42,8 @@
                     name="search"
                     icon="mail"
                     label="文献检索"
-                  /><br><br><br>
+                  />
+                  <br><br><br>
                   <q-tab
                     name="user_search"
                     icon="alarm"
@@ -149,7 +150,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热门论文 <span class="material-icons" style="color: rgba(8,179,255,0.93)">verified</span>
+          热门论文 <span class="material-icons" style="color: rgba(37,130,255,0.95)">verified</span>
         </h4>
         <div v-for="(each,index) in hot_paper_list"
              :key="each">
@@ -160,6 +161,8 @@
             <q-banner
               class="bg-grey-3"
               @click="viewPaper(each.paper_id)"
+              rounded
+              style="cursor:pointer;background-color: white"
             >
               <template #avatar>
                 <q-icon
@@ -187,7 +190,7 @@
                   size="27px"
                 />
               </template>
-              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              <strong>{{ index + 1 }}&nbsp;&nbsp;&nbsp;</strong>
               {{ each.paper_name }}
             </q-banner>
           </div>
@@ -198,7 +201,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热门学者 <span class="material-icons" style="color: rgba(8,179,255,0.93)">supervised_user_circle</span>
+          热门学者 <span class="material-icons" style="color: rgba(37,130,255,0.95)">supervised_user_circle</span>
         </h4>
         <div v-for="(each,index) in hot_scholar_list"
              :key="each">
@@ -209,6 +212,8 @@
             <q-banner
               class="bg-grey-3"
               @click="viewAuthor(each.author_id)"
+              rounded
+              style="cursor:pointer;background-color: white"
             >
               <template #avatar>
                 <q-icon
@@ -236,7 +241,7 @@
                   size="27px"
                 />
               </template>
-              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              <strong>{{ index + 1 }}&nbsp;&nbsp;&nbsp;</strong>
               <strong>{{ each.name }}&nbsp;&nbsp;&nbsp;</strong>
               <row style="float:right;padding-right: 40px">被引量{{ each.quote }}</row>
 
@@ -249,7 +254,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热搜关键词 <span class="material-icons" style="color: rgba(8,179,255,0.93)">local_fire_department</span>
+          热搜关键词 <span class="material-icons" style="color: rgba(37,130,255,0.95)">local_fire_department</span>
         </h4>
         <div v-for="(each,index) in hot_keyword_list"
              :key="each">
@@ -260,6 +265,8 @@
             <q-banner
               class="bg-grey-3"
               @click="viewKeyword(each)"
+              rounded
+              style="cursor:pointer;background-color: white"
             >
               <template #avatar>
                 <q-icon
@@ -287,7 +294,7 @@
                   size="27px"
                 />
               </template>
-              <strong>{{ index+1 }}&nbsp;&nbsp;&nbsp;</strong>
+              <strong>{{ index + 1 }}&nbsp;&nbsp;&nbsp;</strong>
               {{ each }}
             </q-banner>
           </div>
@@ -305,173 +312,171 @@ import NavBar from "components/NavBar";
 import PaperComment from "components/PaperComment";
 
 export default {
-    "name": "Home",
-    "props": ["rank", "context", "author", "pid"],
-    "components": {
-        NavBar,
-        EachRanking,
-        PaperComment
-    },
+  "name": "Home",
+  "props": ["rank", "context", "author", "pid"],
+  "components": {
+    NavBar,
+    EachRanking,
+    PaperComment
+  },
 
-    data () {
-        return {
-            "type_accepted_user": [],
-            "type_options_user": [
-                {
-                    "label": "普通用户",
-                    "value": "normal_user"
-                },
-                {
-                    "label": "科研用户",
-                    "value": "science_user"
-                },
-            ],
-            "type_accepted": [],
-            "type_options": [
-                {
-                    "label": "学术期刊",
-                    "value": "qikan"
-                },
-                {
-                    "label": "学位论文",
-                    "value": "lunwen"
-                },
-                {
-                    "label": "图书书籍",
-                    "value": "pop"
-                },
-            ],
-
-            "search_type": "不限",
-            "search_type_options": [
-                "不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"
-            ],
-            "search_text": "",
-            "user_search_text": "",
-            "tab": "search",
-            "splitterModel": 20,
-            "dense": false,
-            "slide": "first",
-            "autoplay": true,
-            "hot_paper_list": [
-                { "paper_id": 1, "paper_name": "拓扑排序"},
-                { "paper_id": 2, "paper_name": "插入排序"},
-                { "paper_id": 3, "paper_name": "分治"},
-            ],
-            "hot_scholar_list": [
-                { "author_id":1,"name": "宋", "quote": "1231"},
-                { "author_id":2,"name": "徐", "quote": "1221"},
-            ],
-            "hot_keyword_list": [
-              "软件工程",
-              "操作系统",
-              "数据挖掘",
-              "算法设计",
-            ]
-        };
-
-    },
-
-    methods: {
-      viewPaper (paper_id) {
-
-        console.log("点击了查看论文方法", paper_id);
-        this.$router.push({
-          "path": "/paper/check",
-          "query": {
-            "id": paper_id
-          }
-        });
-
-      },
-      viewAuthor (author_id) {
-
-        console.log("点击了查看学者方法", author_id);
-        this.$router.push({
-          "path": "",
-          "query": {
-
-          }
-        });
-
-      },
-      viewKeyword (keyword) {
-
-        console.log("点击了查看关键词方法", keyword);
-        this.$router.push({ "path": "/search", "query": { "searchBy": "不限", "key": keyword , "method" : "1"} });
-
-      },
-      search () {
-        console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
-        this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
-
-      },
-      searchAuthor(){
-        this.$router.push({ "path": "/search/user", "query": { "key": this.user_search_text} });
-      },
-      advanced(){
-        this.$router.push("/search/advanced")
-      }
-    },
-    mounted() {
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/top_author/",
-        "data": {
+  data() {
+    return {
+      "type_accepted_user": [],
+      "type_options_user": [
+        {
+          "label": "普通用户",
+          "value": "normal_user"
         },
-        "transformRequest": [function (data) {
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-        console.log("作者热度排行榜", response);
-        this.hot_scholar_list = response.data.info;
-      });
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/top_keywords/",
-        "data": {
+        {
+          "label": "科研用户",
+          "value": "science_user"
         },
-        "transformRequest": [function (data) {
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-        console.log("关键词热度排行榜", response);
-        this.hot_keyword_list = response.data.all_key;
-      });
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/top_paper/",
-        "data": {
+      ],
+      "type_accepted": [],
+      "type_options": [
+        {
+          "label": "学术期刊",
+          "value": "qikan"
         },
-        "transformRequest": [function (data) {
-          let ret = "";
-          for (const it in data) {
+        {
+          "label": "学位论文",
+          "value": "lunwen"
+        },
+        {
+          "label": "图书书籍",
+          "value": "pop"
+        },
+      ],
 
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+      "search_type": "不限",
+      "search_type_options": [
+        "不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"
+      ],
+      "search_text": "",
+      "user_search_text": "",
+      "tab": "search",
+      "splitterModel": 20,
+      "dense": false,
+      "slide": "first",
+      "autoplay": true,
+      "hot_paper_list": [
+        {"paper_id": 1, "paper_name": "拓扑排序"},
+        {"paper_id": 2, "paper_name": "插入排序"},
+        {"paper_id": 3, "paper_name": "分治"},
+      ],
+      "hot_scholar_list": [
+        {"author_id": 1, "name": "宋", "quote": "1231"},
+        {"author_id": 2, "name": "徐", "quote": "1221"},
+      ],
+      "hot_keyword_list": [
+        "软件工程",
+        "操作系统",
+        "数据挖掘",
+        "算法设计",
+      ]
+    };
 
-          }
-          return ret;
+  },
 
-        }],
-      }).then(response => {
-        console.log("论文热度排行榜", response);
-        this.hot_paper_list = response.data.top_paper;
+  methods: {
+    viewPaper(paper_id) {
+
+      console.log("点击了查看论文方法", paper_id);
+      this.$router.push({
+        "path": "/paper/check",
+        "query": {
+          "id": paper_id
+        }
       });
+
     },
+    viewAuthor(author_id) {
+
+      console.log("点击了查看学者方法", author_id);
+      this.$router.push({
+        "path": "",
+        "query": {}
+      });
+
+    },
+    viewKeyword(keyword) {
+
+      console.log("点击了查看关键词方法", keyword);
+      this.$router.push({"path": "/search", "query": {"searchBy": "不限", "key": keyword, "method": "1"}});
+
+    },
+    search() {
+      console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
+      this.$router.push({
+        "path": "/search",
+        "query": {"searchBy": this.search_type, "key": this.search_text, "method": "1"}
+      });
+
+    },
+    searchAuthor() {
+      this.$router.push({"path": "/search/user", "query": {"key": this.user_search_text}});
+    },
+    advanced() {
+      this.$router.push("/search/advanced")
+    }
+  },
+  mounted() {
+    this.$axios({
+      "method": "POST",
+      "url": "http://114.116.235.94/top_author/",
+      "data": {},
+      "transformRequest": [function (data) {
+        let ret = "";
+        for (const it in data) {
+
+          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+        }
+        return ret;
+
+      }],
+    }).then(response => {
+      console.log("作者热度排行榜", response);
+      this.hot_scholar_list = response.data.info;
+    });
+    this.$axios({
+      "method": "POST",
+      "url": "http://114.116.235.94/top_keywords/",
+      "data": {},
+      "transformRequest": [function (data) {
+        let ret = "";
+        for (const it in data) {
+
+          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+        }
+        return ret;
+
+      }],
+    }).then(response => {
+      console.log("关键词热度排行榜", response);
+      this.hot_keyword_list = response.data.all_key;
+    });
+    this.$axios({
+      "method": "POST",
+      "url": "http://114.116.235.94/top_paper/",
+      "data": {},
+      "transformRequest": [function (data) {
+        let ret = "";
+        for (const it in data) {
+
+          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+        }
+        return ret;
+
+      }],
+    }).then(response => {
+      console.log("论文热度排行榜", response);
+      this.hot_paper_list = response.data.top_paper;
+    });
+  },
 
 
 };
@@ -490,6 +495,7 @@ export default {
 
 .L_search
   width: 90%
+
 .tabs
   width: 90%
 </style>
