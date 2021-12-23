@@ -50,7 +50,7 @@
           <q-tab
             name="2"
             style="width:200px"
-            label="学者主页"
+            label="学术中心"
           />
           <q-tab
             name="3"

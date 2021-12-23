@@ -58,7 +58,7 @@ import {
 import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
-import { onMounted, onUnmounted, watch } from "vue";
+import { onMounted, onUnmounted, ref, toRef, toRefs, watch } from "vue";
 
 // 注册必须的组件
 echarts.use([
@@ -78,14 +78,18 @@ echarts.use([
 
 export default {
     "name": "PieChart",
-    setup () {
-
+    props: {
+        type: Array,
+        sum: Number
+    },
+    setup (props, context) {
+        const {type, sum} = toRefs(props)
         const researchItems = {
-            "items": [{ "value": 35, "name": "期刊" },
-                { "value": 16, "name": "会议" },
-                { "value": 9, "name": "专著" },
-                { "value": 3, "name": "其他" }],
-            "sum": 73
+            "items": [{ "value": type[0], "name": "期刊" },
+                { "value": type[1], "name": "会议" },
+                { "value": type[2], "name": "专著" },
+                { "value": type[3], "name": "其他" }],
+            "sum": sum
         };
 
         const option = {
@@ -116,12 +120,7 @@ export default {
                     "labelLine": {
                         "show": true
                     },
-                    "data": [
-                        { "value": 35, "name": "期刊" },
-                        { "value": 16, "name": "会议" },
-                        { "value": 9, "name": "专著" },
-                        { "value": 6, "name": "其他" }
-                    ]
+                    "data": researchItems.items
                 }
             ]
         };
