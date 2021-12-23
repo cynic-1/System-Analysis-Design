@@ -17,6 +17,7 @@
         :key="test"
         class="q-gutter-md"
         style="max-width: 1000px;margin: 0 auto"
+        @click="viewPost(test.post_id)"
       >
         <!--        <q-field filled label="Filled" stack-label>-->
         <!--          <template v-slot:control>-->
@@ -27,7 +28,6 @@
           filled
           stack-label
           style="cursor:pointer"
-          @click="viewPost(test.post_id)"
         >
           <h3 style="margin: 10px;float: left;color: skyblue">
             {{ index + 1 }}
