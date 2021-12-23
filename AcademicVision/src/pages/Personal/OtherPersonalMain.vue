@@ -191,5 +191,5 @@ export default {
 .other-card
   padding-left: 500px
   width: 100%
-  max-width: 1200px
+  max-width: 1400px
 </style>
