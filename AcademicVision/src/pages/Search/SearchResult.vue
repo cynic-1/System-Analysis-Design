@@ -42,9 +42,9 @@
 
         <q-input
           v-model="key"
-          dark
+
           dense
-          standout
+          outlined
           input-class="text-left"
           class="q-ml-md"
           style="width: 80%"

@@ -61,7 +61,7 @@
       <div class="row" style="margin-top: 10px">
         <span style="font-weight: bold;width: 6%">关键词：</span>
         <span style="width: 94%">
-          <span v-for="x in keywords" :key="x" style="margin-left: 10px;color: #666666;cursor: pointer;">{{ x }};</span>
+          <span v-for="x in keywords" :key="x" style="margin-left: 10px;color: #666666;cursor: pointer;" @click="goSearch(x)">{{ x }};</span>
         </span>
       </div>
 
@@ -341,6 +341,9 @@ export default {
         this.timer = void 0
       }, 1000)
     },
+    goSearch(key) {
+      this.$router.push({ "path": "/search", "query": { "searchBy": "关键词", "key": key , "method" : "1"} });
+    }
   },
   beforeDestroy () {
     if (this.timer !== void 0) {
