@@ -48,6 +48,10 @@ const routes = [
         "path": "/paper/check",
         "component": () => import("pages/Paper/PaperCheck.vue")
       },
+      {
+        "path": "/otherpersonal",
+        "component": () => import("pages/Personal/OtherPersonalMain.vue")
+      },
     ]
   },
   // 注册主页页面路由

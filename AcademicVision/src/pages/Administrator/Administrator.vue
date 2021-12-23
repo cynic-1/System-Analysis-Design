@@ -325,7 +325,7 @@
                     >
                       <span v-if="col.name !== 'operation'">{{ col.value }}</span>
                       <span v-else>
-                        <q-btn flat color="primary" @click="gotocheck">前往查看</q-btn>
+                        <q-btn flat color="primary" @click="gotoCheckUser(props.row.author_user)">前往查看</q-btn>
                         <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
                           <q-list>
                             <q-item clickable v-close-popup @click="deleteAuthor(props.row.report_id)">

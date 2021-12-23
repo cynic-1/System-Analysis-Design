@@ -548,32 +548,37 @@
         <q-separator inset />
         <br>
         <p style=" font-size : 1.5em">
-          Following({{ Form.follownum }})
+          Following({{ colAuthorList.length }})
         </p>
-        <q-item>
-          <q-item-section side>
-            <q-avatar
-              rounded
-              size="48px"
-            >
-              <img src="https://cdn.quasar.dev/img/avatar.png">
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Mary</q-item-label>
-            <q-item-label caption>
-              西安大学教授
-            </q-item-label>
-          </q-item-section>
-          <q-item-section>
-            <q-btn
-              label="Unfollow"
-              type="unfollow"
-              color="primary"
-              size="12px"
-            />
-          </q-item-section>
-        </q-item>
+        <div
+          v-for="author in colAuthorList"
+          :key="author">
+          <q-item>
+            <q-item-section side>
+              <q-avatar
+                rounded
+                size="48px"
+              >
+                <img :src="author.img">
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ author.author_name }}</q-item-label>
+              <q-item-label caption>
+                {{ author.org }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-btn
+                label="Unfollow"
+                type="unfollow"
+                color="primary"
+                size="12px"
+                @click="deletecol(author.author_id)"
+              />
+            </q-item-section>
+          </q-item>
+        </div>
       </q-card>
     </template>
   </right-drawer>
@@ -600,6 +605,7 @@ export default {
             "disabled3": true,
             "accept": false,
             "options1": ["Chinese", "English", "Japanese", "French", "Russian"],
+            "colAuthorList":[],
             "Form": {
                 "user": "",
                 "pass": "········",
@@ -631,8 +637,57 @@ export default {
     },
     "mounted": function () {
       this.loadInfo()
+      this.loadcolAuthor()
     },
     "methods": {
+        loadcolAuthor(){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/my_col_author_list/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.info )
+            let info = res.data.info ;
+            this.colAuthorList = info;
+
+          })
+        },
+        deletecol(authorid){
+          this.$axios({
+            method:"post",
+            url:"http://114.116.235.94/un_col_author/",
+            header:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:{
+              user_id:this.$store.state.person.userID,
+              author_id:authorid,
+            },
+            transformRequest:[function(data){
+              let ret = ''
+              for(let it in data){
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret
+            }],
+          }).then((res)=>{
+            console.log(res.data.code )
+            this.loadcolAuthor()
+
+          })
+        },
         loadInfo(){
           this.$axios({
             method:"post",
