@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3d628955-eefd-48ec-8842-bd448df12d40" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcademicVision/src/layouts/RightDrawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/layouts/RightDrawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcademicVision/src/pages/Personal/PersonalInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/pages/Personal/PersonalInformation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcademicVision/src/pages/Personal/PersonalSaved.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/pages/Personal/PersonalSaved.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AcademicVision/src/components/PaperComment.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/components/PaperComment.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AcademicVision/src/pages/Paper/PaperCheck.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/pages/Paper/PaperCheck.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
