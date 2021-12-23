@@ -124,7 +124,7 @@
 
     </q-card>
 
-    <PostView></PostView>
+    <PostView :paper_id="this.$route.query.id"></PostView>
   </div>
 </template>
 
