@@ -69,6 +69,7 @@
                       v-model="search_text"
                       outlined
                       label="请输入检索词"
+                      @keyup.enter="search"
                     >
                       <template #prepend>
                         <q-select
@@ -114,6 +115,7 @@
                       outlined
                       label="请输入学者名称"
                       style="margin-top: 50px"
+                      @keyup.enter="searchAuthor"
                     >
                       <template #append>
                         <q-avatar>
