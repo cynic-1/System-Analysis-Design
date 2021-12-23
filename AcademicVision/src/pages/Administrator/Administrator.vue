@@ -328,12 +328,12 @@
                         <q-btn flat color="primary" @click="gotocheck">前往查看</q-btn>
                         <q-btn-dropdown flat color="red" style="left: 18px" label="处理举报" dropdown-icon="change_history">
                           <q-list>
-                            <q-item clickable v-close-popup @click="onItemClick">
+                            <q-item clickable v-close-popup @click="deleteAuthor(props.row.report_id)">
                               <q-item-section>
                                 <q-item-label>删除科研认证</q-item-label>
                               </q-item-section>
                             </q-item>
-                            <q-item clickable v-close-popup @click="onItemClick">
+                            <q-item clickable v-close-popup @click="deleteAuthorReport(props.row.report_id)">
                               <q-item-section>
                                 <q-item-label>举报无效</q-item-label>
                               </q-item-section>
@@ -540,6 +540,9 @@ export default {
       "pagination2": ref({
         "rowsPerPage": 0
       }),
+      "pagination3": ref({
+        "rowsPerPage": 0
+      }),
       "pagination4": ref({
         "rowsPerPage": 0
       }),
@@ -665,6 +668,56 @@ export default {
         // if(info.briefintroduction !== null)
         //   this.Form.briefintroduction = info.briefintroduction;
       })
+    },
+    deleteAuthor(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_author/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:1,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadAuthorTable();
+        alert("处理成功");
+      })
+      this.loadAuthorTable();
+    },
+    deleteAuthorReport(reportid){
+      this.$axios({
+        method:"post",
+        url:"http://114.116.235.94/handle_report_author/",
+        header:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:{
+          report_id:reportid,
+          type:2,
+        },
+        transformRequest:[function(data){
+          let ret = ''
+          for(let it in data){
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then((res)=>{
+        console.log(res.data.code);
+        this.loadAuthorTable();
+        alert("处理成功");
+      })
+      this.loadAuthorTable();
     },
     gotoCheckPost(postid,userid){
       console.log(userid)

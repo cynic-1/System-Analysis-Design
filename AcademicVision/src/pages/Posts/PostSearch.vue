@@ -80,86 +80,123 @@
 
 <script>
 export default {
-    "name": "PostSearch",
+  "name": "PostSearch",
 
-    data () {
+  data() {
 
-        return {
-            "text": this.$route.query.context,
-            "dense": false,
-            "visible": true,
-            "showSimulatedReturnData": true,
-            "list": [],
-        };
+    return {
+      "text": this.$route.query.context,
+      "dense": false,
+      "visible": true,
+      "showSimulatedReturnData": true,
+      "list": [],
+    };
 
-    },
+  },
+  mounted() {
+    console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+    this.visible = true;
+    this.showSimulatedReturnData = false;
 
-    "methods": {
-        viewPost (post_id) {
+    // http://114.116.235.94/search_post/
+    this.$axios({
+      "method": "POST",
+      "url": "http://114.116.235.94/search_post/",
+      "data": {
+        "title": this.text
+      },
+      "transformRequest": [function (data) {
 
-            console.log("搜索帖子");
-            this.$router.push({
-                "path": "/posts/view",
-                "query": {
-                    "user_id": this.$store.state.person.userID,
-                    post_id,
-                }
-            });
-        
-        },
-        back () {
+        let ret = "";
+        for (const it in data) {
 
-            this.$router.go(-1);
-
-        },
-        search () {
-
-            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-            this.visible = true;
-            this.showSimulatedReturnData = false;
-
-            // http://114.116.235.94/search_post/
-            this.$axios({
-                "method": "POST",
-                "url": "http://114.116.235.94/search_post/",
-                "data": {
-                    "title": this.text
-                },
-                "transformRequest": [function (data) {
-
-                    let ret = "";
-                    for (const it in data) {
-
-                        ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                    
-                    }
-                    return ret;
-                
-                }],
-            }).then(response => {
-
-                console.log("搜索帖子", response);
-                this.list = response.data.info;
-            
-            });
-            // setTimeout(() => {
-            //
-            //   this.list = [
-            //     {"rank": 1, "context": "新的推荐帖子", "author": "周杰伦"},
-            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-            //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
-            //   ];
-            // }, 1000);
-
-            this.visible = false;
-            this.showSimulatedReturnData = true;
-            // 更新List数据
+          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
 
         }
+        return ret;
+
+      }],
+    }).then(response => {
+
+      console.log("搜索帖子", response);
+      this.list = response.data.info;
+
+    });
+    clearTimeout(this.timer);  //清除延迟执行
+
+    this.timer = setTimeout(()=>{   //设置延迟执行
+      this.visible = false;
+      this.showSimulatedReturnData = true;
+    },500);
+  },
+  "methods": {
+    viewPost(post_id) {
+
+      console.log("搜索帖子");
+      this.$router.push({
+        "path": "/posts/view",
+        "query": {
+          "user_id": this.$store.state.person.userID,
+          post_id,
+        }
+      });
+
+    },
+    back() {
+
+      this.$router.go(-1);
+
+    },
+    search() {
+
+      console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+      this.visible = true;
+      this.showSimulatedReturnData = false;
+
+      // http://114.116.235.94/search_post/
+      this.$axios({
+        "method": "POST",
+        "url": "http://114.116.235.94/search_post/",
+        "data": {
+          "title": this.text
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+
+        console.log("搜索帖子", response);
+        this.list = response.data.info;
+
+      });
+      // setTimeout(() => {
+      //
+      //   this.list = [
+      //     {"rank": 1, "context": "新的推荐帖子", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //     {"rank": 1, "context": "新的推荐数据", "author": "周杰伦"},
+      //   ];
+      // }, 1000);
+
+      this.timer = setTimeout(()=>{   //设置延迟执行
+        this.visible = false;
+        this.showSimulatedReturnData = true;
+      },500);
+      // 更新List数据
+
     }
+  }
 };
 </script>
 
