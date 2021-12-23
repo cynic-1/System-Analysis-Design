@@ -519,8 +519,8 @@ export default {
                 item.org = "";
             }
             for(let idx in [1,2,3]){
-              let i = Math.round(Math.random()*500)
-              //console.log(this.rows[i])
+              let i = Math.round(Math.random()*this.rows.length)
+              //console.log(this.rows)
               this.relatedPaper.push({title : this.rows[i].title, id: this.rows[i].id})
             }
             //console.log(this.relatedPaper)
@@ -545,7 +545,7 @@ export default {
                   this.topAuthor.push({name:key, value:item})
                 }
               }
-
+              //console.log(this.topAuthor)
               for(let key in this.top.keywords_count){
                 if(key !== "None") {
                   let item = this.top.keywords_count[key];
@@ -576,6 +576,7 @@ export default {
           this.topDate = []
           this.topAuthor = []
           let row = []
+          this.relatedPaper = []
           this.$axios.get("http://114.116.235.94/search/",{
             params:{
               q : this.key,
@@ -598,6 +599,12 @@ export default {
               if(item.org === "N/A")
                 item.org = "";
             }
+           for(let idx in [1,2,3]){
+             let i = Math.round(Math.random()*this.rows.length)
+             //console.log(this.rows[i])
+             this.relatedPaper.push({title : this.rows[i].title, id: this.rows[i].id})
+           }
+            //console.log(this.relatedPaper)
             this.$axios({
               method:"post",
               url: "http://114.116.235.94/count_search/",
@@ -654,6 +661,7 @@ export default {
           this.$router.push("/search/advanced");
         },
         check (id){
+          window.sessionStorage.setItem("data", JSON.stringify(this.rows))
           this.$router.push({ "path": "/paper/check", "query": { "id": id } });
         },
         pick (cond){

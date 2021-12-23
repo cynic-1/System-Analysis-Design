@@ -101,6 +101,7 @@
                       color="black"
                       size="18px"
                       label="高级检索"
+                      @click="advanced"
                     />
                   </q-tab-panel>
 
@@ -108,7 +109,8 @@
                     <q-input
                       v-model="user_search_text"
                       outlined
-                      label="请输入用户名"
+                      label="请输入学者名称"
+                      style="margin-top: 50px"
                     >
                       <template #append>
                         <q-avatar>
@@ -116,20 +118,11 @@
                             icon="search"
                             round
                             size="14px"
-                            @click="search"
+                            @click="searchAuthor"
                           />
                         </q-avatar>
                       </template>
                     </q-input>
-                    <br>
-                    <q-option-group
-                      v-model="type_accepted_user"
-                      name="type_acc_user"
-                      :options="type_options_user"
-                      type="checkbox"
-                      color="primary"
-                      inline
-                    />
                   </q-tab-panel>
                 </q-tab-panels>
               </template>
@@ -339,31 +332,11 @@ export default {
                     "value": "qikan"
                 },
                 {
-                    "label": "学术论文",
+                    "label": "学位论文",
                     "value": "lunwen"
                 },
                 {
-                    "label": "会议",
-                    "value": "conference"
-                },
-                {
-                    "label": "报纸",
-                    "value": "newpaper"
-                },
-                {
-                    "label": "年鉴",
-                    "value": "nianjian"
-                },
-                {
-                    "label": "专利",
-                    "value": "zhuanli"
-                },
-                {
-                    "label": "成果",
-                    "value": "chengguo"
-                },
-                {
-                    "label": "图书",
+                    "label": "图书书籍",
                     "value": "pop"
                 },
             ],
@@ -427,11 +400,17 @@ export default {
         this.$router.push({ "path": "/search", "query": { "searchBy": "不限", "key": keyword , "method" : "1"} });
 
       },
-        search () {
-            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
-            this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
+      search () {
+        console.log(`您点击了搜索按钮，您选择搜索的内容是${this.search_text}`);
+        this.$router.push({ "path": "/search", "query": { "searchBy": this.search_type, "key": this.search_text , "method" : "1"} });
 
-        }
+      },
+      searchAuthor(){
+        this.$router.push({ "path": "/search/user", "query": { "key": this.user_search_text} });
+      },
+      advanced(){
+        this.$router.push("/search/advanced")
+      }
     },
     mounted() {
       this.$axios({

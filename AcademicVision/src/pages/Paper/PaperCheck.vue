@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;height: 100%">
     <q-card style="width: 90%;margin: 20px auto auto auto;padding: 15px 10% 20px 10%">
-      <div style="font-size: small;color: #7f7f7f">{{ instruction }}</div>
+      <div style="font-size: small;color: #7f7f7f">{{ school }}</div>
       <div class="q-pa-md q-gutter-sm">
         <q-dialog
           v-model="dialog"
@@ -47,9 +47,9 @@
       <div class="qrcode" ref="qrCodeUrl" style="float: right;margin-top: 20px"></div>
       <div style="margin-top: 30px;text-align: center;font-size: 24px;font-weight: bold">{{ title }}</div>
       <div style="margin-top: 20px;text-align: center">
-        <span v-for="x in author" :key="x" style="margin-left: 30px;color: #006cd6;cursor: pointer;" @click="checkAuthor">{{x}}</span>
+        <span v-for="x in author" :key="x" style="margin-left: 30px;color: #006cd6;cursor: pointer;" @click="checkAuthor(x)">{{x}}</span>
       </div>
-      <div style="margin-top: 10px;text-align: center;color: #006cd6;cursor: pointer;">{{ school }}</div>
+<!--      <div style="margin-top: 10px;text-align: center;color: #006cd6;cursor: pointer;">{{ school }}</div>-->
 
       <div class="row" style="margin-top: 10px">
         <span style="font-weight: bold;width: 6%">摘要：</span>
@@ -86,12 +86,13 @@
         </span>
       </div>
 
-      <div class="row" style="margin-top: 10px;margin-bottom: 100px">
-        <span style="font-weight: bold;width: 8%">前往查看：</span>
-        <span style="width: 92%">
-          <span style="color: #666666">{{ url }}</span>
-        </span>
-      </div>
+
+<!--        <span style="font-weight: bold;width: 8%">前往查看：</span>-->
+<!--        <span style="width: 92%">-->
+<!--          <span style="color: #666666">{{ url }}</span>-->
+<!--        </span>-->
+      <q-btn @click="goBaiDu" rounded style="margin-top: 10px;float: right">前往查看</q-btn>
+
 
       <q-tabs
         v-model="tab"
@@ -101,35 +102,24 @@
         indicator-color="primary"
         align="justify"
         narrow-indicator
+        style="margin-top: 60px"
       >
-        <q-tab name="参考文献" label="参考文献"/>
         <q-tab name="相似文献" label="相似文献"/>
-        <q-tab name="引证文献" label="引证文献"/>
       </q-tabs>
 
       <q-separator/>
-
-      <q-tab-panels v-model="tab" animated style="font-size: 16px;color: #7f7f7f">
-        <q-tab-panel name="参考文献">
-          <div v-for="(i,x) in 10" :key="i" style="margin-top: 15px">
-            <span style="margin-right: 20px">[{{ i }}]</span>
-            <span>{{ reference }}</span>
-          </div>
-        </q-tab-panel>
-
+      <q-tab-panels v-model="tab">
         <q-tab-panel name="相似文献">
-          <div v-for="(i,x) in 10" :key="i" style="margin-top: 15px">
+          <div v-for="(item,i) in reference" :key="i" style="margin-top: 15px;cursor: pointer;" @click="check(item.id)">
             <span style="margin-right: 20px">[{{ i }}]</span>
-            <span>{{ reference }}</span>
+            <span>
+              {{ item.title }}.
+              <span v-for="opt in item.author">{{opt}}&nbsp; </span>
+              <span v-if="item.publish_time !== ''">.{{item.publish_time}}.</span>
+            </span>
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="引证文献">
-          <div v-for="(i,x) in 10" :key="i" style="margin-top: 15px">
-            <span style="margin-right: 20px">[{{ i }}]</span>
-            <span>{{ reference }}</span>
-          </div>
-        </q-tab-panel>
       </q-tab-panels>
 
     </q-card>
@@ -166,18 +156,20 @@ export default {
       abstract: "",
       keywords: [],
       DOI: "",
-      tab: "参考文献",
-      reference: "基于多元数据的城市街区活力影响机制研究[J]. 李夏天,温小军.  江西理工大学学报. 2021(01)",
+      tab: "相似文献",
+      reference: [],
       quote: 0,
       url: "",
       collection: 0,
-      is_col: false
+      is_col: false,
+      paper:[]
     }
 
   },
   created() {
+    this.paper = JSON.parse(window.sessionStorage.getItem("data"))
     this.paper_id = this.$route.query.id
-    this.user_id = this.$store.state.person.userID
+    this.user_id = this.$store.state.person.userID !== ""? this.$store.state.person.userID: "1"
     this.loadPaper()
   },
   methods: {
@@ -192,6 +184,8 @@ export default {
       })
     },
     loadPaper() {
+      //console.log(this.paper)
+      this.reference = []
       this.$axios({
         method: 'POST',
         url: 'http://114.116.235.94/view_paper/',
@@ -212,7 +206,7 @@ export default {
         let info = response.data.all_info
         this.title = info.title
         this.publish_time = info.publish_time
-        this.school = info.org
+        this.school = info.org === "N/A" ? "" : info.org
         //this.abstract = info.abstract
         this.author = info.author_name.match(/(?<=\')[^,].*?(?=\')/g)
         this.keywords = info.keyword.match(/(?<=\')[^,].*?(?=\')/g)
@@ -239,6 +233,13 @@ export default {
       }).then(response => {
         this.abstract = response.data.abstract
       })
+
+      for(let idx in [1,2,3,4,5,6,7,8,9,10]){
+        let i = Math.round(Math.random()*this.paper.length)
+        //console.log(this.rows[i])
+        this.reference.push({title : this.paper[i].title, id: this.paper[i].id, author:this.paper[i].author_name, publish_time: this.paper[i].publish_time})
+      }
+      console.log(this.reference)
     },
     getPdf(title) {
       html2Canvas(document.querySelector('#pdfDom'), {
@@ -270,7 +271,7 @@ export default {
       )
     },
     colpaper(){
-      if(this.is_col===false) {
+      if(this.is_col===false && this.user_id !== "1") {
         this.$axios({
           method: 'POST',
           url: 'http://114.116.235.94/col_paper/',
@@ -291,10 +292,25 @@ export default {
           this.is_col=true
         })
       }
+      else if(this.user_id === "1"){
+        alert("请先登录！")
+      }
       else {
         alert("文献已收藏")
       }
     },
+    checkAuthor(name){
+      this.$router.push({ "path": "/search/user", "query": { "key": name} });
+    },
+    check(id){
+      this.paper_id = id
+      this.$router.push({ "path": "/paper/check", "query": { "id": id } })
+      this.loadPaper()
+
+    },
+    goBaiDu () {
+      window.open(this.url, '_blank');
+    }
   }
 }
 </script>

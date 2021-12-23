@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm" style="margin: 0 auto;text-align:center">
-    <div class="text-h5 text-grey-7" style="margin-top: 50px">学者搜索</div>
+    <div class="text-h5 text-grey-7" style="margin-top: 0px">学者搜索</div>
   </div>
 
   <q-toolbar
@@ -61,6 +61,7 @@
       style="margin-left: 10px"
       no-wrap
       icon="search"
+      @click="load"
     >
     </q-btn>
   </q-toolbar>
@@ -68,22 +69,26 @@
   <div style="margin: 0 auto;width: 70%">
     <div style="font-size: small;margin-bottom: 20px">为您搜索到如下结果：</div>
     <div class="row">
-      <q-card v-for="x in 8"  :key="x" class="my-card" flat bordered style="width: 50%">
+      <q-card v-for="item in author"  :key="item" class="my-card" flat bordered style="width: 50%">
         <q-item>
           <q-item-section avatar>
             <q-avatar size="80px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              <img v-if="item.img !== null" :src="'http://114.116.235.94/' + item.img">
+              <img v-else src="https://cdn.quasar.dev/img/boy-avatar.png">
             </q-avatar>
           </q-item-section>
 
           <q-item-section>
-            <q-item-label style="font-size: large;font-weight: bold">张勇</q-item-label>
-            <q-item-label style="font-size: small">中国疾病预防控制中心病毒病预防控制所</q-item-label>
+            <q-item-label style="font-size: large;font-weight: bold">{{item.author_name}}</q-item-label>
+            <q-item-label style="font-size: small">{{item.org}}</q-item-label>
             <q-item-label caption>
-              发表文章：7522  被引次数：166328
+              发表文章：{{item.paper_mum}}
+            </q-item-label>
+            <q-item-label caption>
+              被引次数：{{item.quote}}
             </q-item-label>
             <q-item-label  caption>
-              研究领域：病原生物学 分子流行病学
+              研究方向： {{item.direction}}
             </q-item-label>
           </q-item-section>
           <q-btn class="text-blue-7" color="blue-7" rounded outline size="md" style="height: 30px">前往查看</q-btn>
@@ -95,7 +100,7 @@
       <q-pagination
         v-model="current"
         color="grey"
-        :max="10"
+        :max="max"
         :max-pages="6"
         boundary-numbers
       />
@@ -110,7 +115,36 @@ export default {
     return{
       'name': '',
       'instruction' : '',
-      'current' : 1
+      'current' : 1,
+      "author" : [],
+      "max" : 1
+    }
+  },
+  created() {
+    this.name = this.$route.query.key
+    this.load()
+  },
+  methods : {
+    load () {
+      this.$router.push({ "path": "/search/user", "query": { "key": this.name, "org":this.instruction} });
+      this.$axios({
+        method: 'POST',
+        url: 'http://114.116.235.94/get_author/',
+        data: {
+          name: this.name,
+          org: this.instruction
+        },
+        transformRequest: [function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+      }).then(response => {
+        this.author = response.data.list
+        this.max = this.author.length / 6
+      })
     }
   }
 }
