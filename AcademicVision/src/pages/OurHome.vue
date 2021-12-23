@@ -1,6 +1,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <template>
   <div>
+    <br>
 <!--    <NavBar /><br>-->
     <div
       class="q-pa-md"
@@ -148,7 +149,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热 门 论 文 <span class="material-icons">trending_up</span>
+          热门论文 <span class="material-icons" style="color: rgba(8,179,255,0.93)">verified</span>
         </h4>
         <div v-for="(each,index) in hot_paper_list"
              :key="each">
@@ -197,7 +198,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热 门 学 者 <span class="material-icons">trending_up</span>
+          热门学者 <span class="material-icons" style="color: rgba(8,179,255,0.93)">supervised_user_circle</span>
         </h4>
         <div v-for="(each,index) in hot_scholar_list"
              :key="each">
@@ -248,7 +249,7 @@
         style="height: 550px"
       >
         <h4 style="margin: 20px">
-          热 门 关 键 词 <span class="material-icons">trending_up</span>
+          热搜关键词 <span class="material-icons" style="color: rgba(8,179,255,0.93)">local_fire_department</span>
         </h4>
         <div v-for="(each,index) in hot_keyword_list"
              :key="each">

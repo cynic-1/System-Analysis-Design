@@ -3,7 +3,6 @@
     <q-header elevated>
       <NavBar />
     </q-header>
-    <br>
     <q-page-container>
       <router-view />
     </q-page-container>
