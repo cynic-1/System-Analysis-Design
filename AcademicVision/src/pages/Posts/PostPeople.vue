@@ -139,6 +139,7 @@
             filled
             stack-label
             bg-color="light-blue-1"
+            style="cursor:pointer"
           >
             <template #control>
               <div
@@ -199,6 +200,7 @@
             stack-label
             bg-color="light-blue-1"
             @click="viewPost(test.post_id)"
+            style="cursor:pointer"
           >
             <template #control>
               <div

@@ -16,6 +16,7 @@
         transition-next="slide-left"
         @mouseenter="autoplay = false"
         @mouseleave="autoplay = true"
+        style="cursor:pointer"
       >
         <q-carousel-slide
           name="first"

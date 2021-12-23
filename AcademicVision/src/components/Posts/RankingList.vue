@@ -13,6 +13,7 @@
       :context="each.title"
       :author="each.user_name"
       :pid="each.post_id"
+      style="cursor:pointer"
     />
   </div>
 </template>
@@ -38,7 +39,7 @@ export default {
                     post_id,
                 }
             });
-        
+
         },
     },
 
@@ -73,18 +74,18 @@ export default {
                 for (const it in data) {
 
                     ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-                
+
                 }
                 return ret;
-            
+
             }],
         }).then(response => {
 
             console.log("所有帖子排行榜", response);
             this.list = response.data.all_info.splice(0, 7);
-        
+
         });
-    
+
     }
 };
 </script>

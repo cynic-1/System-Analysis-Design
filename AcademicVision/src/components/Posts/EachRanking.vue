@@ -55,7 +55,7 @@ export default {
                     post_id,
                 }
             });
-        
+
         },
     },
     "props": ["rank", "context", "author", "pid"]
