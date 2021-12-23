@@ -49,6 +49,7 @@
           class="q-ml-md"
           style="width: 80%"
           bg-color="white"
+          @keyup.enter="search"
         >
           <template #append>
             <q-separator
