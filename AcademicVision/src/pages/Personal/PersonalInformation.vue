@@ -83,7 +83,7 @@
             <br>
             <q-form
               class="q-gutter-md"
-              @submit="onSubmit"
+              @submit="onSubmit1"
               @reset="onReset"
             >
               <div
@@ -156,7 +156,7 @@
                 style="padding: 0px 60px 0px 30px"
                 class="text-weight-bold"
               >
-                特长
+                部门
               </div>
               <q-input
                 v-model="Form.department"
