@@ -162,12 +162,31 @@ export default {
       url: "",
       collection: 0,
       is_col: false,
-      paper:[]
+      paper:[],
+      defaultPaper : [
+        {id : 934461, title: "边坡稳定性影响因素敏感性人工神经网络分析", author_name:["夏元友","熊海丰"], publish_time : "2004"},
+        {id : 883584, title: "人工神经网络模型在急性应激障碍预警中的应用", author_name:["侯艳红","张林","陈晓菲"], publish_time : "2015"},
+        {id : 203086, title: "一种移动机器人全局路径规划新型算法. 王仲民", author_name:["王仲民","岳宏"], publish_time : "2003"},
+        {id : 80841, title: "基于时空神经网络的充电桩时空动态负荷预测", author_name:["张秀钊","王志敏","钱纹"], publish_time : "2019"},
+        {id : 25495, title: "移动机器人多传感器信息融合技术综述", author_name:["司现军","王志良"], publish_time : "2004"},
+        {id : 2390, title: "交通系统的模糊控制及其神经网络实现", author_name:["徐冬玲","方建安"], publish_time : "1992"},
+        {id : 1822, title: "M-P神经元模型的几何意义及其应用", author_name:["张铃","张钹"], publish_time : "1998"},
+        {id : 897313, title: "基于高光谱成像及神经网络技术检测玉米含水率", author_name:["李江波","苏忆楠","饶秀勤"], publish_time : "2010"},
+        {id : 91322, title: "基于神经网络的水轮发电机组的建模分析", author_name:["郭君","董朝霞"], publish_time : "2003"},
+        {id : 84072, title: "基于决策表-粗糙集理论的动态安全分析神经网络输入特征优选", author_name:["严宇","刘天琪"], publish_time : "2004"},
+        {id : 920664, title: "区域环境污染影响因子的数量分析", author_name:["武鹏程","张曙红"], publish_time : "2008"},
+        {id : 79259, title: "基于Hopfield网络学习的多城市旅行商问题的解法", author_name:["金海和","陈剑","唐政"], publish_time : "2003"},
+        {id : 941150, title: "神经网络基于粒子群优化的学习算法研究", author_name:["刘洪波","王秀坤","孟军"], publish_time : "2005"},
+        {id : 2277, title: "基于FFT和神经网络的非整数次谐波检测方法",author_name:["向东阳","王公宝","马伟明"], publish_time : "2005"},
+        {id : 64791, title: "Automated Image Segmentation Using Improved PCNN Model Based on Cross-entropy一种基于交叉熵的改进型PCNN图像自动分割新方法", author_name:["LIU Qing","MA Yide","QIAN Zhibai"], publish_time : "2005"},
+      ]
     }
 
   },
   created() {
     this.paper = JSON.parse(window.sessionStorage.getItem("data"))
+    if(this.paper === null || this.paper === undefined)
+      this.paper = this.defaultPaper
     this.paper_id = this.$route.query.id
     this.user_id = this.$store.state.person.userID !== ""? this.$store.state.person.userID: "1"
     this.loadPaper()
@@ -234,7 +253,7 @@ export default {
       }).then(response => {
         this.abstract = response.data.abstract
       })
-
+      //console.log(this.paper)
       for(let idx in [1,2,3,4,5,6,7,8,9,10]){
         let i = Math.round(Math.random()*this.paper.length)
         //console.log(this.rows[i])
