@@ -20,7 +20,7 @@
       >
         <q-carousel-slide
           name="first"
-          img-src="https://pic2.zhimg.com/80/v2-8ba8ae255f068b7b24dc7e7bf3d56711_720w.jpg"
+          img-src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20191008%2Fb43e924a74404d80b0df528233cbb7b7.jpeg&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642867237&t=af870aac426f0057a92529422bd17ee4"
         >
           <q-input
             v-model="text"
