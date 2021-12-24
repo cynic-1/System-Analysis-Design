@@ -214,7 +214,7 @@
           >
             <q-banner
               class="bg-grey-3"
-              @click="viewAuthor(each.author_id)"
+              @click="viewAuthor(each.user_id)"
               rounded
               style="cursor:pointer;background-color: white"
             >
@@ -394,10 +394,10 @@ export default {
       });
 
     },
-    viewAuthor(author_id) {
+    viewAuthor(user_id) {
 
-      console.log("点击了查看学者方法", author_id);
-      window.sessionStorage.setItem('otherpersonid', author_id);
+      console.log("点击了查看学者方法", user_id);
+      window.sessionStorage.setItem('otherpersonid', user_id);
       this.$router.push({
         "path": "/otherpersonal",
       })

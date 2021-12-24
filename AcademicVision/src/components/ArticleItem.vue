@@ -3,7 +3,7 @@
     class="q-pt-md"
   >
     <q-item-section top>
-      <q-item-label lines="1">
+      <q-item-label lines="1" @click="viewPaper">
         <span class="text-h5 text-weight-bold cursor-pointer">{{ title }}</span>
       </q-item-label>
       <q-item-label lines="1">
@@ -225,6 +225,15 @@ export default {
 
         console.log("收藏文章", response);
 
+      });
+
+    },
+    viewPaper() {
+      this.$router.push({
+        "path": "/paper/check",
+        "query": {
+          "id": this.paperId
+        }
       });
 
     },

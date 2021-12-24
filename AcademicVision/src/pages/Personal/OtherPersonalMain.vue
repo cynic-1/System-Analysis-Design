@@ -91,13 +91,13 @@ import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 
 const OtherPersonalInformation = defineAsyncComponent(() => import("./OtherPersonalInformation"));
-const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
+const OtherPersonalResearch = defineAsyncComponent(() => import("./OtherPersonalResearch"));
 
 export default {
   "name": "OtherPersonalMain",
 
   "components": {
-    PersonalResearch,
+    OtherPersonalResearch,
     OtherPersonalInformation,
   },
   setup () {

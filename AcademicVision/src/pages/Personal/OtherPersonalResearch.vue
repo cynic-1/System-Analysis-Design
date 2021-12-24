@@ -38,7 +38,6 @@
           style="padding: 1px"
         >
           <template v-if="this.confirmedList.length > 0">
-            fuck
             <q-card>
               <div class="text-h5 q-pa-md">
                 统计数据

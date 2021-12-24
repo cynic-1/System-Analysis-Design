@@ -239,7 +239,7 @@ export default {
     }
 
   },
-  created() {
+  mounted() {
     this.paper = JSON.parse(window.sessionStorage.getItem("data"))
     this.paper_id = this.$route.query.id
     this.user_id = this.$store.state.person.userID !== ""? this.$store.state.person.userID: "1"
