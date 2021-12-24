@@ -61,7 +61,7 @@
           name="scholar page"
           style="padding: 1px"
         >
-          <div v-if="this.$store.state.person.papers.length > 0">
+          <div v-if="this.confirmedList.length > 0">
             <q-card>
               <div class="text-h5 q-pa-md">
                 统计数据
@@ -120,15 +120,22 @@
               </div>
             </div>
             <q-separator inset />
-            <q-list>
-              <article-item
-                v-for="(item,index) in confirmList"
-                :key="item.paperId"
-                v-bind="item"
-                @denyAuthor="confirmList.splice(index, 1)"
-                @claimAuthor="claimAuthor(item.paperId)"
-              />
-            </q-list>
+            <template v-if="this.confirmList.length > 0">
+              <q-list>
+                <article-item
+                  v-for="(item,index) in confirmList"
+                  :key="item.paperId"
+                  v-bind="item"
+                  @denyAuthor="confirmList.splice(index, 1)"
+                  @claimAuthor="claimAuthor(item.paperId)"
+                />
+              </q-list>
+            </template>
+            <template v-else>
+              <div class="q-pa-xl text-center text-grey text-h5">
+                根据您的姓名未搜索到学术成果
+              </div>
+            </template>
           </q-card>
         </q-tab-panel>
       </q-tab-panels>
@@ -156,7 +163,6 @@ export default {
     },
     props: {
       username: String,
-      canEdit: Boolean
     },
     data () {
 
@@ -171,7 +177,6 @@ export default {
             "confirmedList": [],
           articleCount: [],
           articleSum: 7,
-          canEdit: false
         };
 
     },
@@ -260,7 +265,7 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           "params": {
-            "q": this.$route.query.userId,
+            "q": this.$store.state.person.username,
             "method": 1,
             "want": "00010"
           },
@@ -287,7 +292,7 @@ export default {
               "paperId": it.id,
               "researchType": typeMap[it.type], // 0: 期刊 1: 会议 2：专著 3: 其他
               "title": it.title,
-              "publishTime": it.publish_time,
+              "publishTime": it.publish_time === "N/A"? "" : it.publish_time,
               "journalName": it.org === "N/A" ? "" : it.org, // 期刊、会议、出版社名
               "authorList": it.author_name.match(/(?<=\')[^,].*?(?=\')/g), // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
               "reference": it.quote === "N/A" ? 0 : Number(it.quote),
@@ -309,7 +314,18 @@ export default {
         console.log("test confirm list");
         this.getConfirmList()
     },
+    mounted () {
+      watch(
+        this.$store.state.person.username,
+        (newId) => {
+          this.getConfirmedList();
+        },
+        { "deep": true }
+      );
+    },
+  watch: {
 
+  }
 
 
 };

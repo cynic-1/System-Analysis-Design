@@ -75,7 +75,7 @@
           <br>
           <div>
             <div
-              style="padding: 0px 60px 0px 30px"
+              style="padding: 0 60px 0 30px"
               class="text-caption text-grey"
             >
               When you make changes to the information below, your profile will be updated with the same information.
@@ -87,7 +87,7 @@
               @reset="onReset"
             >
               <div
-                style="padding: 0px 60px 0px 30px"
+                style="padding: 0 60px 0 30px"
                 class="text-h5 q-mt-sm q-mb-xs"
               >
                 {{ Form.nickname }}
@@ -316,7 +316,7 @@
             <q-select
               dense
               filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              style="padding: 0 60px 0 30px;margin-top: 0"
               outlined
               v-model="Form.Language"
               :options="options1"
@@ -696,7 +696,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$route.query.userID,
+              user_id:this.$route.query.userId,
             },
             transformRequest:[function(data){
               let ret = ''
@@ -765,7 +765,7 @@ export default {
               },
               data: {
                 user_id: this.$store.state.person.userID,
-                name: this.Form.nickname,
+                user_name: this.Form.nickname,
                 org: this.Form.institution,
                 department:this.Form.department,
               },
@@ -780,11 +780,12 @@ export default {
               console.log(res.data)
               if (res.data.code !== '400') return alert(res.data.message);
               alert('修改个人信息成功');
+              this.$store.commit("setUserName", this.Form.nickname);
+              this.$emit("changeUserName");
               this.disabled = true;
-              // PersonalMain.methods.loadpersonalInfo();
             });
           this.disabled = true;
-          // PersonalMain.methods.loadpersonalInfo();
+
         },
         onReset () {
 

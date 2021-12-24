@@ -74,12 +74,14 @@
           />
         </q-tabs>
       </q-card>
-      <q-page-container v-if="tab==='1'">
-        <OtherPersonalInformation />
-      </q-page-container>
-      <q-page-container v-else-if="tab==='2'">
-        <personal-research />
-      </q-page-container>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel  name="1">
+          <OtherPersonalInformation />
+        </q-tab-panel>
+        <q-tab-panel  name="2">
+          <OtherPersonalResearch />
+        </q-tab-panel>
+      </q-tab-panels>
     </q-layout>
   </div>
 </template>
@@ -89,6 +91,7 @@ import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 
 const OtherPersonalInformation = defineAsyncComponent(() => import("./OtherPersonalInformation"));
+const OtherPersonalResearch = defineAsyncComponent(() => import("./OtherPersonalResearch"));
 const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
 
 export default {
@@ -97,6 +100,7 @@ export default {
   "components": {
     PersonalResearch,
     OtherPersonalInformation,
+    OtherPersonalResearch
   },
   setup () {
     return {

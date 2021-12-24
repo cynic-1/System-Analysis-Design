@@ -117,6 +117,10 @@ const routes = [
     "path": "/otherpersonalinformation",
     "component": () => import("pages/Personal/OtherPersonalInformation.vue")
   },
+  {
+    "path": "/otherpersonalresearch",
+    "component": () => import("pages/Personal/OtherPersonalResearch")
+  },
   // 注册管理员页面路由
   {
     "path": "/administrator",

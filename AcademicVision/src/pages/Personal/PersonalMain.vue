@@ -67,7 +67,8 @@
       />
       <q-tab-panels v-model="tab">
         <q-tab-panel name="1">
-          <PersonalInformation :imageurl="this.imgUrl" :canEdit="this.canEdit"/>
+          <PersonalInformation :imageurl="this.imgUrl" :canEdit="this.canEdit"
+          @changeUserName="changeUserName"/>
         </q-tab-panel>
         <q-tab-panel name="2">
           <personal-research
@@ -148,13 +149,12 @@ export default {
     },
     mounted () {
       this.loadpersonalInfo()
-      if (this.$route.query.userId === this.$store.state.person.userID) {
-        this.canEdit = true;
-      }
+      this.canEdit = this.$route.query.userId === this.$store.state.person.userID
       watch(
-        this.$route.query.userId,
-        (newId) => {
-          this.canEdit = newId === this.$store.state.person.userID;
+        this.$store.state.person.username,
+        (newName) => {
+          this.nickname = newName
+          console.log(this.nickname)
         },
         { "deep": true }
       );
@@ -238,7 +238,11 @@ export default {
           console.log("更新成功")
           this.loadpersonalInfo()
         })
-       }
+       },
+      changeUserName() {
+          console.log(this.$store.state.person.username)
+          this.nickname = this.$store.state.person.username
+      }
     },
 
 

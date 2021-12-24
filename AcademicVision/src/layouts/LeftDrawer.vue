@@ -5,7 +5,7 @@
       style="max-width: 400px; overflow:auto;"
     >
       <slot name="leftDrawer">
-        <div>里面放点啥呢</div>
+        <div></div>
       </slot>
     </div>
 
@@ -14,7 +14,7 @@
       style="overflow:auto; width: 100%;"
     >
       <slot name="navBar4SmallWindow">
-        <div> 这里放横向的q-tabs，当响应式将左边的边栏去掉时，这里作为切换的导航栏</div>
+        <div></div>
       </slot>
     </div>
 
