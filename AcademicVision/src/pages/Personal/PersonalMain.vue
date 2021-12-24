@@ -50,7 +50,7 @@
             label="学者主页"
           />
           <q-tab
-            name="4"
+            name="3"
             style="width:200px"
             label="收藏夹"
           />
@@ -72,7 +72,7 @@
             @changeTab="changeTab"
           />
         </q-tab-panel>
-        <q-tab-panel name="4">
+        <q-tab-panel name="3">
           <PersonalSaved />
         </q-tab-panel>
       </q-tab-panels>

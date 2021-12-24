@@ -100,10 +100,16 @@ export default {
     return {
       "tab": "scholar page",
       "dataReady": false,
+      "dataReady1": false,
+      "tabsList": [
+        { "name": "scholar page", "icon": "description", "label": "学者主页" },
+        { "name": "confirm authorship", "icon": "school", "label": "研究认领" },
+      ],
       "confirmList": [],
       "confirmedList": [],
       articleCount: [],
       articleSum: 7,
+      paperIdList: []
     };
 
   },
@@ -113,6 +119,7 @@ export default {
       this.confirmAuthor(it)
       this.confirmList.splice(index, 1)
       this.getConfirmedList()
+      this.getLineChartData()
     },
     confirmAuthor(paperId) {
       this.$axios({
@@ -151,7 +158,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         "data": {
-          "user_id": window.sessionStorage.getItem('otherpersonid'),
+          "user_id":  window.sessionStorage.getItem('otherpersonid'),
         },
         "transformRequest": [function (data) {
 
@@ -172,6 +179,10 @@ export default {
           return;
         }
         this.confirmedList = res.data.data.paper_list;
+        this.confirmedList.forEach((item) => {
+          item.publishTime = item.publishTime === "N/A" ? "" : item.publishTime
+        })
+        console.log(this.confirmedList)
         this.articleCount = res.data.type;
         this.articleSum = res.data.sum;
         console.log(this.articleCount[0]);
@@ -183,7 +194,36 @@ export default {
         // alert("文章认领成功");
       });
     },
-    getConfirmList() {
+    getLineChartData() {
+      this.$axios({
+        "method": "post",
+        "url": "count_my_paper/",
+        "header": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "data": {
+          "user_id": this.$route.query.userId,
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then((res) => {
+        console.log(res.data);
+        this.$store.commit("setQuoteNums", res.data.num);
+        this.$store.commit("setYears", res.data.years);
+        this.dataReady1 = true;
+
+      });
+    },
+    getConfirmList(list) {
       console.log(this.$store.state.person.username)
       this.$axios({
         "method": "get",
@@ -192,7 +232,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         "params": {
-          "q": this.$store.state.person.username,
+          "q": window.sessionStorage.getItem('otherpersonid'),
           "method": 1,
           "want": "00010"
         },
@@ -209,17 +249,18 @@ export default {
         }],
       }).then((res) => {
 
-        console.log(res.data);
         if (res.data.status.code !== 200) return;
         this.confirmList = [];
         for (let it of res.data.data.goods) {
+          if (list.includes(it.id)) continue;
+          console.log(it.id);
           let temp = {
             "canEdit": 0,
             "authorName": "宋永欣",
             "paperId": it.id,
             "researchType": typeMap[it.type], // 0: 期刊 1: 会议 2：专著 3: 其他
             "title": it.title,
-            "publishTime": it.publish_time,
+            "publishTime": it.publish_time === "N/A"? "" : it.publish_time,
             "journalName": it.org === "N/A" ? "" : it.org, // 期刊、会议、出版社名
             "authorList": it.author_name.match(/(?<=\')[^,].*?(?=\')/g), // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
             "reference": it.quote === "N/A" ? 0 : Number(it.quote),
@@ -228,8 +269,33 @@ export default {
         }
         this.$store.commit("setConfirmPapers", this.confirmList.slice());
         console.log(this.confirmList)
-        this.dataReady = true;
         // alert("文章认领成功");
+      });
+    },
+    getConfirmListWithFilter() {
+      this.$axios({
+        "method": "post",
+        "url": "my_paper_id/",
+        "header": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "data": {
+          "user_id": this.$route.query.userId
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then((res) => {
+        const paperIdList = res.data.paper_id_list;
+        this.getConfirmList(paperIdList);
       });
     }
 
@@ -239,21 +305,19 @@ export default {
   created () {
     this.getConfirmedList();
     console.log("test confirm list");
-    this.getConfirmList()
+    this.getConfirmListWithFilter()
+    this.getLineChartData()
   },
   mounted () {
     watch(
       this.$store.state.person.username,
       (newId) => {
         this.getConfirmedList();
+        this.getLineChartData()
       },
       { "deep": true }
     );
   },
-  watch: {
-
-  }
-
 
 };
 </script>
