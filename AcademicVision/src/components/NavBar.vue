@@ -19,11 +19,6 @@
           label="帖子"
           icon="widgets"
         />
-        <q-breadcrumbs-el
-          to=""
-          label="科研用户"
-          icon="science"
-        />
         <q-breadcrumbs-el>
           <q-btn
             flat
