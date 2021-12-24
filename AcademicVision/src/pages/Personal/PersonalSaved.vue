@@ -108,7 +108,13 @@
               :key="col.name"
               :props="props"
             >
-              {{ col.value }}
+              <span v-if="col.name!=='author_name'">{{ col.value }}</span>
+              <span v-else>
+                <span v-for="item in col.value"
+                :key="item">
+                  {{item}}&nbsp;&nbsp;
+                </span>
+              </span>
             </q-td>
           </q-tr>
           <q-tr
@@ -324,6 +330,9 @@ export default {
             console.log(res.data.info )
             let info = res.data.info ;
             this.rows1=info;
+            for(let item of this.rows1) {
+              item.author_name = item.author_name.match(/(?<=\')[^,].*?(?=\')/g);
+            }
             // if(info.briefintroduction !== null)
             //   this.Form.briefintroduction = info.briefintroduction;
           })
