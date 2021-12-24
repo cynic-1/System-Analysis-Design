@@ -1,10 +1,15 @@
 <template>
   <div>
     <q-toolbar class="bg-primary Nav fa-text-height text-white">
+
+      <q-btn to="/home" flat unelevated padding="2vh" ripple="false">
       <q-avatar>
         <q-icon name="school" size="lg"></q-icon>
       </q-avatar>
+
       <q-toolbar-title>Academic Vision</q-toolbar-title>
+      </q-btn>
+      <q-space></q-space>
       <q-breadcrumbs
         active-color="white"
         style="font-size: 18px"
