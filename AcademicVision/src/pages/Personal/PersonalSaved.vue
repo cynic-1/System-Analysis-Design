@@ -53,7 +53,7 @@
     </template>
     <template #main>
       <q-table
-        v-if="tab==='1'"
+        v-if="tab==='1'&&this.rows1.length !== 0"
         v-model:pagination="pagination"
         style="height:450px;width: 85%"
         title="文献列表"
@@ -147,8 +147,11 @@
           </q-tr>
         </template>
       </q-table>
+      <div v-if="tab==='1' && this.rows1.length===0">
+        <span style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">您还未收藏文献</span>
+      </div>
         <q-table
-          v-if="tab==='2'"
+          v-if="tab==='2'&&this.rows2.length !== 0"
           v-model:pagination="pagination2"
           style="height: 450px;width: 85%"
           title="知贴列表"
@@ -223,6 +226,9 @@
             </q-tr>
           </template>
         </q-table>
+      <div v-if="tab==='2' && this.rows2.length===0">
+        <span style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">您还未收藏任何帖子</span>
+      </div>
     </template>
   </left-drawer>
 </template>
