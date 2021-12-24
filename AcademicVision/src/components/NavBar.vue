@@ -61,7 +61,7 @@
                   class="q-mx-lg"
                 />
                 <div class="column items-md-center">
-                  <div class="row items-md-center">
+                  <div class="row items-md-center" style="margin-top: 20px">
                     <q-btn
                       color="secondary"
                       label="个人信息"
@@ -79,13 +79,6 @@
                     />
                   </div>
                   <br>
-                  <div class="row items-md-center">
-                    <q-btn
-                      color="secondary"
-                      label="我的消息"
-                      @click="personalMessage"
-                    />
-                  </div>
                 </div>
               </div>
               <div
@@ -149,6 +142,7 @@ export default {
             "path": "/personal",
             "query": {
               "tab": "4",
+              "userId": this.$store.state.person.userID
             }
           })
         },

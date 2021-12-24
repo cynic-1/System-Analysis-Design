@@ -227,7 +227,7 @@ export default {
       }],
     }).then(response => {
 
-      console.log("所有帖子排行榜", response);
+      console.log("所有帖子排行榜2", response.data);
       this.list = response.data.all_info.splice(0, 5);
       this.title1 = this.list[0].title;
       this.name1 = this.list[0].user_name;

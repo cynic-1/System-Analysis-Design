@@ -350,7 +350,7 @@ export default {
       }
     },
     checkAuthor(name){
-      this.$router.push({ "path": "/search", "query": { "searchBy": "第一作者", "key": name , "method" : "1"} });
+      this.$router.push({ "path": "/search", "query": { "searchBy": "作者", "key": name , "method" : "1"} });
     },
     check(id){
       this.paper_id = id

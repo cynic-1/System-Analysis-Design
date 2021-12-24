@@ -256,7 +256,7 @@ const columns1 = [
     },
     { "name": "author_name","align": "center", "label": "作者", "field": "author_name" },
     { "name": "org", "align": "center", "label": "出版单位", "field": "org",},
-    { "name": "quote", "align": "center", "label": "被引次数", "field": "quote", "sortable": true },
+    { "name": "quote", "align": "center", "label": "被引次数", "field": "quote", },
     { "name": "publish_time","align": "center", "label": "发布日期", "field": "publish_time" },
 ];
 
@@ -273,7 +273,7 @@ const columns2 = [
     },
     { "name": "lable", "align": "center", "label": "分类", "field": "lable", "sortable": true },
     { "name": "user_name","align": "center", "label": "作者", "field": "user_name" },
-    { "name": "goodnum", "align": "center", "label": "获赞数", "field": "goodnum", "sortable": true },
+    { "name": "goodnum", "align": "center", "label": "获赞数", "field": "goodnum",},
     { "name": "time", "align": "center","label": "发布日期", "field": "time" },
 ];
 

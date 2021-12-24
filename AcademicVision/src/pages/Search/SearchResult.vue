@@ -400,7 +400,7 @@ export default {
         });
         return {
             pagination,
-            "list": ["不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"],
+            "list": ["不限", "篇名", "摘要", "关键词", "作者", "发表时间"],
             "searchBy": "不限",
             "key": "",
             "result" : "",
@@ -488,7 +488,7 @@ export default {
             want = "10000";
           else if(this.searchBy === "关键词")
             want = "01000";
-          else if(this.searchBy === "第一作者")
+          else if(this.searchBy === "作者")
             want = "00010";
           else if(this.searchBy === "发表时间")
             want = "00001";
@@ -519,6 +519,12 @@ export default {
                 item.publish_time = "";
               if(item.quote === "N/A")
                 item.quote = 0;
+              if(item.quote !== "N/A"){
+                if(String(item.quote).indexOf("万") !== -1)
+                  item.qutoe = 10012
+                else
+                  item.quote = parseInt(item.quote)
+              }
               if(item.org === "N/A")
                 item.org = "";
             }
@@ -601,6 +607,12 @@ export default {
                 item.publish_time = "";
               if(item.quote === "N/A")
                 item.quote = 0;
+              if(item.quote !== "N/A"){
+                if(String(item.quote).indexOf("万") !== -1)
+                  item.qutoe = 10012
+                else
+                  item.quote = parseInt(item.quote)
+              }
               if(item.org === "N/A")
                 item.org = "";
             }

@@ -73,7 +73,9 @@
               </q-avatar>
             </template>
           </q-input>
-          <div class="absolute-bottom custom-caption">
+          <div class="absolute-bottom custom-caption"
+               @click="viewPost(15)"
+          >
             <div class="text-h2">
               Windows11正式发布
             </div>
@@ -105,7 +107,9 @@
               </q-avatar>
             </template>
           </q-input>
-          <div class="absolute-bottom custom-caption">
+          <div class="absolute-bottom custom-caption"
+               @click="viewPost(14)"
+          >
             <div class="text-h2">
               知贴版区公告
             </div>
@@ -132,13 +136,13 @@
         class="col-8"
         style="height: 550px"
       >
-        <Recommendation />
+        <Recommendation/>
       </div>
       <div
         class="col-4"
         style="height: 550px"
       >
-        <RankingList />
+        <RankingList/>
       </div>
     </div>
   </div>
@@ -149,33 +153,45 @@ import Recommendation from "components/Posts/Recommendation";
 import RankingList from "components/Posts/RankingList";
 
 export default {
-    "name": "PostFirstPage",
+  "name": "PostFirstPage",
 
-    "components": {
-        Recommendation,
-        RankingList
-    },
+  "components": {
+    Recommendation,
+    RankingList
+  },
 
-    data () {
+  data() {
 
-        return {
-            "text": "",
-            "dense": false,
-            "slide": "first",
-            "autoplay": true,
-            "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        };
+    return {
+      "text": "",
+      "dense": false,
+      "slide": "first",
+      "autoplay": true,
+      "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    };
 
-    },
+  },
 
-    "methods": {
-        search () {
+  "methods": {
+    viewPost(post_id) {
 
-            console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
-            this.$router.push({ "path": "/posts/search", "query": { "id": 123456, "context": this.text } });
-
+      console.log("点击了查看帖子方法");
+      this.$router.push({
+        "path": "/posts/view",
+        "query": {
+          "user_id": this.$store.state.person.userID,
+          post_id,
         }
+      });
+
+    },
+    search() {
+
+      console.log(`您点击了搜索按钮，您选择搜索的内容是${this.text}`);
+      this.$router.push({"path": "/posts/search", "query": {"id": 123456, "context": this.text}});
+
     }
+  }
 };
 </script>
 

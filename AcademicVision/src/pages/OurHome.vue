@@ -354,7 +354,7 @@ export default {
 
       "search_type": "不限",
       "search_type_options": [
-        "不限", "篇名", "摘要", "关键词", "第一作者", "发表时间"
+        "不限", "篇名", "摘要", "关键词", "作者", "发表时间"
       ],
       "search_text": "",
       "user_search_text": "",

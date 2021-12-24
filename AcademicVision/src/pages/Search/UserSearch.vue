@@ -69,7 +69,7 @@
   <div style="margin: 0 auto;width: 70%">
     <div style="font-size: small;margin-bottom: 20px">为您搜索到如下结果：</div>
     <div class="row">
-      <q-card v-if="author.length !== 0" v-for="item in author"  :key="item" class="my-card" flat bordered style="width: 50%">
+      <q-card v-if="author.length !== 0" v-for="item in author.slice((current-1)*8,current*8)"  :key="item" class="my-card" flat bordered style="width: 50%">
         <q-item>
           <q-item-section avatar>
             <q-avatar size="80px">
@@ -103,7 +103,7 @@
         v-model="current"
         color="grey"
         :max="max"
-        :max-pages="6"
+        :max-pages="8"
         boundary-numbers
       />
     </div>
@@ -144,6 +144,7 @@ export default {
           return ret
         }],
       }).then(response => {
+        this.author = []
         this.author = response.data.list
         this.max = this.author.length / 6
       })
