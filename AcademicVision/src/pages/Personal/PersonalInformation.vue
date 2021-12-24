@@ -459,7 +459,7 @@
             class="q-pa-md"
             style="max-width: 300px"
           >
-            <p>P请描述一下您的所属机构或您自己的相关信息</p>
+            <p>请描述一下您的所属机构或您自己的相关信息</p>
             <q-input
               v-model="Form.text"
               filled
