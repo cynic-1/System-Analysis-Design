@@ -175,8 +175,9 @@ export default {
             ],
             "confirmList": [],
             "confirmedList": [],
-          articleCount: [],
-          articleSum: 7,
+            articleCount: [],
+            articleSum: 7,
+            paperIdList: []
         };
 
     },
@@ -245,6 +246,9 @@ export default {
             return;
           }
           this.confirmedList = res.data.data.paper_list;
+          this.confirmedList.forEach((item) => {
+            item.publishTime = item.publishTime === "N/A" ? "" : item.publishTime
+          })
           this.articleCount = res.data.type;
           this.articleSum = res.data.sum;
           console.log(this.articleCount[0]);

@@ -137,6 +137,7 @@ export default {
         },
         data:{
           user_id:window.sessionStorage.getItem('otherpersonid'),
+          user_id2:this.$store.state.person.userID
         },
         transformRequest:[function(data){
           let ret = ''

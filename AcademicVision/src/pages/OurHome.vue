@@ -397,10 +397,10 @@ export default {
     viewAuthor(author_id) {
 
       console.log("点击了查看学者方法", author_id);
+      window.sessionStorage.setItem('otherpersonid', author_id);
       this.$router.push({
-        "path": "",
-        "query": {}
-      });
+        "path": "/otherpersonal",
+      })
 
     },
     viewKeyword(keyword) {
