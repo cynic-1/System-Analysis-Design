@@ -236,7 +236,7 @@
           class="shadow-2"
           style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
         >
-          <q-btn v-for="opt in this.topDate" :key="opt" flat @click="pick(opt.name)">
+          <q-btn v-for="opt in this.topDate" :key="opt" flat @click="pickTime(opt.name)">
             {{opt.name}}
           </q-btn>
         </q-expansion-item>
@@ -248,7 +248,7 @@
           style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
         >
           <div>
-            <q-btn v-for="opt in this.topAuthor" :key="opt" flat @click="pick(opt.name)">
+            <q-btn v-for="opt in this.topAuthor" :key="opt" flat @click="pickAuthor(opt.name)">
               {{opt.name}}
             </q-btn>
           </div>
@@ -261,7 +261,7 @@
           style="margin-top: 10px;background-color: #cce6ff; color: #1D1D1D; font-weight: bold;"
         >
           <div>
-            <q-btn v-for="opt in this.topSchool" :key="opt" flat @click="pick(opt.name)">
+            <q-btn v-for="opt in this.topSchool" :key="opt" flat @click="pickSchool(opt.name)">
               {{opt.name}}
             </q-btn>
           </div>
@@ -300,6 +300,7 @@
         style="width: 72%; margin-left: 10px"
       >
         <q-table
+          v-if="this.rows.length !== 0"
           v-model:pagination="pagination"
           :rows="rows"
           :columns="columns"
@@ -353,6 +354,7 @@
 <!--            </q-td>-->
 <!--          </template>-->
         </q-table>
+        <div v-else></div>
 
         <div class="row justify-center q-mt-md">
           <q-pagination
@@ -667,10 +669,10 @@ export default {
           window.sessionStorage.setItem("data", JSON.stringify(this.rows))
           this.$router.push({ "path": "/paper/check", "query": { "id": id } });
         },
-        pick (cond){
-          this.key = this.key + " " + cond
-          this.search()
-        },
+        // pick (cond){
+        //   this.key = this.key + " " + cond
+        //   this.search()
+        // },
         relative (cond){
           this.key = cond
           this.search()
@@ -678,6 +680,21 @@ export default {
         pickType (type) {
           this.line = "$" + this.result + "_" + "$" + this.result + "_" + "$" + this.result + "_" + "$" + "_" + "$" + "_" + "$" + type + "_" + "$"
           this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key , "method" : "2"} });
+          this.advancedSearch()
+        },
+        pickTime (time){
+          this.line = "$"  + "_" + "$"   +"_" + "$"  + "_" + "$"  + "_" + "$"  + "_" + "$"  + "_" + "$" + time
+          this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key + " " + time , "method" : "2"} });
+          this.advancedSearch()
+        },
+        pickAuthor (author){
+          this.line = "$"  + "_" + "$"   +"_" + "$"  + "_" + "$" + author + "_" + "$"  + "_" + "$"  + "_" + "$"
+          this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key + " " + author , "method" : "2"} });
+          this.advancedSearch()
+        },
+        pickSchool (school){
+          this.line = "$"  + "_" + "$"   +"_" + "$"  + "_" + "$"  + "_" + "$"  + school + "_" + "$"  + "_" + "$"
+          this.$router.push({ "path": "/search", "query": { "line": this.line, "key": this.key + " " + school , "method" : "2"} });
           this.advancedSearch()
         },
         showLoading () {
