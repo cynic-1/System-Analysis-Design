@@ -810,7 +810,10 @@ export default {
               }],
             }).then((res) => {
               console.log(res.data)
-              if (res.data.code !== '400') return alert(res.data.message);
+              if (res.data.code !== '400') {
+                this.loadInfo();
+                return alert(res.data.message);
+              }
               alert('修改个人信息成功');
               this.$store.commit("setUserName", this.Form.nickname);
               this.$emit("changeUserName");
