@@ -181,7 +181,7 @@ export default {
             "hasComment": false,//
             "prompt": false, //
             "reason": "", //
-            "length": 0, //
+            "comment_length": 0, //
             "isgood": false, //
             "current": 1, //
             "left": 0, //
@@ -379,9 +379,9 @@ export default {
         this.comments = response.data.comment;
         if (this.comments.length !== 0) {
           if (this.comments.length % 5 === 0) {
-            this.commnet_length = this.comments.length / 5
+            this.comment_length = this.comments.length / 5
           } else {
-            this.commnet_length = this.comments.length / 5 + 1
+            this.comment_length = this.comments.length / 5 + 1
           }
         }
         if (this.comments.length === 0) {
