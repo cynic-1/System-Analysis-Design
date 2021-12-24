@@ -323,7 +323,7 @@
               label="选择您的常用语言"
             />
             <div
-              style="padding: 0px 60px 0px 30px"
+              style="padding: 0 60px 0 30px"
               class="text-weight-bold"
             >
               学科
@@ -334,10 +334,10 @@
               bottom-slots
               dense
               filled
-              style="padding: 0px 60px 0px 30px;margin-top: 0px"
+              style="padding: 0 60px 0 30px;margin-top: 0"
             />
             <div
-              style="padding: 0px 60px 0px 30px"
+              style="padding: 0 60px 0 30px"
               class="text-weight-bold"
             >
               技能与专长
