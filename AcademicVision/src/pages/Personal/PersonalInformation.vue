@@ -396,27 +396,27 @@
         <div class="q-pa-md row items-start q-gutter-md">
           <q-card style="width: 150px;height: 75px;padding-left:10px">
             <div class="text-h5 q-mt-sm q-mb-xs">
-              {{ Form.Researchitemnum }}
+              {{ articleCount[0] }}
             </div>
-            <div>Research item</div>
+            <div>期刊/会议</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
             <div class="text-h5 q-mt-sm q-mb-xs">
-              {{ Form.Projectnum }}
+              {{ articleCount[1] }}
             </div>
-            <div>Project</div>
+            <div>学位论文</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
             <div class="text-h5 q-mt-sm q-mb-xs">
-              {{ Form.Questionnum }}
+              {{ articleCount[2] }}
             </div>
-            <div>Questions</div>
+            <div>专著</div>
           </q-card>
           <q-card style="width: 150px;height: 75px;padding-left:10px">
             <div class="text-h5 q-mt-sm q-mb-xs">
-              {{ Form.Answernum }}
+              {{ articleCount[3] }}
             </div>
-            <div>Answers</div>
+            <div>其他</div>
           </q-card>
         </div>
       </q-card>
@@ -611,6 +611,7 @@ export default {
             "accept": false,
             "options1": ["Chinese", "English", "Japanese", "French", "Russian"],
             "colAuthorList":[],
+            "articleCount": [],
             "Form": {
                 "user": "",
                 "pass": "········",
@@ -643,8 +644,34 @@ export default {
     "mounted": function () {
       this.loadInfo()
       this.loadcolAuthor()
+      this.getConfirmedList()
     },
     "methods": {
+        getConfirmedList() {
+          this.$axios({
+            "method": "post",
+            "url": "my_paper/",
+            "header": {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            "data": {
+              "user_id": this.$route.query.userId,
+            },
+            "transformRequest": [function (data) {
+
+              let ret = "";
+              for (const it in data) {
+
+                ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+              }
+              return ret;
+
+            }],
+          }).then((res) => {
+            this.articleCount = res.data.type;
+          });
+        },
         loadcolAuthor(){
           this.$axios({
             method:"post",
