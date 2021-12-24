@@ -3,7 +3,7 @@
   <br>
   <div class="PaperComment">
     <br><br>
-    <q-separator inset />
+    <q-separator inset/>
     <br>
     <h4 style="float: left;margin-top: 20px;margin-left: 120px;margin-bottom: 20px">
       <q-icon
@@ -133,7 +133,7 @@
         <q-dialog v-model="confirm" persistent>
           <q-card>
             <q-card-section class="row items-center">
-              <q-avatar icon="logout" color="primary" text-color="white" />
+              <q-avatar icon="logout" color="primary" text-color="white"/>
               <span class="q-ml-sm" style="font-size: 20px">您即将前往用户个人空间</span>
             </q-card-section>
 
@@ -354,158 +354,160 @@ export default {
             ],
         };
 
-    },
-    "computed": {},
-    mounted () {
-      this.$axios({
-        "method": "POST",
-        "url": "http://114.116.235.94/get_paper_comment/",
-        "data": {
-          "paper_id": this.paper_id,
-        },
-        "transformRequest": [function (data) {
-
-          let ret = "";
-          for (const it in data) {
-
-            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
-
-          }
-          return ret;
-
-        }],
-      }).then(response => {
-        console.log("查看学术成果评论", response);
-        this.comments = response.data.comment;
-        if (this.comments.length !== 0) {
-          if (this.comments.length % 5 === 0) {
-            this.comment_length = this.comments.length / 5
-          } else {
-            this.comment_length = this.comments.length / 5 + 1
-          }
-        }
-        if (this.comments.length === 0) {
-
-          this.hasComment = true;
-
-        }
-
-      });
-    },
-
-    "methods": {
-      method1(userid) {
-        this.comid = userid;
-        this.confirm = true;
+  },
+  "computed": {},
+  mounted() {
+    this.$axios({
+      "method": "POST",
+      "url": "http://114.116.235.94/get_paper_comment/",
+      "data": {
+        "paper_id": this.paper_id,
       },
-        simulateProgress (number) {
+      "transformRequest": [function (data) {
 
-            // we set loading state
-            this[`loading${number}`] = true;
-            // simulate a delay
-            setTimeout(() => {
+        let ret = "";
+        for (const it in data) {
 
-                // we're done, we reset loading state
-                this[`loading${number}`] = false;
+          ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
 
-            }, 1000);
+        }
+        return ret;
 
-        },
-        onSubmit () {
-          if(this.$store.state.login) {
-            console.log("点击了发布按钮");
-            this.$refs.text.validate();
-            if (this.$refs.text.hasError) {
+      }],
+    }).then(response => {
+      console.log("查看学术成果评论", response);
+      this.comments = response.data.comment;
+      if (this.comments.length !== 0) {
+        if (this.comments.length % 5 === 0) {
+          this.commnet_length = this.comments.length / 5
+        } else {
+          this.commnet_length = this.comments.length / 5 + 1
+        }
+      }
+      if (this.comments.length === 0) {
 
-              this.formHasError = true;
+        this.hasComment = true;
 
-            } else {
+      }
 
-              this.$refs.text.resetValidation();
-              // 调用评论axios请求
-              // http://114.116.235.94/comment_post/
-              this.$axios({
-                "method": "POST",
-                "url": "http://114.116.235.94/comment_paper/",
-                "data": {
-                  "user_id": this.$store.state.person.userID !== "" ? this.$store.state.person.userID : "1",
-                  "paper_id": this.paper_id,
-                  "content": this.text,
-                },
-                "transformRequest": [function (data) {
+    });
+  },
 
-                  let ret = "";
-                  for (const it in data) {
+  "methods": {
+    method1(userid) {
+      this.comid = userid;
+      this.confirm = true;
+    },
+    simulateProgress(number) {
 
-                    ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+      // we set loading state
+      this[`loading${number}`] = true;
+      // simulate a delay
+      setTimeout(() => {
 
-                  }
-                  return ret;
+        // we're done, we reset loading state
+        this[`loading${number}`] = false;
 
-                }],
-              }).then(response => {
+      }, 1000);
 
-                console.log("发表学术成果评论", response);
-                if (response.data.code === 200) {
+    },
+    onSubmit() {
+      if (this.$store.state.login) {
+        console.log("点击了发布按钮");
+        this.$refs.text.validate();
+        if (this.$refs.text.hasError) {
 
-                  this.alert = true;
+          this.formHasError = true;
 
-                }
-                this.hasComment = false;
+        } else {
 
-              });
-              const d = new Date();
-              let str = "";
-              str += `${d.getFullYear()}/`; // 获取当前年份
-              str += `${d.getMonth() + 1}/`; // 获取当前月份（0——11）
-              str += `${d.getDate()}/ `;
-              str += `${d.getHours()}:`;
-              str += `${d.getMinutes()}:`;
-              str += d.getSeconds();
-              this.$axios({
-                "method": "POST",
-                "url": "http://114.116.235.94/get_paper_comment/",
-                "data": {
-                  "paper_id": this.paper_id
-                },
-                "transformRequest": [function (data) {
+          this.$refs.text.resetValidation();
+          // 调用评论axios请求
+          // http://114.116.235.94/comment_post/
+          this.$axios({
+            "method": "POST",
+            "url": "http://114.116.235.94/comment_paper/",
+            "data": {
+              "user_id": this.$store.state.person.userID !== "" ? this.$store.state.person.userID : "1",
+              "paper_id": this.paper_id,
+              "content": this.text,
+            },
+            "transformRequest": [function (data) {
 
-                  let ret = "";
-                  for (const it in data) {
+              let ret = "";
+              for (const it in data) {
 
-                    ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+                ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
 
-                  }
-                  return ret;
+              }
+              return ret;
 
-                }],
-              }).then(response => {
+            }],
+          }).then(response => {
 
-                console.log("查看学术成果评论", response);
-                this.comments = response.data.comment;
+            console.log("发表学术成果评论", response);
+            if (response.data.code === 200) {
 
-              });
+              this.alert = true;
 
             }
-          }
-          else {
-            this.isLoginAlert = true;
-          }
-        },
-        onReset () {
+            this.hasComment = false;
 
-            this.text = null;
-            this.$refs.text.resetValidation();
+          });
+          const d = new Date();
+          let str = "";
+          str += `${d.getFullYear()}/`; // 获取当前年份
+          str += `${d.getMonth() + 1}/`; // 获取当前月份（0——11）
+          str += `${d.getDate()}/ `;
+          str += `${d.getHours()}:`;
+          str += `${d.getMinutes()}:`;
+          str += d.getSeconds();
+          clearTimeout(this.timer);  //清除延迟执行
+          this.timer = setTimeout(() => {   //设置延迟执行
+            this.$axios({
+              "method": "POST",
+              "url": "http://114.116.235.94/get_paper_comment/",
+              "data": {
+                "paper_id": this.paper_id
+              },
+              "transformRequest": [function (data) {
 
-        },
-      gotoCheckUser(userid) {
-        console.log(userid)
-        window.sessionStorage.setItem('otherpersonid', userid);
-        this.$router.push({
-          "path": "/otherpersonal",
-        })
-      },
+                let ret = "";
+                for (const it in data) {
+
+                  ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+                }
+                return ret;
+
+              }],
+            }).then(response => {
+
+              console.log("查看学术成果评论2", response);
+              this.comments = response.data.comment;
+
+            });
+          }, 1000);
+
+        }
+      } else {
+        this.isLoginAlert = true;
+      }
     },
+    onReset() {
+
+      this.text = null;
+      this.$refs.text.resetValidation();
+
+    },
+    gotoCheckUser(userid) {
+      console.log(userid)
+      window.sessionStorage.setItem('otherpersonid', userid);
+      this.$router.push({
+        "path": "/otherpersonal",
+      })
+    },
+  },
 
 };
 </script>

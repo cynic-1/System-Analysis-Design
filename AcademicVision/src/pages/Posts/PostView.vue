@@ -28,9 +28,9 @@
     <!--    </div>-->
 
     <br>
-    <q-card class="my-card">
+    <q-card class="my-card" style="min-width: 1350px">
       <div
-        style="margin-left: 20px;margin-right: 20px;"
+        style="margin-left: 20px;margin-right: 20px"
         class="test"
         v-html="context"
       />
