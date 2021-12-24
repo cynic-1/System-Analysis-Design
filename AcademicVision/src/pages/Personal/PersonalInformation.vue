@@ -704,7 +704,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$route.query.userID,
+              user_id:this.$store.state.person.userID,
               author_id:authorid,
             },
             transformRequest:[function(data){
