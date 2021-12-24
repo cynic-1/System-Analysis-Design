@@ -27,6 +27,7 @@ export default {
           "userAvatar": "https://cdn.quasar.dev/logo/svg/quasar-logo.svg",
           "actionType": 0, // 0: 增加一篇期刊 1: 关注一篇期刊
           // 2.增加一篇会议 3. 关注一篇会议 4：增加一篇专著 5: 关注一篇专著 6. 增加其他研究 7. 关注其他研究
+          "paperId": 13628,
           "canEdit": 2,
           "authorName": "宋永欣",
           "researchType": 0, // 0: 期刊 1: 会议 2：专著 3: 其他

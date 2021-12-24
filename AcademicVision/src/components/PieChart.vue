@@ -152,15 +152,15 @@ export default {
 
         });
 
-        // watch(
-        //     option,
-        //     (newOptions) => {
-        //
-        //         chart.value.setOption(newOptions);
-        //
-        //     },
-        //     { "deep": true }
-        // );
+        watch(
+            option,
+            (newOptions) => {
+
+                chart.value.setOption(newOptions);
+
+            },
+            { "deep": true }
+        );
 
         return {
             option,

@@ -85,9 +85,22 @@
           size="lg"
           dense
           flat
-          color="primary"
+          color="grey-6"
           icon="star"
           label="收藏"
+          v-show="!isStar"
+          @click="star"
+        />
+        <q-btn
+          class="gt-xs"
+          size="lg"
+          dense
+          flat
+          color="blue-6"
+          icon="star"
+          label="收藏"
+          v-show="isStar"
+          @click="unstar"
         />
         <q-btn
           class="gt-xs"
@@ -120,7 +133,8 @@ export default {
   data () {
 
     return {
-      "researchTypeStrMap": ["期刊/会议", "学位论文", "专著", "其他"]
+      "researchTypeStrMap": ["期刊/会议", "学位论文", "专著", "其他"],
+      isStar: false
     };
 
   },
@@ -156,7 +170,64 @@ export default {
         // PersonalMain.methods.loadpersonalInfo();
 
       });
-    }
+    },
+    unstar() {
+
+      this.isStar = false;
+      // http://114.116.235.94/del_my_col_post/
+      this.$axios({
+        "method": "POST",
+        "url": "un_col_paper/",
+        "data": {
+          "user_id": this.$store.state.person.userID,
+          "paper_id": this.paperId,
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+
+        console.log("取消收藏文章", response);
+
+      });
+
+    },
+    star() {
+
+      this.isStar = true;
+      this.$axios({
+        "method": "POST",
+        "url": "col_paper/",
+        "data": {
+          "paper_id": this.paperId,
+          "user_id": this.$store.state.person.userID,
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then(response => {
+
+        console.log("收藏文章", response);
+
+      });
+
+    },
   }
 };
 </script>

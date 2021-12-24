@@ -7,6 +7,7 @@
   <article-item
   :title="title"
   :researchType="researchType"
+  :paperId="paperId"
   :publishTime="publishTime"
   :journalName="journalName"
   :authorList="authorList"
@@ -29,6 +30,7 @@ export default {
         userAvatar: String,
         actionType: Number, // 0: 增加一篇期刊 1: 关注一篇期刊
         // 2.增加一篇会议 3. 关注一篇会议 4：增加一篇专著 5: 关注一篇专著 6. 增加其他研究 7. 关注其他研究
+        paperId: Number,
         title: String,
         researchType: Number, // 0: 期刊 1: 会议 2：专著 3: 其他
         publishTime: String,
