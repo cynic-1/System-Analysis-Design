@@ -34,6 +34,8 @@ export default store((/* { ssrContext } */) => {
                 "papers": [],
                 "paperCounts": [],
                 "confirmPapers": [],
+                "quoteNums": [],
+                "years": []
             }
         },
         "mutations": {
@@ -93,7 +95,15 @@ export default store((/* { ssrContext } */) => {
 
             setConfirmPapers (state, list){
               state.person.confirmPapers = list;
-            }
+            },
+
+            setQuoteNums (state, list){
+              state.person.quoteNums = list;
+            },
+
+            setYears (state, list){
+              state.person.years = list;
+            },
 
         },
     });

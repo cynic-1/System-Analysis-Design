@@ -19,6 +19,7 @@ import { UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
 import { onMounted, onUnmounted, watch } from "vue";
 
+import { useStore } from 'vuex'
 
 echarts.use([
     TitleComponent,
@@ -34,6 +35,8 @@ echarts.use([
 export default {
     "name": "LineChart",
     setup () {
+
+        const store = useStore()
 
         let option; let chart;
         option = {
@@ -55,23 +58,17 @@ export default {
             "xAxis": {
                 "type": "category",
                 "boundaryGap": false,
-                "data": ["-1980", "1981-1990", "1991-2000", "2001-2010", "2011-2015", "2016-2020", "2021-"]
+                "data": store.state.person.years
             },
             "yAxis": {
                 "type": "value"
             },
             "series": [
                 {
-                    "name": "学术成果数量",
-                    "type": "line",
-                    "stack": "Total",
-                    "data": [120, 132, 101, 134, 90, 230, 210]
-                },
-                {
                     "name": "论文引用量",
                     "type": "line",
                     "stack": "Total",
-                    "data": [220, 182, 191, 234, 290, 330, 310]
+                    "data": store.state.person.quoteNums
                 },
             ]
         };
@@ -102,15 +99,15 @@ export default {
 
         });
 
-        // watch(
-        //     option,
-        //     (newOptions) => {
-        //
-        //         chart.value.setOption(newOptions);
-        //
-        //     },
-        //     { "deep": true }
-        // );
+      watch(
+        option,
+        (newOptions) => {
+
+          chart.value.setOption(newOptions);
+
+        },
+        { "deep": true }
+      );
 
         return {
             option
