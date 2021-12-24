@@ -106,7 +106,7 @@
             </div>
             <q-separator/>
             <br>
-            <div v-if="item.name==='1'">
+            <div v-if="item.name==='1'&& this.rows1.length!==0">
               <q-table
                 v-model:pagination="pagination"
                 style="height:450px;width: 100%"
@@ -196,7 +196,10 @@
                 </template>
               </q-table>
             </div>
-            <div v-if="item.name==='2'">
+            <div v-if="item.name==='1' && this.rows1.length===0">
+              <span style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">暂无数据</span>
+            </div>
+            <div v-if="item.name==='2'&& this.rows2.length!==0">
               <q-table
                 v-model:pagination="pagination2"
                 style="height:450px;width: 100%"
@@ -274,10 +277,13 @@
                   </q-tr>
                 </template>
               </q-table>
+
+            </div>
+            <div v-if="item.name==='2' && this.rows2.length===0">
+              <span style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">暂无数据</span>
             </div>
 
-
-            <div v-if="item.name==='3'">
+            <div v-if="item.name==='3'&& this.rows3.length!==0">
               <q-table
                 v-model:pagination="pagination3"
                 style="height:450px;width: 100%"
@@ -354,6 +360,9 @@
                   </q-tr>
                 </template>
               </q-table>
+            </div>
+            <div v-if="item.name==='3' && this.rows3.length===0">
+              <span style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">暂无数据</span>
             </div>
             <div v-if="item.name==='4'">
               <q-table

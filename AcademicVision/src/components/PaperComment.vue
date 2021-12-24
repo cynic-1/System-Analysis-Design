@@ -170,190 +170,189 @@
 
 <script>
 import "highlight.js/styles/arta.css";
-
 export default {
-  name: "PaperComment",
-  props: ['paper_id'],
-  data() {
+    name: "PaperComment",
+    props:['paper_id'],
+    data () {
 
-    return {
-      comid: 0,
-      confirm: false,//
-      "hasComment": false,//
-      "prompt": false, //
-      "reason": "", //
-      "length": 0, //
-      "isgood": false, //
-      "current": 1, //
-      "left": 0, //
-      "right": 5, //
-      "alert": false, //
-      "isLoginAlert": false, //
-      "loading1": false, //
-      "text": "", //
-      "comments": [{
-        "name": "周杰伦",
-        "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
-        "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-        "stamp": "2021/6/10",
-        "goodnumber": 300,
-        "isgood": true,
-        "cid": 1,
-      },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 299,
-          "isgood": false,
-          "cid": 2,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 298,
-          "isgood": false,
-          "cid": 3,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 4,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 5,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 6,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 7,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 8,
-        },
-        {
-          "name": "周杰伦",  // 用户名
-          "commentid": 1, // 评论id
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto", // 用户头像
-          "text": "这里是一条评论，哎呦不错哦",  // 用户评论内容
-          "stamp": "2021/6/10", // 评论时间
-          "goodnumber": 297,  // 评论点赞数
-          "isgood": true, // 当前用户是否点赞该评论
-          "cid": 9, // 评论id
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 10,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 11,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 12,
-        }, {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 13,
-        }, {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 14,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 15,
-        },
-        {
-          "name": "周杰伦",
-          "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 297,
-          "isgood": true,
-          "cid": 16,
-        }, {
-          "name": "周杰伦",
-          "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 300,
-          "isgood": true,
-          "cid": 17,
-        }, {
-          "name": "周杰伦",
-          "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
-          "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
-          "stamp": "2021/6/10",
-          "goodnumber": 300,
-          "isgood": true,
-          "cid": 18,
-        }
+        return {
+             comid: 0,
+             confirm: false,//
+            "hasComment": false,//
+            "prompt": false, //
+            "reason": "", //
+            "comment_length": 0, //
+            "isgood": false, //
+            "current": 1, //
+            "left": 0, //
+            "right": 5, //
+            "alert": false, //
+            "isLoginAlert": false, //
+            "loading1": false, //
+            "text": "", //
+            "comments": [{
+                "name": "周杰伦",
+                "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 300,
+                "isgood": true,
+                "cid": 1,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 299,
+                "isgood": false,
+                "cid": 2,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 298,
+                "isgood": false,
+                "cid": 3,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 4,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 5,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 6,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 7,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 8,
+            },
+            {
+                "name": "周杰伦",  // 用户名
+                "commentid": 1, // 评论id
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto", // 用户头像
+                "text": "这里是一条评论，哎呦不错哦",  // 用户评论内容
+                "stamp": "2021/6/10", // 评论时间
+                "goodnumber": 297,  // 评论点赞数
+                "isgood": true, // 当前用户是否点赞该评论
+                "cid": 9, // 评论id
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 10,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 11,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 12,
+            }, {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 13,
+            }, {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 14,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 15,
+            },
+            {
+                "name": "周杰伦",
+                "avatar": "https://img2.baidu.com/it/u=4107644900,2951709340&fm=26&fmt=auto",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 297,
+                "isgood": true,
+                "cid": 16,
+            }, {
+                "name": "周杰伦",
+                "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 300,
+                "isgood": true,
+                "cid": 17,
+            }, {
+                "name": "周杰伦",
+                "avatar": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqqpublic.qpic.cn%2Fqq_public%2F0%2F0-2485887168-197F1658E5C35C7917B991AB1E993AA8%2F0%3Ffmt%3Djpg%26size%3D246%26h%3D900%26w%3D900%26ppv%3D1.jpg&refer=http%3A%2F%2Fqqpublic.qpic.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640135843&t=de793e46679e21a08c9fc364633089a6",
+                "text": "这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦这里是一条评论，哎呦不错哦",
+                "stamp": "2021/6/10",
+                "goodnumber": 300,
+                "isgood": true,
+                "cid": 18,
+            }
 
 
-      ],
-    };
+            ],
+        };
 
   },
   "computed": {},

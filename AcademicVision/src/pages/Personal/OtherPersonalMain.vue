@@ -65,12 +65,12 @@
           <q-tab
             name="1"
             style="width:200px"
-            label="Information"
+            label="个人信息"
           />
           <q-tab
             name="2"
             style="width:200px"
-            label="Research"
+            label="学者主页"
           />
         </q-tabs>
       </q-card>
@@ -135,6 +135,7 @@ export default {
         },
         data:{
           user_id:window.sessionStorage.getItem('otherpersonid'),
+          user_id2:this.$store.state.person.userID,
         },
         transformRequest:[function(data){
           let ret = ''

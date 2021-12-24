@@ -122,7 +122,7 @@ export default {
   props: {
     "canEdit": Number,
     "authorName": String,
-    "paperId": Number,
+    "paper_id": Number,
     "researchType": Number, // 0: 期刊/会议 1: 学位论文 2：专著 3: 其他
     "title": String,
     "publishTime": String,
@@ -147,7 +147,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         "data": {
-          "paper_id": this.paperId,
+          "paper_id": this.paper_id,
           "user_id": this.$store.state.person.userID,
         },
         "transformRequest": [function (data) {
@@ -180,7 +180,7 @@ export default {
         "url": "un_col_paper/",
         "data": {
           "user_id": this.$store.state.person.userID,
-          "paper_id": this.paperId,
+          "paper_id": this.paper_id,
         },
         "transformRequest": [function (data) {
 
@@ -207,7 +207,7 @@ export default {
         "method": "POST",
         "url": "col_paper/",
         "data": {
-          "paper_id": this.paperId,
+          "paper_id": this.paper_id,
           "user_id": this.$store.state.person.userID,
         },
         "transformRequest": [function (data) {
@@ -232,7 +232,7 @@ export default {
       this.$router.push({
         "path": "/paper/check",
         "query": {
-          "id": this.paperId
+          "id": this.paper_id
         }
       });
 

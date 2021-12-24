@@ -67,14 +67,14 @@
                 统计数据
               </div>
               <q-separator inset />
-              <pie-chart v-if="this.dataReady" :n="this.articleCount" :s="this.articleSum" />
+              <pie-chart v-if="this.dataReady" />
             </q-card>
             <q-card class="q-my-xl">
               <div class="text-h5 q-pa-md">
                 历史数据
               </div>
               <q-separator inset />
-              <line-chart />
+              <line-chart v-if="this.dataReady1"/>
             </q-card>
             <q-card>
               <article-item
@@ -122,13 +122,15 @@
             <q-separator inset />
             <template v-if="this.confirmList.length > 0">
               <q-list>
-                <article-item
+                <template
                   v-for="(item,index) in confirmList"
-                  :key="item.paperId"
-                  v-bind="item"
-                  @denyAuthor="confirmList.splice(index, 1)"
-                  @claimAuthor="claimAuthor(item.paperId)"
-                />
+                  :key="item.paperId">
+                  <article-item
+                    v-bind="item"
+                    @denyAuthor="confirmList.splice(index, 1)"
+                    @claimAuthor="claimAuthor(item.paperId)"
+                  />
+                </template>
               </q-list>
             </template>
             <template v-else>
@@ -169,6 +171,7 @@ export default {
         return {
             "tab": "scholar page",
             "dataReady": false,
+            "dataReady1": false,
             "tabsList": [
                 { "name": "scholar page", "icon": "description", "label": "学者主页" },
                 { "name": "confirm authorship", "icon": "school", "label": "研究认领" },
@@ -187,6 +190,7 @@ export default {
         this.confirmAuthor(it)
         this.confirmList.splice(index, 1)
         this.getConfirmedList()
+        this.getLineChartData()
       },
       confirmAuthor(paperId) {
         this.$axios({
@@ -249,6 +253,7 @@ export default {
           this.confirmedList.forEach((item) => {
             item.publishTime = item.publishTime === "N/A" ? "" : item.publishTime
           })
+          console.log(this.confirmedList)
           this.articleCount = res.data.type;
           this.articleSum = res.data.sum;
           console.log(this.articleCount[0]);
@@ -260,7 +265,36 @@ export default {
           // alert("文章认领成功");
         });
       },
-      getConfirmList() {
+      getLineChartData() {
+        this.$axios({
+          "method": "post",
+          "url": "count_my_paper/",
+          "header": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "data": {
+            "user_id": this.$route.query.userId,
+          },
+          "transformRequest": [function (data) {
+
+            let ret = "";
+            for (const it in data) {
+
+              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+            }
+            return ret;
+
+          }],
+        }).then((res) => {
+            console.log(res.data);
+            this.$store.commit("setQuoteNums", res.data.num);
+            this.$store.commit("setYears", res.data.years);
+            this.dataReady1 = true;
+
+        });
+      },
+      getConfirmList(list) {
         console.log(this.$store.state.person.username)
         this.$axios({
           "method": "get",
@@ -286,10 +320,11 @@ export default {
           }],
         }).then((res) => {
 
-          console.log(res.data);
           if (res.data.status.code !== 200) return;
           this.confirmList = [];
           for (let it of res.data.data.goods) {
+            if (list.includes(it.id)) continue;
+            console.log(it.id);
             let temp = {
               "canEdit": 0,
               "authorName": "宋永欣",
@@ -305,8 +340,33 @@ export default {
           }
           this.$store.commit("setConfirmPapers", this.confirmList.slice());
           console.log(this.confirmList)
-          this.dataReady = true;
           // alert("文章认领成功");
+        });
+      },
+      getConfirmListWithFilter() {
+        this.$axios({
+          "method": "post",
+          "url": "my_paper_id/",
+          "header": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "data": {
+            "user_id": this.$route.query.userId
+          },
+          "transformRequest": [function (data) {
+
+            let ret = "";
+            for (const it in data) {
+
+              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+            }
+            return ret;
+
+          }],
+        }).then((res) => {
+          const paperIdList = res.data.paper_id_list;
+          this.getConfirmList(paperIdList);
         });
       }
 
@@ -316,21 +376,19 @@ export default {
     created () {
         this.getConfirmedList();
         console.log("test confirm list");
-        this.getConfirmList()
+        this.getConfirmListWithFilter()
+        this.getLineChartData()
     },
     mounted () {
       watch(
         this.$store.state.person.username,
         (newId) => {
           this.getConfirmedList();
+          this.getLineChartData()
         },
         { "deep": true }
       );
     },
-  watch: {
-
-  }
-
 
 };
 </script>

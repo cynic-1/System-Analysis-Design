@@ -2,7 +2,7 @@
   <div>
     <q-toolbar class="bg-primary Nav fa-text-height text-white">
       <q-avatar>
-        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+        <q-icon name="school" size="lg"></q-icon>
       </q-avatar>
       <q-toolbar-title>Academic Vision</q-toolbar-title>
       <q-breadcrumbs
@@ -165,6 +165,6 @@ export default {
 </script>
 <style>
 .Nav{
-  height: 10vh;
+  height: 7vh;
 }
 </style>
