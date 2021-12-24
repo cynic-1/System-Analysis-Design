@@ -87,8 +87,9 @@
           <div v-else>
             <q-card>
               <div class="q-pa-xl justify-center" style="min-width: 200px; min-height: 100px">
-                <span class="text-center text-h5 q-ma-md">您尚未认领任何成果，请</span>
-                <q-btn flat color="primary" size="xl" padding="none" label="前往认领" @click="()=>{tab='confirm authorship'}"></q-btn>
+                <q-btn flat class="text-center text-h5 q-ma-md text-grey" @click="()=>{tab='confirm authorship'}"
+                style="cursor: pointer"
+                >您尚未认领任何成果，请前往认领</q-btn>
               </div>
 
             </q-card>
