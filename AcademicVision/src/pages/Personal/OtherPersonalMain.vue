@@ -115,6 +115,7 @@ export default {
       "is_associated":0,
       "hobby":"",
       "OtherimgUrl":"",
+      "author_id": "",
     };
 
   },
@@ -160,6 +161,7 @@ export default {
         if (info.department!==null) {
           this.department = info.department;
         }
+        this.author_id=info.author_id;
         // if(info.signature !== null)
         //   this.Form.signature = info.signature;
         // if(info.briefintroduction !== null)
@@ -172,8 +174,48 @@ export default {
     changeFollow (){
       if (this.isFollowed){
         this.isFollowed = false;
+        this.$axios({
+          method:"post",
+          url:"http://114.116.235.94/un_col_author/",
+          header:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data:{
+            user_id:this.$store.state.person.userID,
+            author_id:this.author_id,
+          },
+          transformRequest:[function(data){
+            let ret = ''
+            for(let it in data){
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then((res)=>{
+          console.log(res.data.code )
+        })
       } else {
         this.isFollowed = true;
+        this.$axios({
+          method:"post",
+          url:"http://114.116.235.94/col_author/",
+          header:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data:{
+            user_id:this.$store.state.person.userID,
+            author_id:this.author_id,
+          },
+          transformRequest:[function(data){
+            let ret = ''
+            for(let it in data){
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+          }],
+        }).then((res)=>{
+          console.log(res.data.code )
+        })
           }
       }
     },
@@ -191,5 +233,5 @@ export default {
 .other-card
   padding-left: 500px
   width: 100%
-  max-width: 1200px
+  max-width: 1400px
 </style>

@@ -559,7 +559,7 @@
                 rounded
                 size="48px"
               >
-                <img :src="author.img">
+                <img :src="'http://114.116.235.94/'+author.img">
               </q-avatar>
             </q-item-section>
             <q-item-section>

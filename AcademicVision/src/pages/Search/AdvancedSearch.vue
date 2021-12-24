@@ -447,6 +447,14 @@ export default {
         },
 
         onReset () {
+          this.condition = [
+            { "searchBy": "篇名", "wayWith": "AND", "key": "", },
+            { "searchBy": "关键词", "wayWith": "AND", "key": "", },
+            { "searchBy": "作者", "wayWith": "AND", "key": "", },
+          ]
+          this.beginDate = ""
+          this.endDate = ""
+          this.source = ["全部"]
 
         }
     }

@@ -14,6 +14,7 @@
         standout
         :dense="dense"
         style="max-width: 900px;margin:0 auto;background-color: white;opacity: 0.85"
+        @keyup.enter="search"
       >
         <template #append>
           <q-avatar>
@@ -202,7 +203,7 @@ export default {
 
 <style scoped>
 .search {
-  background-image: url("../../../public/双生.jpg");
+  background-image: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_match%2F0%2F11172380288%2F0.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642867237&t=46c17f1376890eed84ebac87c0e93dbf");
   background-size: cover;
   background-attachment: fixed;
   padding: 0;
