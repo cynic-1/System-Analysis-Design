@@ -7,7 +7,6 @@
     <list default="true" id="3d628955-eefd-48ec-8842-bd448df12d40" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AcademicVision/src/components/PaperComment.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/components/PaperComment.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcademicVision/src/pages/Paper/PaperCheck.vue" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicVision/src/pages/Paper/PaperCheck.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +47,11 @@
       <workItem from="1638680899468" duration="8425000" />
       <workItem from="1638843189258" duration="1676000" />
       <workItem from="1638173648899" duration="117000" />
+      <workItem from="1640266110479" duration="36000" />
+      <workItem from="1640266156929" duration="416000" />
+      <workItem from="1640266989692" duration="168000" />
+      <workItem from="1640267162098" duration="963000" />
+      <workItem from="1640270403622" duration="1591000" />
     </task>
     <servers />
   </component>
