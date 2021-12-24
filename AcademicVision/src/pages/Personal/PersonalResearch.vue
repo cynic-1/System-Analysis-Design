@@ -61,27 +61,39 @@
           name="scholar page"
           style="padding: 1px"
         >
-          <q-card>
-            <div class="text-h5 q-pa-md">
-              统计数据
-            </div>
-            <q-separator inset />
-            <pie-chart v-if="this.dataReady" :n="this.articleCount" :s="this.articleSum" />
-          </q-card>
-          <q-card class="q-my-xl">
-            <div class="text-h5 q-pa-md">
-              历史数据
-            </div>
-            <q-separator inset />
-            <line-chart />
-          </q-card>
-          <q-card>
-            <article-item
-              v-for="item in confirmedListExample"
-              :key="item"
-              v-bind="item"
-            />
-          </q-card>
+          <div v-if="this.$store.state.person.papers.length === 0">
+            <q-card>
+              <div class="text-h5 q-pa-md">
+                统计数据
+              </div>
+              <q-separator inset />
+              <pie-chart v-if="this.dataReady" :n="this.articleCount" :s="this.articleSum" />
+            </q-card>
+            <q-card class="q-my-xl">
+              <div class="text-h5 q-pa-md">
+                历史数据
+              </div>
+              <q-separator inset />
+              <line-chart />
+            </q-card>
+            <q-card>
+              <article-item
+                v-for="item in confirmedListExample"
+                :key="item"
+                v-bind="item"
+              />
+            </q-card>
+          </div>
+          <div v-else>
+            <q-card>
+              <div class="q-pa-xl justify-center" style="min-width: 200px; min-height: 100px">
+                <span class="text-center text-h5 q-ma-md">您尚未认领任何成果，请</span>
+                <q-btn flat color="primary" size="xl" padding="none" label="前往认领" @click="()=>{tab='confirm authorship'}"></q-btn>
+              </div>
+
+            </q-card>
+          </div>
+
         </q-tab-panel>
         <q-tab-panel
           name="confirm authorship"
@@ -110,11 +122,11 @@
             <q-separator inset />
             <q-list>
               <article-item
-                v-for="item in confirmListExample"
+                v-for="(item,index) in confirmListExample"
                 :key="item.paperId"
                 v-bind="item"
-                @denyAuthor="denyAuthor(item)"
-                @claimAuthor="claimAuthor(item)"
+                @denyAuthor="confirmListExample.splice(index, 1)"
+                @claimAuthor="claimAuthor(item.paperId)"
               />
             </q-list>
           </q-card>
@@ -132,6 +144,7 @@ const pieChart = defineAsyncComponent(() => import("../../components/PieChart"))
 const lineChart = defineAsyncComponent(() => import("../../components/LineChart"));
 const articleItem = defineAsyncComponent(() => import("../../components/ArticleItem"));
 
+const typeMap = [-1, 2, 1, 0, 3];
 
 export default {
     "name": "PersonalResearch",
@@ -188,11 +201,9 @@ export default {
     },
     "methods": {
       denyAuthor(it) {
-        const index = this.confirmListExample.findIndex(item => item.paperId === it.paperId)
-        this.confirmListExample.splice(index, 1)
       },
       claimAuthor(it) {
-        const index = this.confirmListExample.findIndex(item => item.paperId === it.paperId)
+        const index = this.confirmListExample.findIndex(item => item.paperId === it)
         this.confirmAuthor(it.paperId)
         this.confirmListExample.splice(index, 1)
       },
@@ -249,7 +260,7 @@ export default {
         }).then((res) => {
 
           console.log(res.data);
-          if (res.data.code !== 200) return alert(res.data.message);
+          if (res.data.code !== 200) return;
           this.confirmedListExample = res.data.data.paper_list;
           this.articleCount = res.data.type;
           this.articleSum = res.data.sum;
@@ -261,6 +272,55 @@ export default {
           this.dataReady = true;
           // alert("文章认领成功");
         });
+      },
+      getConfirmList() {
+        console.log(this.$store.state.person.username)
+        this.$axios({
+          "method": "get",
+          "url": "search/",
+          "header": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "params": {
+            "q": this.$store.state.person.username,
+            "method": 1,
+            "want": "00010"
+          },
+          "transformRequest": [function (data) {
+
+            let ret = "";
+            for (const it in data) {
+
+              ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+            }
+            return ret;
+
+          }],
+        }).then((res) => {
+
+          console.log(res.data);
+          if (res.data.status.code !== 200) return;
+          this.confirmListExample = [];
+          for (let it of res.data.data.goods) {
+            let temp = {
+              "canEdit": 0,
+              "authorName": "宋永欣",
+              "paperId": it.id,
+              "researchType": typeMap[it.type], // 0: 期刊 1: 会议 2：专著 3: 其他
+              "title": it.title,
+              "publishTime": it.publishTime === "N/A" ? "" : it.publishTime,
+              "journalName": it.org === "N/A" ? "" : it.org, // 期刊、会议、出版社名
+              "authorList": it.author_name.match(/(?<=\')[^,].*?(?=\')/g), // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
+              "reference": it.quote === "N/A" ? 0 : Number(it.quote),
+            };
+            this.confirmListExample.push(temp);
+          }
+          this.$store.commit("setConfirmPapers", this.confirmListExample.slice());
+          console.log(this.confirmListExample)
+          this.dataReady = true;
+          // alert("文章认领成功");
+        });
       }
 
     },
@@ -268,6 +328,8 @@ export default {
     },
     created () {
         this.getConfirmedList();
+        console.log("test confirm list");
+        this.getConfirmList()
     }
 
 };

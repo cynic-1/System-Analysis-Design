@@ -46,6 +46,7 @@
           color="primary"
           icon="close"
           label="不是我"
+          @click="() => {this.$emit('denyAuthor')}"
         />
         <q-btn
           class="gt-xs"
@@ -54,6 +55,7 @@
           icon="check"
           label="我是作者"
           color="primary"
+          @click="() => {this.$emit('claimAuthor')}"
         />
       </div>
       <div v-else-if="canEdit===1">
@@ -65,6 +67,7 @@
           color="primary"
           icon="add_circle_outline"
           label="补充相关资源"
+          @click="collect()"
         />
         <q-btn
           class="gt-xs"
@@ -106,7 +109,8 @@ export default {
   props: {
     "canEdit": Number,
     "authorName": String,
-    "researchType": Number, // 0: 期刊 1: 会议 2：专著 3: 其他
+    "paperId": Number,
+    "researchType": Number, // 0: 期刊/会议 1: 学位论文 2：专著 3: 其他
     "title": String,
     "publishTime": String,
     "journalName": String, // 期刊、会议、出版社名
@@ -116,10 +120,44 @@ export default {
   data () {
 
     return {
-      "researchTypeStrMap": ["期刊", "会议", "专著", "其他"]
+      "researchTypeStrMap": ["期刊/会议", "学位论文", "专著", "其他"]
     };
 
   },
+  methods: {
+    collect() {
+      this.$axios({
+        "method": "post",
+        "url": "col_paper/",
+        "header": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "data": {
+          "paper_id": this.paperId,
+          "user_id": this.$store.state.person.userID,
+        },
+        "transformRequest": [function (data) {
+
+          let ret = "";
+          for (const it in data) {
+
+            ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`;
+
+          }
+          return ret;
+
+        }],
+      }).then((res) => {
+
+        console.log(res.data);
+        if (res.data.code !== "400") return alert(res.data.message);
+        alert("修改个人信息成功");
+        this.disabled = true;
+        // PersonalMain.methods.loadpersonalInfo();
+
+      });
+    }
+  }
 };
 </script>
 

@@ -32,7 +32,8 @@ export default store((/* { ssrContext } */) => {
                 "headImage": "",
                 "is_associated": "",
                 "papers": [],
-                "paperCounts": []
+                "paperCounts": [],
+                "confirmPapers": [],
             }
         },
         "mutations": {
@@ -88,6 +89,10 @@ export default store((/* { ssrContext } */) => {
 
             setPaperCounts (state, nums){
               state.person.paperCounts = nums;
+            },
+
+            setConfirmPapers (state, list){
+              state.person.confirmPapers = list;
             }
 
         },
