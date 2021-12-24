@@ -122,13 +122,15 @@
             <q-separator inset />
             <template v-if="this.confirmList.length > 0">
               <q-list>
-                <article-item
+                <template
                   v-for="(item,index) in confirmList"
-                  :key="item.paperId"
-                  v-bind="item"
-                  @denyAuthor="confirmList.splice(index, 1)"
-                  @claimAuthor="claimAuthor(item.paperId)"
-                />
+                  :key="item.paperId">
+                  <article-item
+                    v-bind="item"
+                    @denyAuthor="confirmList.splice(index, 1)"
+                    @claimAuthor="claimAuthor(item.paperId)"
+                  />
+                </template>
               </q-list>
             </template>
             <template v-else>
@@ -248,7 +250,9 @@ export default {
           this.confirmedList = res.data.data.paper_list;
           this.confirmedList.forEach((item) => {
             item.publishTime = item.publishTime === "N/A" ? "" : item.publishTime
+            item.canEdit = 1
           })
+          console.log(this.confirmedList)
           this.articleCount = res.data.type;
           this.articleSum = res.data.sum;
           console.log(this.articleCount[0]);
