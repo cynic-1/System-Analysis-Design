@@ -9,7 +9,7 @@
           <div class="clearfix">
             <span style="font-size: 20px;">
               <q-icon name="lock" />
-              This preview is private — only you can see it on your profile</span>
+              此预览是私有的 — 只有您可以在个人资料中看到它</span>
             <q-btn
               flat
               color="black"
@@ -23,10 +23,10 @@
           <br>
           <div>
             <p style="font-size : 1.5em">
-              Business card
+              名 片
             </p>
             <div class="text-caption text-grey">
-              Your business card is a short summary of your profile which can be displayed to others across the platform. Make sure it's up to date so others can easily learn about you when they discover your card.
+               您的名片是您个人资料的简短摘要，可以在平台上向其他人显示。确保它是最新的，以便其他人可以轻松了解您。
             </div>
             <br>
             <q-card
@@ -42,11 +42,11 @@
                   </div>
                   <br>
                   <div class="text-caption text-grey">
-                    Institution
+                    机构
                   </div>
                   <p>{{ Form.institution }}</p>
                   <div class="text-caption text-grey">
-                    Department
+                    部门
                   </div>
                   <p>{{ Form.department }}</p>
                 </q-card-section>
@@ -66,9 +66,9 @@
         </div>
         <div v-if="!disabled">
           <div class="clearfix">
-            <span style="font-size: 20px;">Edit your business card</span>
+            <span style="font-size: 20px;">编辑您的名片</span>
             <div class="text-caption text-grey">
-              Make sure your business card information is accurate and up to date.
+              确保您的名片信息准确且最新
             </div>
           </div>
           <q-separator />
@@ -78,7 +78,7 @@
               style="padding: 0 60px 0 30px"
               class="text-caption text-grey"
             >
-              When you make changes to the information below, your profile will be updated with the same information.
+              当您对以下信息进行更改时，您的个人资料将使用相同的信息进行更新。
             </div>
             <br>
             <q-form
@@ -96,7 +96,7 @@
                 style="padding: 0px 60px 0px 30px"
                 class="text-weight-bold"
               >
-                昵称*
+                用户名*
               </div>
               <q-input
                 v-model="Form.nickname"
@@ -200,7 +200,7 @@
         style="width: 80%;margin-left: 160px;padding: 10px 25px"
       >
         <div class="clearfix">
-          <span style="font-size: 28px;">About me</span>
+          <span style="font-size: 28px;">关于我</span>
           <q-btn
             flat
             color="black"
@@ -214,7 +214,7 @@
         <br>
         <div v-if="disabled1">
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Introduction
+            自我介绍
           </div>
           <div v-if="Form.introduction.length!==0">
             {{ Form.introduction }}
@@ -228,16 +228,16 @@
               @click="chgcard1()"
             >
               <div class="text-h6 q-mt-sm q-mb-xs">
-                Make an introduction for yourself
+                请介绍一下您自己
               </div>
               <div class="text-grey">
-                Add an introduction with your research focus and interests to help others understand your work.
+                添加一篇介绍您的研究重点和兴趣的文章，以帮助他人更进一步的了解您与您的工作。
               </div>
             </q-btn>
           </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Languages
+            常用语言
           </div>
           <div v-if="Form.Language.length!==0">
             <q-btn
@@ -258,31 +258,31 @@
               @click="chgcard1()"
             >
               <div class="text-h6 q-mt-sm q-mb-xs">
-                Which language do you speak
+                请选择您的常用语言
               </div>
               <div class="text-grey">
-                Make it easier for others to contact you by listing the languages you speak
+                请从所给列表选择出您最常用的语言，以便让其他人更容易地与您进行联系与沟通。
               </div>
             </q-btn>
           </div>
           <br>
-          <div class="text-h6 q-mt-sm q-mb-xs">Disciplines</div>
+          <div class="text-h6 q-mt-sm q-mb-xs">学科</div>
           <div v-if="Form.disciplines.length!==0">
             <q-btn outline no-caps rounded color="grey">{{Form.disciplines}} </q-btn>
           </div>
           <div v-if="Form.disciplines.length===0">
             <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
-              <div class="text-h6 q-mt-sm q-mb-xs">Which discipline do you learn</div>
+              <div class="text-h6 q-mt-sm q-mb-xs">请列举出您所学习与研究的学科</div>
             </q-btn>
           </div>
           <br>
-          <div class="text-h6 q-mt-sm q-mb-xs">Skills and expertise</div>
+          <div class="text-h6 q-mt-sm q-mb-xs">技能与专长</div>
           <div v-if="Form.skill.length!==0">
             <q-btn outline no-caps rounded color="grey">{{Form.skill}} </q-btn>
           </div>
           <div v-if="Form.skill.length===0">
             <q-btn outline no-caps color="black" class="full-width" @click="chgcard1()">
-              <div class="text-h6 q-mt-sm q-mb-xs">Please introduce your skills</div>
+              <div class="text-h6 q-mt-sm q-mb-xs">请介绍您的技能与专长</div>
             </q-btn>
           </div>
         </div>
@@ -296,7 +296,7 @@
               style="padding: 0px 60px 0px 30px"
               class="text-weight-bold"
             >
-              Introduction
+              自我介绍
             </div>
             <q-input
               v-model="Form.introduction"
@@ -304,14 +304,14 @@
               autogrow
               type="textarea"
               dense
-              label="Please make an introduction for yourself"
+              label="请介绍一下您自己"
               style="padding: 0px 60px 0px 30px;margin-top: 0px"
             />
             <div
               style="padding: 0px 60px 0px 30px"
               class="text-weight-bold"
             >
-              Languages
+              常用语言
             </div>
             <q-select
               dense
@@ -320,13 +320,13 @@
               outlined
               v-model="Form.Language"
               :options="options1"
-              label="Choose language"
+              label="选择您的常用语言"
             />
             <div
               style="padding: 0px 60px 0px 30px"
               class="text-weight-bold"
             >
-              disciplines
+              学科
             </div>
             <q-input
               v-model="Form.disciplines"
@@ -340,7 +340,7 @@
               style="padding: 0px 60px 0px 30px"
               class="text-weight-bold"
             >
-              Skills and expertise
+              技能与专长
             </div>
             <q-input
               v-model="Form.skill"
@@ -380,7 +380,7 @@
         class="text-h4 q-mt-sm q-mb-xs"
         style="width: 80%;margin-left: 160px;"
       >
-        Research
+        学 者
         <q-separator />
       </div>
       <br>
@@ -389,7 +389,7 @@
         style="width: 80%;margin-left: 160px;padding: 10px 25px"
       >
         <div class="clearfix">
-          <span style="font-size: 20px;">Research overview</span>
+          <span style="font-size: 20px;">学者概况</span>
         </div>
         <q-separator inset />
         <br>
@@ -427,7 +427,7 @@
         style="width:280px;margin-right: 100px;padding: 10px 10px"
       >
         <div class="clearfix">
-          <span style="font-size: 28px">Affiliation</span>
+          <span style="font-size: 28px">所属机构</span>
           <q-btn
             flat
             color="black"
@@ -444,22 +444,22 @@
             {{ Form.institution }}
           </p>
           <p style=" font-size : 1.5em">
-            Department：{{ Form.department }}
+            部门：{{ Form.department }}
           </p>
           <p style="font-size : 1em">
-            position：{{ Form.position }}
+            在职岗位：{{ Form.position }}
           </p>
           <p style="font-size : 1em">
-            direction：{{ Form.direction }}
+            研究方向：{{ Form.direction }}
           </p>
           <p style="font-size : 1em">
-            achievement：{{ Form.achievement }}
+            研究成果：{{ Form.achievement }}
           </p>
           <div
             class="q-pa-md"
             style="max-width: 300px"
           >
-            <p>Please describe your affiliation or yourself</p>
+            <p>P请描述一下您的所属机构或您自己的相关信息</p>
             <q-input
               v-model="Form.text"
               filled
@@ -555,12 +555,17 @@
           :key="author">
           <q-item>
             <q-item-section side>
-              <q-avatar
-                rounded
-                size="48px"
+              <q-btn
+                round
+                @click="checkother(author.user_id)"
               >
-                <img :src="'http://114.116.235.94/'+author.img">
-              </q-avatar>
+                <q-avatar
+                  rounded
+                  size="48px"
+                >
+                  <img :src="'http://114.116.235.94/'+author.img">
+                </q-avatar>
+              </q-btn>
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ author.author_name }}</q-item-label>
@@ -877,6 +882,12 @@ export default {
           this.disabled3 = true;
           this.loadInfo();
         },
+      checkother(userid){
+          window.sessionStorage.setItem('otherpersonid',userid);
+          this.$router.push({
+            "path":"/otherpersonal",
+          })
+      }
     },
   props:["imageurl", "canEdit"]
 }

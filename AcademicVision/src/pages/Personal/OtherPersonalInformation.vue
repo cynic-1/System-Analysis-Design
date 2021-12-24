@@ -12,7 +12,7 @@
         <br>
         <div>
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Introduction
+            自我介绍
           </div>
           <div v-if="Form.introduction.length!==0">
             {{ Form.introduction }}
@@ -25,13 +25,13 @@
               class="full-width"
             >
               <div class="text-h6 q-mt-sm q-mb-xs">
-                This user hasn't introduced himself
+                该用户尚未进行自我介绍。
               </div>
             </q-btn>
           </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Languages
+            常用语言
           </div>
           <div v-if="Form.Language.length!==0">
             <q-btn
@@ -51,15 +51,15 @@
               class="full-width"
             >
               <div class="text-h6 q-mt-sm q-mb-xs">
-                This user hasn't chosen his language
+                该用户尚未选择常用语言。
               </div>
             </q-btn>
           </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Disciplines
+            学科
           </div>
-          <div>
+          <div v-if="Form.disciplines.length!==0">
             <q-btn
               outline
               no-caps
@@ -69,11 +69,23 @@
               {{ Form.disciplines }}
             </q-btn>
           </div>
+          <div v-if="Form.Language.length===0">
+            <q-btn
+              outline
+              no-caps
+              color="black"
+              class="full-width"
+            >
+              <div class="text-h6 q-mt-sm q-mb-xs">
+                该用户尚未填写他的学科。
+              </div>
+            </q-btn>
+          </div>
           <br>
           <div class="text-h6 q-mt-sm q-mb-xs">
-            Skills and expertise
+            技能与专长
           </div>
-          <div>
+          <div v-if="Form.skill.length!==0">
             <q-btn
               outline
               no-caps
@@ -83,6 +95,18 @@
               {{ Form.skill }}
             </q-btn>
           </div>
+          <div v-if="Form.skill.length===0">
+            <q-btn
+              outline
+              no-caps
+              color="black"
+              class="full-width"
+            >
+              <div class="text-h6 q-mt-sm q-mb-xs">
+                该用户尚未填写他的技能与专长。
+              </div>
+            </q-btn>
+          </div>
         </div>
       </q-card>
       <br>
@@ -90,7 +114,7 @@
         class="text-h4 q-mt-sm q-mb-xs"
         style="width: 80%;margin-left: 160px;"
       >
-        Research
+        学 者
         <q-separator />
       </div>
       <br>
@@ -99,7 +123,7 @@
         style="width: 80%;margin-left: 160px;padding: 10px 25px"
       >
         <div class="clearfix">
-          <span style="font-size: 20px;">Research overview</span>
+          <span style="font-size: 20px;">学者概况</span>
         </div>
         <q-separator inset />
         <br>
@@ -137,7 +161,7 @@
         style="width:280px;margin-right: 100px;padding: 10px 10px"
       >
         <div class="clearfix">
-          <span style="font-size: 28px">Affiliation</span>
+          <span style="font-size: 28px">所属机构</span>
         </div>
         <q-separator inset />
         <br>
@@ -146,20 +170,20 @@
             {{ Form.institution }}
           </p>
           <p style=" font-size : 1.5em">
-            Department：{{ Form.department }}
+            部门：{{ Form.department }}
           </p>
           <p style="font-size : 1em">
-            position：{{ Form.position }}
+            在职岗位：{{ Form.position }}
           </p>
           <p style="font-size : 1em">
-            direction：{{ Form.direction }}
+            研究方向：{{ Form.direction }}
           </p>
           <p style="font-size : 1em">
-            achievement：{{ Form.achievement }}
+            研究成果：{{ Form.achievement }}
           </p>
           <div v-if="Form.text.length!==0">
             <div class="text-weight-bold">
-              The description of his affiliation
+              该用户所属机构的描述
             </div>
             <q-input
               outlined
