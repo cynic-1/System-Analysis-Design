@@ -607,6 +607,12 @@ export default {
                 item.publish_time = "";
               if(item.quote === "N/A")
                 item.quote = 0;
+              if(item.quote !== "N/A"){
+                if(String(item.quote).indexOf("万") !== -1)
+                  item.qutoe = 10012
+                else
+                  item.quote = parseInt(item.quote)
+              }
               if(item.org === "N/A")
                 item.org = "";
             }
