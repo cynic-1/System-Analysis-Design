@@ -2,7 +2,8 @@
   <div>
     <q-toolbar class="bg-primary Nav fa-text-height text-white">
       <q-avatar>
-        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+<!--        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">-->
+        <img src="http://114.116.235.94/img/null.jpg">
       </q-avatar>
       <q-toolbar-title>Academic Vision</q-toolbar-title>
       <q-breadcrumbs
