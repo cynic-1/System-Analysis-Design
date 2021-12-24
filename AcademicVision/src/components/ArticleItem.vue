@@ -16,7 +16,7 @@
         >
           {{ this.researchTypeStrMap[researchType] }}
         </q-chip>
-        <span class="text-h6 text-grey q-px-md">{{ publishTime }} {{ journalName }}
+        <span class="text-h6 text-grey q-px-md">{{ publishTime !== "N/A" ? publishTime : "" }} {{ journalName }}
             被引量: {{ reference }}</span>
       </q-item-label>
       <q-item-label

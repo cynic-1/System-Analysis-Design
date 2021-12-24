@@ -145,6 +145,7 @@ export default {
             "path": "/personal",
             "query": {
               "tab": "1",
+              "userId": this.$store.state.person.userID
             }
           })
         },

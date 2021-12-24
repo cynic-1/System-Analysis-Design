@@ -67,11 +67,12 @@
       />
       <q-tab-panels v-model="tab">
         <q-tab-panel name="1">
-          <PersonalInformation :imageurl="this.imgUrl" />
+          <PersonalInformation :imageurl="this.imgUrl" :canEdit="this.canEdit"/>
         </q-tab-panel>
         <q-tab-panel name="2">
           <personal-research
             ref="personal-research"
+            :canEdit="canEdit"
             @changeTab="changeTab"
           />
         </q-tab-panel>
@@ -105,7 +106,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 
 const PersonalInformation = defineAsyncComponent(() => import("./PersonalInformation"));
 const PersonalResearch = defineAsyncComponent(() => import("./PersonalResearch"));
@@ -141,12 +142,24 @@ export default {
             "hobby":"",
             "imgUrl":"",
             "user_id":this.$store.state.person.userID,
+            "canEdit": false
         };
 
     },
-    "mounted": function () {
+    mounted () {
       this.loadpersonalInfo()
+      if (this.$route.query.userId === this.$store.state.person.userID) {
+        this.canEdit = true;
+      }
+      watch(
+        this.$route.query.userId,
+        (newId) => {
+          this.canEdit = newId === this.$store.state.person.userID;
+        },
+        { "deep": true }
+      );
     },
+
     "methods": {
         checkinfor (){
             this.$router.push({ "path": "/personalinformation", "query": { "id": 123456 } });
@@ -162,7 +175,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$store.state.person.userID,
+              user_id: this.$route.query.userId,
             },
             transformRequest:[function(data){
               let ret = ''

@@ -648,7 +648,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$store.state.person.userID,
+              user_id: this.$route.query.userId,
             },
             transformRequest:[function(data){
               let ret = ''
@@ -672,7 +672,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$store.state.person.userID,
+              user_id:this.$route.query.userID,
               author_id:authorid,
             },
             transformRequest:[function(data){
@@ -696,7 +696,7 @@ export default {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data:{
-              user_id:this.$store.state.person.userID,
+              user_id:this.$route.query.userID,
             },
             transformRequest:[function(data){
               let ret = ''
@@ -877,7 +877,7 @@ export default {
           this.loadInfo();
         },
     },
-  props:['imageurl']
+  props:["imageurl", "canEdit"]
 }
 
 </script>

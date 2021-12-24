@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, watch } from "vue";
 
 const leftDrawer = defineAsyncComponent(() => import("../../layouts/LeftDrawer"));
 const pieChart = defineAsyncComponent(() => import("../../components/PieChart"));
@@ -156,6 +156,7 @@ export default {
     },
     props: {
       username: String,
+      canEdit: Boolean
     },
     data () {
 
@@ -169,7 +170,8 @@ export default {
             "confirmList": [],
             "confirmedList": [],
           articleCount: [],
-          articleSum: 7
+          articleSum: 7,
+          canEdit: false
         };
 
     },
@@ -188,7 +190,7 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           "data": {
-              "user_id": this.$store.state.person.userID,
+              "user_id": this.$route.query.userId,
               "paper_id": paperId
           },
           "transformRequest": [function (data) {
@@ -217,7 +219,7 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           "data": {
-            "user_id": this.$store.state.person.userID,
+            "user_id": this.$route.query.userId,
           },
           "transformRequest": [function (data) {
 
@@ -258,7 +260,7 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           "params": {
-            "q": this.$store.state.person.username,
+            "q": this.$route.query.userId,
             "method": 1,
             "want": "00010"
           },
@@ -285,7 +287,7 @@ export default {
               "paperId": it.id,
               "researchType": typeMap[it.type], // 0: 期刊 1: 会议 2：专著 3: 其他
               "title": it.title,
-              "publishTime": it.publishTime === "N/A" ? "" : it.publishTime,
+              "publishTime": it.publish_time,
               "journalName": it.org === "N/A" ? "" : it.org, // 期刊、会议、出版社名
               "authorList": it.author_name.match(/(?<=\')[^,].*?(?=\')/g), // 共同作者名，按照原文的作者排序，包括正在认领的这个作者
               "reference": it.quote === "N/A" ? 0 : Number(it.quote),
@@ -306,7 +308,9 @@ export default {
         this.getConfirmedList();
         console.log("test confirm list");
         this.getConfirmList()
-    }
+    },
+
+
 
 };
 </script>
