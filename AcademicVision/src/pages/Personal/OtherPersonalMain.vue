@@ -165,9 +165,11 @@ export default {
         }
         this.author_id=info.author_id;
         if(info.isfollow===0){
+          console.log("未关注");
           this.isFollowed=false
         }
         else {
+          console.log("已关注");
           this.isFollowed=true
         }
         // if(info.signature !== null)
@@ -222,7 +224,8 @@ export default {
             return ret
           }],
         }).then((res)=>{
-          console.log(res.data.code )
+          alert("关注成功")
+          console.log(res.data.code)
         })
           }
       }

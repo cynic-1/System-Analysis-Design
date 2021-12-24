@@ -12,7 +12,7 @@
         arrows
         control-text-color="primary"
         animated
-        height="450px"
+        height="400px"
         :autoplay="autoplay"
         transition-prev="slide-right"
         transition-next="slide-left"
@@ -425,6 +425,7 @@ export default {
     }
   },
   mounted() {
+    console.log("加载首页")
     this.$axios({
       "method": "POST",
       "url": "http://114.116.235.94/top_author/",

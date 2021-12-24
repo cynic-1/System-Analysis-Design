@@ -69,7 +69,7 @@
   <div style="margin: 0 auto;width: 70%">
     <div style="font-size: small;margin-bottom: 20px">为您搜索到如下结果：</div>
     <div class="row">
-      <q-card v-for="item in author"  :key="item" class="my-card" flat bordered style="width: 50%">
+      <q-card v-if="author.length !== 0" v-for="item in author"  :key="item" class="my-card" flat bordered style="width: 50%">
         <q-item>
           <q-item-section avatar>
             <q-avatar size="80px">
@@ -82,7 +82,7 @@
             <q-item-label style="font-size: large;font-weight: bold">{{item.author_name}}</q-item-label>
             <q-item-label style="font-size: small">{{item.org}}</q-item-label>
             <q-item-label caption>
-              发表文章：{{item.paper_mum}}
+              发表文章：{{item.paper_num}}
             </q-item-label>
             <q-item-label caption>
               被引次数：{{item.quote}}
@@ -91,9 +91,11 @@
               研究方向： {{item.direction}}
             </q-item-label>
           </q-item-section>
-          <q-btn class="text-blue-7" color="blue-7" rounded outline size="md" style="height: 30px">前往查看</q-btn>
+          <q-btn class="text-blue-7" color="blue-7" rounded outline size="md" style="height: 30px" @click="goToOther(item.user_id)">前往查看</q-btn>
         </q-item>
       </q-card>
+
+      <div v-else style="font-size: 50px;font-weight: bold;color: #7f7f7f;margin-left: auto;margin-right: auto;margin-top: 80px">暂无符合要求的结果!</div>
     </div>
 
     <div class="q-pa-lg flex flex-center" style="margin-top: 30px">
@@ -145,6 +147,10 @@ export default {
         this.author = response.data.list
         this.max = this.author.length / 6
       })
+    },
+    goToOther(id){
+      window.sessionStorage.setItem("otherpersonid",id)
+      this.$router.push({"path":"/otherpersonal"})
     }
   }
 }
