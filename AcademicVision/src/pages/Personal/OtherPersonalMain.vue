@@ -133,6 +133,7 @@ export default {
         },
         data:{
           user_id:window.sessionStorage.getItem('otherpersonid'),
+          user_id2:this.$store.state.person.userID,
         },
         transformRequest:[function(data){
           let ret = ''
@@ -162,6 +163,12 @@ export default {
           this.department = info.department;
         }
         this.author_id=info.author_id;
+        if(info.isfollow===0){
+          this.isFollowed=false
+        }
+        else {
+          this.isFollowed=true
+        }
         // if(info.signature !== null)
         //   this.Form.signature = info.signature;
         // if(info.briefintroduction !== null)
