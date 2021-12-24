@@ -57,7 +57,7 @@
           flat
           round
           color="blue-6"
-          icon="bookmark"
+          icon="star"
           size="19px"
           @click="unstar"
           v-show="isStar"
@@ -66,7 +66,7 @@
           flat
           round
           color="grey-6"
-          icon="bookmark"
+          icon="star"
           size="19px"
           @click="star"
           v-show="!isStar"
