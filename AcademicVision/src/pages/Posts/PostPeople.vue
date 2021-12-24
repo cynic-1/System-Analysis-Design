@@ -468,7 +468,7 @@
 
     <q-dialog v-model="card1">
       <q-card class="my-card">
-        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202109%2F04%2F20210904215837_22f1d.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642056027&t=d8c44399142aa3ee2d2fad0698cc8a62" />
+        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic2.zhimg.com%2Fv2-678ed781c39579664eeac6c2496f917f_r.jpg%3Fsource%3D1940ef5c&refer=http%3A%2F%2Fpic2.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642902738&t=f87aa0bdd8232724162f240cbaafbd86" height="400px"/>
 
         <q-card-section>
           <q-btn
@@ -505,7 +505,7 @@
 
     <q-dialog v-model="card2">
       <q-card class="my-card">
-        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.nga.178.com%2Fattachments%2Fmon_202002%2F20%2Ff9Q5-1rynZpT3cSa2-e8.jpeg&refer=http%3A%2F%2Fimg.nga.178.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642056027&t=e6ae10fca4860ae4a9c37a961c3f1109" />
+        <q-img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.doubanio.com%2Fview%2Fgroup_topic%2Fl%2Fpublic%2Fp291868896.jpg&refer=http%3A%2F%2Fimg9.doubanio.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642902738&t=e32297e8e47b7f4afc8eadfb6e9afa72" />
 
         <q-card-section>
           <q-btn

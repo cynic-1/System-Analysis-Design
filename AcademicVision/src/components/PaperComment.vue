@@ -128,7 +128,21 @@
           :stamp="comment.com_time"
           style="font-size: 23px;width: 1100px"
           bg-color="blue-2"
+          @click="method1(comment.comment_user_id)"
         />
+        <q-dialog v-model="confirm" persistent>
+          <q-card>
+            <q-card-section class="row items-center">
+              <q-avatar icon="logout" color="primary" text-color="white" />
+              <span class="q-ml-sm" style="font-size: 20px">您即将前往用户个人空间</span>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="取消" color="primary" v-close-popup/>
+              <q-btn flat label="前往" color="primary" v-close-popup @click="gotoCheckUser(this.comid)"/>
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
         <br><br>
         <q-separator
           inset
@@ -162,6 +176,8 @@ export default {
     data () {
 
         return {
+             comid: 0,
+             confirm: false,//
             "hasComment": false,//
             "prompt": false, //
             "reason": "", //
@@ -378,6 +394,10 @@ export default {
     },
 
     "methods": {
+      method1(userid) {
+        this.comid = userid;
+        this.confirm = true;
+      },
         simulateProgress (number) {
 
             // we set loading state
@@ -477,7 +497,14 @@ export default {
             this.text = null;
             this.$refs.text.resetValidation();
 
-        }
+        },
+      gotoCheckUser(userid) {
+        console.log(userid)
+        window.sessionStorage.setItem('otherpersonid', userid);
+        this.$router.push({
+          "path": "/otherpersonal",
+        })
+      },
     },
 
 };

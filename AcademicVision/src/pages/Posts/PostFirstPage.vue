@@ -84,7 +84,7 @@
         </q-carousel-slide>
         <q-carousel-slide
           name="third"
-          img-src="https://upload-bbs.mihoyo.com/upload/2021/12/19/83464122/e7f34e324c9178ef0cadb9fcdbaad568_1250810013433647666.png?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,png"
+          img-src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwallcoo.com%2Fgame%2FHalo_Reach%2Fwallpapers%2F1920x1080%2FCruiser_Crash.jpg&refer=http%3A%2F%2Fwallcoo.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642903069&t=14b11d3d98796b2db7dd2e2886c52e3f"
         >
           <q-input
             v-model="text"
