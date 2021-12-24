@@ -50,11 +50,6 @@
             label="学者主页"
           />
           <q-tab
-            name="3"
-            style="width:200px"
-            label="消息中心"
-          />
-          <q-tab
             name="4"
             style="width:200px"
             label="收藏夹"
@@ -76,9 +71,6 @@
             :canEdit="canEdit"
             @changeTab="changeTab"
           />
-        </q-tab-panel>
-        <q-tab-panel name="3" >
-          <personal-message/>
         </q-tab-panel>
         <q-tab-panel name="4">
           <PersonalSaved />
