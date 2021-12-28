@@ -181,6 +181,7 @@ export default {
         this.confirmedList = res.data.data.paper_list;
         this.confirmedList.forEach((item) => {
           item.publishTime = item.publishTime === "N/A" ? "" : item.publishTime
+          item.canEdit = 1
         })
         console.log(this.confirmedList)
         this.articleCount = res.data.type;
@@ -202,7 +203,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         "data": {
-          "user_id": this.$route.query.userId,
+          "user_id": window.sessionStorage.getItem('otherpersonid'),
         },
         "transformRequest": [function (data) {
 
@@ -280,7 +281,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         "data": {
-          "user_id": this.$route.query.userId
+          "user_id": window.sessionStorage.getItem('otherpersonid')
         },
         "transformRequest": [function (data) {
 
@@ -310,7 +311,7 @@ export default {
   },
   mounted () {
     watch(
-      this.$store.state.person.username,
+      window.sessionStorage.getItem('otherpersonid'),
       (newId) => {
         this.getConfirmedList();
         this.getLineChartData()
